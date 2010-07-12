@@ -1,0 +1,107 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <title>YARD 0.5.8 - Types Parser</title>
+    <link rel="stylesheet" href="css/yard.css" type="text/css" media="screen" charset="utf-8" />
+    <script type="text/javascript" src="js/jquery.js"></script>
+    <script type="text/javascript">
+      $(function() {
+        $('#types_form').submit(function() {
+          var types = encodeURIComponent($('#types_text').val());
+          $.get('types.cgi?' + types, null, function(data, status) {
+            $('#types_results').html(data);
+          });
+          return false;
+        });
+
+        $('#examples dd').click(function() {
+          $('#types_text').val($(this).text());
+          $('#types_form').submit();
+          document.location = '#see_results';
+        })
+      });
+    </script>
+    <style type="text/css" media="screen">
+      #links { text-align: right; }
+      h1 { 
+        color: #35871b; 
+        font-weight: normal;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="content">
+      <div id="links">
+        <a class="title" href="/">YARD: <span class='lighter'>A Ruby Documentation Tool</span></a>
+        <a href="/" class="lighter">Go Home</a>
+        <a href="/docs/yard/file:docs/WhatsNew.md">What's New?</a> 
+        <a href="/docs/yard/file:README.md">Docs</a> 
+        <a href="http://github.com/lsegal/yard">Source</a> 
+        <a href="http://github.com/lsegal/yard/issues">Issues</a>
+      </div>
+      <div id="types_info">
+        <h1>YARD Type Parser</h1>
+
+        <p>Here is an experimental version of a parser that converts YARD's formal <a href="/docs/yard/file:docs/GettingStarted.md#docing">type syntax</a>
+          into plain old English. This is a good way to test if your type declaration means 
+          what you think it does:</p>
+        <p><small>You can find the code on <a href="http://github.com">Github</a> at <a href="http://github.com/lsegal/yard-types-parser">http://github.com/lsegal/yard-types-parser</a>.</small></p>
+
+        <div id="see_results"></div>
+        <form id="types_form">  
+          <h2>Enter a List of Types:</h2>
+          <input id="types_text" type="text" /> <input id="submit" type="submit" value="Parse" />
+        </form>
+
+        <div id="results">
+          <h2>Results:</h2>
+          <div id="types_results">
+          </div>
+        </div>
+
+        <div id="examples">
+          <h2>Try Some Examples:<br/><small>Click the examples to run them.</small></h2>
+          <p class="note">The syntax used in the examples below is not official YARD type syntax. 
+            This is actually just one syntax being looked at as a possible standard. You can give
+            feedback on the syntax in the <a href="irc://irc.freenode.net/yard">#yard</a> IRC channel.
+            </p>
+          <dl>
+            <dt>A bunch of regular types and a constant:</dt>
+            <dd>Fixnum, Foo, Object, true</dd>
+
+            <dt>A duck-typed Object</dt>
+            <dd>#read</dd>
+
+            <dt>An array of various objects</dt>
+            <dd>Array&lt;String, Symbol, #read&gt;</dd>
+
+            <dt>A collection type other than an Array</dt>
+            <dd>Set&lt;Number&gt;</dd>
+
+            <dt>An fixed-size array of specific objects</dt>
+            <dd>Array(String, Symbol)</dd>
+
+            <dt>A Hash with one key type and a few value types</dt>
+            <dd>Hash{String => Symbol, Number}</dd>
+
+            <dt>A complex example showing a possibility of many different types</dt>
+            <dd>Array&lt;Foo, Bar&gt;, List(String, Symbol, #to_s), {Foo, Bar =&gt; Symbol, Number}</dd>
+
+            <dt>Finally, some shorthands for collections and hashes</dt>
+            <dd>&lt;String, Symbol&gt;, (String, Symbol), {Key=>Value}</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="clear"></div>
+      <div id="copyright">
+        Copyright &copy; 2007-2009. YARD is written by <a href="http://gnuu.org">Loren Segal</a>. Design by <a href="http://gnuu.org">gnuu.org</a>. YARD uses the MIT License.
+      </div>
+    </div>
+  </body>
+  <script src="http://static.getclicky.com/js" type="text/javascript"></script>
+  <script type="text/javascript">clicky.init(151617);</script>
+  <noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/151617ns.gif" /></p></noscript>
+</html>

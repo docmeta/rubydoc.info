@@ -1,0 +1,4 @@
+# Sample configuration file
+
+# If you have Hoptoad, uncomment the following line and add your API key:
+# hoptoad: YOUR_API_KEY

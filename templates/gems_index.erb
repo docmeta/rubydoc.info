@@ -1,0 +1,28 @@
+<div id="content">
+  <h1>YARD Documentation Server</h1>
+  <ul id="nav"><li class="selected">RubyGems</a></li><li><a href="/github">Github</a></li></ul>
+  <h2>RubyGems Listing <small>(<a id="framelink" href="#">links without frames</a>)</small></h2>
+  <ul class="alpha_index">
+    <% (?a..?z).each do |letter| %>
+      <% if letter == @letter %>
+        <li class="selected"><%= letter.upcase %></li>
+      <% else %>
+        <li><a href="/gems/<%= letter %>"><%= letter.upcase %></a></li>
+      <% end %>
+    <% end %>
+  </ul>
+  
+  <ul id="libraries">
+    <% @libraries.sort_by {|name, y| name.downcase }.each do |name, library_versions| %>
+    <li class="r<%= @row = @row == 1 ? 2 : 1 %>">
+      <% library_versions = library_versions.dup %>
+      <% first_lib = library_versions.pop %>
+      <a href="/<%= @adapter.router.docs_prefix %>/<%= first_lib %>/frames"><%= name %></a> 
+      <% if first_lib.version %>
+        <small>(<%= first_lib.version %><% if library_versions.size > 0 %>, 
+          <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/#{@adapter.router.docs_prefix}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
+      <% end %>
+    </li>
+    <% end %>
+  </ul>
+</div>

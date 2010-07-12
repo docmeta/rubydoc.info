@@ -1,0 +1,68 @@
+<style type="text/css" media="screen">
+  #libraries { float: left; width: 60%; }
+</style>
+
+<div id="content">
+  <h1>YARD Documentation Server</h1>
+  <ul id="nav"><li><a href="/gems">RubyGems</a></li><li class="selected">Github</li></ul>
+  <h2>Github Projects Listing <small>(<a id="framelink" href="#">links without frames</a>)</small></h2>
+  <ul id="libraries">
+    <% @libraries.sort_by {|name, y| name.downcase }.each do |name, library_versions| %>
+    <% next if library_versions.empty? %>
+    <li class="r<%= @row = @row == 1 ? 2 : 1 %>">
+      <% library_versions = library_versions.dup %>
+      <% first_lib = library_versions.pop %>
+      <a href="/<%= @adapter.router.docs_prefix %>/<%= first_lib %>/frames"><%= name %></a> 
+      <% if first_lib.version %>
+        <small>(<%= first_lib.version %><% if library_versions.size > 0 %>, 
+          <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/#{@adapter.router.docs_prefix}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
+      <% end %>
+    </li>
+    <% end %>
+  </ul>
+
+  <div id="info">
+    <h1 class="header">Welcome to Yardoc.org</h1>
+
+    <p class="info">Yardoc.org is your source for open source Ruby documentation, generating
+      docs from git or svn repositories.</p>
+
+      <div id="icon">
+        <h1><a href="/">Yardoc.org</a>/docs</h1>
+        <p>Documentation for your favourite Ruby libraries.</p>
+      </div>
+
+
+    <p class="info">This site uses <a href="http://yardoc.org">YARD</a> to generate docs on the fly. To make your docs look better, you can check out
+      some of YARD's <a href="/docs/yard/file/README.md">killer features</a>.</p>
+
+    <p class="info"><strong>We have DISQUS integration!</strong> Click the <em>permalink</em> 
+      (<a href="/docs/yard/YARD/Templates/Engine.render">like this one</a>)
+      on a method to see user comments on a method page.
+    </p>
+    <p class="info">Looking for a <a href="http://github.com">GitHub</a> <a href="http://help.github.com/post-receive-hooks/">post-receive hook</a>?
+      Use <tt>http://yardoc.org/checkout</tt>.</p>
+
+    <p class="info">Problems or suggestions? <a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#121;&#97;&#114;&#100;&#111;&#99;&#64;&#103;&#111;&#111;&#103;&#108;&#101;&#103;&#114;&#111;&#117;&#112;&#115;&#46;&#99;&#111;&#109;'>Contact us</a>.</p>
+
+    <div id="checkout">
+      <h2>Add your own project <small>(eg. git://github.com/lsegal/yard)</small>:</h2>
+      <form id="checkout_form" action="/checkout" method="post">
+        <input class="url" type="text" id="url" name="url" /> 
+        <select name="scheme" id="scheme">
+          <option value="git">git</option>
+          <option value="svn">svn</option>
+        </select>
+        <div class="loadicon"></div>
+        <input type="submit" id="submit" value="Go" />
+        <small>Commit (optional): <input type="text" id="commit" name="commit" value="" /></small>
+      </form>
+      <script type="text/javascript" charset="utf-8">
+        if (jQuery.browser.safari) $('#checkout_form .url').css('width', '225px');
+      </script>
+    </div>
+  </div>
+  
+  <div style="clear:both"></div>
+</div>
+

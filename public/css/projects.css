@@ -1,0 +1,103 @@
+h2 { font-size: 1.6em; }
+
+#projects { font-size: 1.4em; list-style: circle; }
+
+#projects { list-style-position: inside; padding-left: 0; list-style: none; margin-left: 0; }
+#projects li { padding: 7px 15px; font-size: 1.1em; }
+
+#maintitle h1 { margin: 0; border: 0; color: #ffa; }
+#maintitle h1 small { font-size: 0.6em; }
+#maintitle h1 small a:link, #maintitle h1 small a:visited { color: #ff5; }
+#maintitle h1 small a:hover { background: transparent; font-style: italic; }
+#maintitle p { margin-top: 0; }
+
+#checkout form { display: inline; }
+#checkout h2 { margin: 0; padding: 0; border: 0; font-weight: normal; font-size: 1.1em; }
+#checkout input, #checkout select { font-size: 1.1em; }
+#checkout .loadicon { display: none; float: right; position: relative; top: 6px; width: 16px; height: 16px; background: url(/images/loading.gif); }
+#checkout.error #url { background: #fdd; }
+#checkout.error:after { content: "Invalid git/svn repository URL"; margin-left: 3px; color: #888; }
+#checkout.loading .loadicon { display: block; }
+
+#icon {
+  background: url(/images/docslogo.png) no-repeat; 
+  width: 210px; height: 100px; margin-top: 0px; 
+  -webkit-border-radius: 7px; -moz-border-radius: 7px; 
+  
+}
+#icon p { font-size: 0.8em; color: #888; 
+  margin-top: 2px;
+  padding-left: 60px; 
+}
+#icon h1 { 
+  padding-top: 50px; padding-left: 73px; margin: 0;
+  border: 0; color: #000; font-size: 12px; 
+}
+
+#info #icon { margin: 5px auto; }
+
+#info, #maintitle, #checkout { 
+  padding: 8px 12px; color: #fff; background: #1a3f6c; border: 1px solid #78a; 
+  -webkit-border-radius: 10px; -moz-border-radius: 10px; 
+}
+#checkout { 
+  margin: 12px;
+  background: #e5e5e5; color: #666; border: 1px solid #ccc; margin-bottom: 15px; margin-top: 40px;
+  -webkit-box-shadow: 0px 2px 15px #aaa; -moz-box-shadow: 0px 2px 15px #aaa;
+  *font-size: 0.9em;
+}
+#checkout .url { width: 225px; }
+#checkout { width: 350px; margin: 15px auto; }
+
+#info {  
+  padding: 0;
+  background: #eee;
+  border-color: #bbb;
+  color: #222;
+  float: right;
+  width: 400px;
+  border-width: 5px;
+}
+#info h1.header { 
+  padding: 12px;
+  background: #ff9a0f; margin: 0; border: 0; color: #fff;
+  -webkit-border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; 
+  -webkit-border-top-right-radius: 5px; -moz-border-radius-topright: 5px; 
+}
+#info p.info { line-height: 1.3em; font-size: 1em; margin: 12px 16px; }
+
+#info a:link, #info a:visited { border-bottom: 1px dotted #aaf; }
+
+.alpha_index li {
+  display: inline;
+  padding: 0 1px;
+}
+.alpha_index li.selected {
+  padding: 3px 4px;
+  margin-right: 0;
+  background: #dedede;
+}
+.alpha_index li a {
+  padding: 3px 4px;
+  margin-right: 0;
+  background: #eee;
+}
+
+#nav { display: block; }
+#nav li {
+  display: inline;
+}
+#nav li.selected {
+  padding: 6px;
+  background: #dedede;
+}
+#nav li a {
+  padding: 6px;
+  background: #eee;
+}
+
+#content h1 { margin: 0; }
+#content h2 { margin-top: 0.8em; }
+
+#advanced_options { margin: 0; display: block; border: none; color: #111; }
+.extra_options { display: none; }
