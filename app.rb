@@ -27,14 +27,21 @@ class DocServer < Sinatra::Base
     }
   end
   
+  def self.load_configuration
+    return unless File.file?(CONFIG_FILE)
+    puts ">> Loading #{CONFIG_FILE}"
+    YAML.load_file(CONFIG_FILE).each do |key, value|
+      set key, value
+    end
+  end
+  
   def self.copy_static_files
     # Copy template files
     puts ">> Copying static system files..."
     Commands::StaticFileCommand::STATIC_PATHS.each do |path|
       %w(css js images).each do |ext|
-        if File.directory?(File.join(path, ext))
-          system "cp #{File.join(path, ext, '*')} #{File.join('public', ext, '')}"
-        end
+        next unless File.directory?(File.join(path, ext))
+        system "cp #{File.join(path, ext, '*')} #{File.join('public', ext, '')}"
       end
     end
   end
@@ -84,27 +91,19 @@ class DocServer < Sinatra::Base
   end
   
   configure do
-    if File.file?(CONFIG_FILE)
-      YAML.load_file(CONFIG_FILE).each do |key, value|
-        case key.to_s
-        when 'hoptoad'
-          set :hoptoad_notifier, Rack::Hoptoad.new(self, value)
-        else
-          set key, value
-        end
-      end
-    end
-    copy_static_files
+    load_configuration
     load_gems_adapter
     load_scm_adapter
+    copy_static_files
   end
   
   helpers do
     include ScmCheckout
     
     def notify_error
-      if %w(staging production).include?(ENV['RACK_ENV'])
-        options.hoptoad_notifier.send(:send_notification, request.env['sinatra.error'], request.env)
+      if options.hoptoad && %w(staging production).include?(ENV['RACK_ENV'])
+        @hoptoad_notifier ||= Rack::Hoptoad.new(self, options.hoptoad)
+        @hoptoad_notifier.send(:send_notification, request.env['sinatra.error'], request.env)
       end
       erb(:error)
     end
