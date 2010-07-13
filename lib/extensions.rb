@@ -42,7 +42,7 @@ module YARD
       alias load_yardoc_from_github load_yardoc_from_disk
       
       def source_path_for_github
-        File.join(::REPOS_PATH, name.sub('/', '-'), version)
+        File.join(::REPOS_PATH, name.split('/', 2).reverse.join('/'), version)
       end
 
       private

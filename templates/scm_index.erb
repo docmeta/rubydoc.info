@@ -1,5 +1,13 @@
 <style type="text/css" media="screen">
   #libraries { float: left; width: 60%; }
+  #libraries ul { background: #eee; }
+  #libraries { list-style: none; }
+  #libraries li { line-height: 2em; border-bottom: 1px solid #ddd; }
+  #libraries ul li { padding-bottom: 6px; background: #f0f0f0; }
+  #libraries ul { padding-bottom: 10px; background: transparent; }
+  #libraries li:hover { background: #eef; }
+  #libraries li.alternate, #libraries li.alternate:hover { background: transparent; }
+  #libraries li a:hover { background: transparent; color: #3ae; }
 </style>
 
 <div id="content">
@@ -7,17 +15,39 @@
   <ul id="nav"><li><a href="/gems">RubyGems</a></li><li class="selected">Github</li></ul>
   <h2>Github Projects Listing <small>(<a id="framelink" href="#">links without frames</a>)</small></h2>
   <ul id="libraries">
-    <% @libraries.sort_by {|name, y| name.downcase }.each do |name, library_versions| %>
-    <% next if library_versions.empty? %>
-    <li class="r<%= @row = @row == 1 ? 2 : 1 %>">
-      <% library_versions = library_versions.dup %>
-      <% first_lib = library_versions.pop %>
-      <a href="/<%= @adapter.router.docs_prefix %>/<%= first_lib %>/frames"><%= name %></a> 
-      <% if first_lib.version %>
-        <small>(<%= first_lib.version %><% if library_versions.size > 0 %>, 
-          <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/#{@adapter.router.docs_prefix}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
-      <% end %>
-    </li>
+    <% @libraries.sorted_by_project.each do |project, repos| %>
+      <% next if repos.empty? %>
+      <% master = @libraries.master_fork(project) %>
+      <li>
+        <% username, library_versions = *repos.first %>
+        <% if first_lib = library_versions.find {|l| l.name == master } %>
+          <% library_versions -= [first_lib] %>
+          <a href="/<%= @adapter.router.docs_prefix %>/<%= first_lib %>/frames"><strong><%= username %>/<%= project %></strong></a> 
+          <% if first_lib.version %>
+            <small>(<%= first_lib.version %><% if library_versions.size > 0 %>, 
+              <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/#{@adapter.router.docs_prefix}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
+          <% end %>
+          <% repos.shift %>
+        <% else %>
+          <strong><%= project %></strong> <small>(No master fork)</small>
+        <% end %>
+      </li>
+      <% next if repos.empty? %>
+      <ul class="<%= next_row; next_row %>">
+        <li class="alternate"><small>Alternate forks:</small></li>
+        <% repos.each do |username, library_versions| %>
+          <% next if library_versions.empty? %>
+          <li>
+            <% library_versions = library_versions.dup %>
+            <% first_lib = library_versions.pop %>
+            <a href="/<%= @adapter.router.docs_prefix %>/<%= first_lib %>/frames"><%= username %>/<%= project %></a> 
+            <% if first_lib.version %>
+              <small>(<%= first_lib.version %><% if library_versions.size > 0 %>, 
+                <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/#{@adapter.router.docs_prefix}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
     <% end %>
   </ul>
 

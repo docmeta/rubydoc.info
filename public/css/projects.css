@@ -5,6 +5,11 @@ h2 { font-size: 1.6em; }
 #projects { list-style-position: inside; padding-left: 0; list-style: none; margin-left: 0; }
 #projects li { padding: 7px 15px; font-size: 1.1em; }
 
+#libraries { list-style: circle inside none; padding: 0; }
+#libraries li { font-size: 1.2em; line-height: 1.4em; padding: 3px 5px; }
+#libraries ul { padding: 0; margin-bottom: 5px; }
+#libraries ul li { list-style: none; line-height: 0.9em; font-size: 1.05em; padding: 3px 5px; font-weight: normal; padding-left: 25px; }
+
 #maintitle h1 { margin: 0; border: 0; color: #ffa; }
 #maintitle h1 small { font-size: 0.6em; }
 #maintitle h1 small a:link, #maintitle h1 small a:visited { color: #ff5; }
@@ -68,6 +73,7 @@ h2 { font-size: 1.6em; }
 
 #info a:link, #info a:visited { border-bottom: 1px dotted #aaf; }
 
+.alpha_index { display: block; padding-left: 0; font-size: 1.2em; }
 .alpha_index li {
   display: inline;
   padding: 0 1px;
@@ -83,9 +89,10 @@ h2 { font-size: 1.6em; }
   background: #eee;
 }
 
-#nav { display: block; }
+#nav { display: block; padding-left: 0; font-size: 1.2em; }
 #nav li {
   display: inline;
+  margin-right: 4px;
 }
 #nav li.selected {
   padding: 6px;

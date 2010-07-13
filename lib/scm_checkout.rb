@@ -10,18 +10,18 @@ module ScmCheckout
   def checkout(url, name, commit = nil, scheme = "git")
     commit = nil if commit.empty?
     github_project = nil
+    name.gsub!(/[^a-z0-9-]/i, '_')
     if username = url[%r{\Agit://(?:www\.)?github.com/([^/]+)/}, 1]
       github_project = name
-      name = "#{username}-#{name}"
+      name = "#{name}/#{username}"
     end
-    name.gsub!(/[^a-z0-9-]/i, '_')
     cmd = case scheme
     when "git"
       fork = true
       begin
         if github_project && !File.directory?(File.join(options.repos, name))
           json = JSON.parse(open("http://github.com/api/v1/json/#{username}").read)
-          proj_json = json["repositories"].find {|s| s["name"] == project }
+          proj_json = json["user"]["repositories"].find {|s| s["name"] == github_project }
           fork = proj_json["fork"] if proj_json
         end
       rescue IOError, OpenURI::HTTPError
@@ -63,7 +63,7 @@ module ScmCheckout
     if File.directory?(dirname)
       "cd #{name}/#{commit_name} && git reset --hard && git pull --force"
     else
-      fork_cmd = fork ? nil : "touch .master_branch"
+      fork_cmd = fork ? nil : "echo #{name.split('/').reverse.join('/')} > ../../.master_fork"
       checkout = if commit
         if commit.length == 40
           "git checkout #{commit_name}"

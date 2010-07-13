@@ -22,7 +22,7 @@ class ScmLibraryStore
   include Enumerable
   
   def [](name)
-    path = File.join(REPOS_PATH, name.sub('/', '-'))
+    path = File.join(REPOS_PATH, project_dirname(name))
     return unless File.directory?(path)
     Dir.entries(path).map do |dir|
       next nil if dir =~ /^\.\.?$/
@@ -40,9 +40,15 @@ class ScmLibraryStore
   end
   
   def keys
-    Dir.entries(REPOS_PATH).select do |p|
-      File.directory?(File.join(REPOS_PATH, p)) && p !~ /^\.\.?$/
-    end.map {|p| p.sub('-', '/') }
+    dirs = []
+    Dir.entries(REPOS_PATH).each do |project|
+      next unless dir_valid?(project)
+      Dir.entries(File.join(REPOS_PATH, project)).each do |username|
+        next unless dir_valid?(project, username)
+        dirs << "#{username}/#{project}"
+      end
+    end
+    dirs
   end
   
   def values
@@ -53,7 +59,41 @@ class ScmLibraryStore
     keys.zip(values).each(&block)
   end
   
-  def master_fork?(name)
-    self[name].any? {|lib| File.exist?(File.join(lib.source_path, '.master_branch')) }
+  def master_fork(name)
+    project = name.split('/', 2).last
+    File.read(File.join(REPOS_PATH, project, '.master_fork')).strip
+  rescue Errno::ENOENT
+    nil
+  end
+  
+  def sorted_by_project
+    projects = {}
+    Dir.entries(REPOS_PATH).each do |project|
+      next unless dir_valid?(project)
+      master = master_fork(project)
+      Dir.entries(File.join(REPOS_PATH, project)).each do |username|
+        next unless dir_valid?(project, username)
+        projects[project] ||= {}
+        projects[project][username] = sorted_versions("#{username}/#{project}")
+      end
+      projects[project] = projects[project].sort_by do |name, libs|
+        ["#{name}/#{project}" == master ? 0 : 1, name.downcase]
+      end
+    end
+    projects.sort_by {|name, users| name.downcase }
+  end
+  
+  def sorted_versions(name)
+    self[name].sort_by {|lib| [lib.version == "master" ? 1 : 0, File.ctime(lib.source_path)] }
+  end
+  
+  private
+  
+  def project_dirname(name)
+    name.split('/', 2).reverse.join('/')
+  end
+  
+  def dir_valid?(*dir)
+    File.directory?(File.join(REPOS_PATH, *dir)) && dir.last !~ /^\.\.?$/
   end
 end
