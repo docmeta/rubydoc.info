@@ -41,8 +41,9 @@ class DocServer < Sinatra::Base
     puts ">> Copying static system files..."
     Commands::StaticFileCommand::STATIC_PATHS.each do |path|
       %w(css js images).each do |ext|
-        next unless File.directory?(File.join(path, ext))
-        system "cp #{File.join(path, ext, '*')} #{File.join('public', ext, '')}"
+        srcdir, dstdir = File.join(path, ext), File.join('public', ext)
+        next unless File.directory?(srcdir)
+        system "mkdir -p #{dstdir} && cp #{srcdir}/* #{dstdir}/"
       end
     end
   end
