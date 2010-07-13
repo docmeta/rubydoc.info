@@ -123,7 +123,13 @@ class DocServer < Sinatra::Base
     def next_row(prefix = 'r', base = 1)
       prefix + (@row = @row == base ? base + 1 : base).to_s
     end
+    
+    def translate_file_links(extra)
+      extra.sub(%r{^/(frames/)?file:}, '/\1file/')
+    end
   end
+  
+  # Checkout and post commit hooks
   
   post '/checkout' do
     if params[:payload]
@@ -160,9 +166,7 @@ class DocServer < Sinatra::Base
     end
   end
   
-  get '/docs/?' do
-    cache erb(:index)
-  end
+  # Main URL handlers
   
   get '/github/?' do
     @adapter = options.scm_adapter
@@ -184,6 +188,20 @@ class DocServer < Sinatra::Base
   get %r{^/((search|list)/)?gems(/|$)} do
     options.gems_adapter.call(env)
   end
+
+  # Old URL structure redirection for yardoc.org
+  
+  get(%r{^/docs/([^/]+)-([^/]+)(/?.*)}) do |user, proj, extra|
+    redirect "/github/#{user}/#{project}#{translate_file_links extra}"
+  end
+
+  get(%r{^/docs/([^/]+)(/?.*)}) do |lib, extra|
+    redirect "/gems/#{lib}#{translate_file_links extra}"
+  end
+  
+  get('/docs/?') { redirect '/github' }
+  
+  # Root URL redirection
   
   get '/' do
     redirect '/gems'
