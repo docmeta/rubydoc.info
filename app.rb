@@ -6,6 +6,7 @@ require 'yard'
 require 'sinatra'
 require 'json'
 require 'yaml'
+require 'fileutils'
 require 'open-uri'
 require 'rack/hoptoad'
 
@@ -75,6 +76,7 @@ class DocServer < Sinatra::Base
   enable :static
   enable :dump_errors
   enable :lock
+  disable :caching
   disable :raise_errors
 
   set :views, TEMPLATES_PATH
@@ -83,8 +85,9 @@ class DocServer < Sinatra::Base
   set :tmp, TMP_PATH
 
   configure(:production) do
-    # log to file
+    enable :caching
     enable :logging
+    # log to file
     file = File.open("sinatra.log", "a")
     STDOUT.reopen(file)
     STDERR.reopen(file)
@@ -106,6 +109,19 @@ class DocServer < Sinatra::Base
         @hoptoad_notifier.send(:send_notification, request.env['sinatra.error'], request.env)
       end
       erb(:error)
+    end
+    
+    def cache(output)
+      return output if options.caching != true
+      path = request.path.gsub(%r{^/|/$}, '')
+      path = File.join(options.public, path + '.html')
+      FileUtils.mkdir_p(File.dirname(path))
+      File.open(path, "w") {|f| f.write(output) }
+      output
+    end
+    
+    def next_row(prefix = 'r', base = 1)
+      prefix + (@row = @row == base ? base + 1 : base).to_s
     end
   end
   
@@ -145,20 +161,20 @@ class DocServer < Sinatra::Base
   end
   
   get '/docs/?' do
-    erb(:index)
+    cache erb(:index)
   end
   
   get '/github/?' do
     @adapter = options.scm_adapter
     @libraries = @adapter.libraries
-    erb(:scm_index)
+    cache erb(:scm_index)
   end
   
   get %r{^/gems(?:/([a-z])?)?$} do |letter|
     @letter = letter || 'a'
     @adapter = options.gems_adapter
     @libraries = @adapter.libraries.find_all {|k, v| k[0].downcase == @letter }
-    erb(:gems_index)
+    cache erb(:gems_index)
   end
   
   get %r{^/((search|list)/)?github(/|$)} do
