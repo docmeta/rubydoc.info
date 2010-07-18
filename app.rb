@@ -140,25 +140,27 @@ class DocServer < Sinatra::Base
   
   # Checkout and post commit hooks
   
-  post '/checkout' do
-    if params[:payload]
-      payload = JSON.parse(params[:payload])
-      url = payload["repository"]["url"].gsub(%r{^http://}, 'git://')
-      scheme = "git"
-      commit = nil
-    else
-      scheme = params[:scheme]
-      url = params[:url]
-      commit = params[:commit]
-    end
-    dirname = File.basename(url).gsub(/\.[^.]+\Z/, '').gsub(/\s+/, '')
-    return "INVALIDSCHEME" unless url.include?("://")
-    case scheme
-    when "git", "svn"
-      fork { checkout(url, dirname, commit, scheme) }
-      "OK"
-    else
-      "INVALIDSCHEME"
+  ['/checkout', '/projects/update'].each do |path|
+    post path do
+      if params[:payload]
+        payload = JSON.parse(params[:payload])
+        url = payload["repository"]["url"].gsub(%r{^http://}, 'git://')
+        scheme = "git"
+        commit = nil
+      else
+        scheme = params[:scheme]
+        url = params[:url]
+        commit = params[:commit]
+      end
+      dirname = File.basename(url).gsub(/\.[^.]+\Z/, '').gsub(/\s+/, '')
+      return "INVALIDSCHEME" unless url.include?("://")
+      case scheme
+      when "git", "svn"
+        fork { checkout(url, dirname, commit, scheme) }
+        "OK"
+      else
+        "INVALIDSCHEME"
+      end
     end
   end
 
