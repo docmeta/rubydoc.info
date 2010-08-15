@@ -14,8 +14,22 @@
   <h1>YARD Documentation Server</h1>
   <ul id="nav"><li><a href="/gems">RubyGems</a></li><li class="selected">Github</li></ul>
   <h2>Github Projects Listing <small>(<a id="framelink" href="#">links without frames</a>)</small></h2>
+  <ul class="alpha_index">
+    <% (?a..?z).each do |letter| %>
+      <% if letter == @letter %>
+        <li class="selected"><%= letter.upcase %></li>
+      <% else %>
+        <li><a href="/github/<%= letter %>"><%= letter.upcase %></a></li>
+      <% end %>
+    <% end %>
+  </ul>
+
   <ul id="libraries">
-    <% @libraries.sorted_by_project.each do |project, repos| %>
+    <% @sorted_libraries = @libraries.sorted_by_project(@letter) %>
+    <% if @sorted_libraries.size == 0 %>
+      <li>No projects match your criteria. You can generate new docs from the sidebar.</li>
+    <% end %>
+    <% @sorted_libraries.each do |project, repos| %>
       <% next if repos.empty? %>
       <% master = @libraries.master_fork(project) %>
       <li>

@@ -66,9 +66,10 @@ class ScmLibraryStore
     nil
   end
   
-  def sorted_by_project
+  def sorted_by_project(filter = '')
     projects = {}
-    Dir.entries(REPOS_PATH).each do |project|
+    Dir.glob("#{REPOS_PATH}/#{filter}*").each do |project|
+      project = File.basename(project)
       next unless dir_valid?(project)
       master = master_fork(project)
       Dir.entries(File.join(REPOS_PATH, project)).each do |username|

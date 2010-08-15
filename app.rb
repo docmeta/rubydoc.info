@@ -179,7 +179,8 @@ class DocServer < Sinatra::Base
   
   # Main URL handlers
   
-  get '/github/?' do
+  get %r{^/github(?:/([a-z])?)?$} do |letter|
+    @letter = letter || 'a'
     @adapter = options.scm_adapter
     @libraries = @adapter.libraries
     cache erb(:scm_index)
