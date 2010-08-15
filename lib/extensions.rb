@@ -1,5 +1,6 @@
 require 'fileutils'
 require 'open-uri'
+require 'rubygems/package'
 
 module YARD
   module Server
