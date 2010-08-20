@@ -85,7 +85,7 @@ class ScmLibraryStore
   end
   
   def sorted_versions(name)
-    self[name].sort_by {|lib| [lib.version == "master" ? 1 : 0, File.ctime(lib.source_path)] }
+    self[name].sort_by {|lib| [lib.version == "master" ? 0 : 1, File.ctime(lib.source_path)] }
   end
   
   private
