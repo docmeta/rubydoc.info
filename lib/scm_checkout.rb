@@ -6,7 +6,7 @@ module ScmCheckout
     `#{rm_cmd}`
     puts "#{Time.now}: Flushing cache for #{name} (#{$?}): #{rm_cmd}"
   end
-  
+
   def checkout(url, name, commit = nil, scheme = "git")
     commit = nil if commit.empty?
     github_project = nil
@@ -37,7 +37,7 @@ module ScmCheckout
     out = `#{co_cmd}`
     result = $?
     puts "#{Time.now}: Checkout command (#{result}): #{co_cmd}"
-    errorfile = "#{options.tmp}/#{name}.error.txt"
+    errorfile = "#{options.tmp}/#{name.gsub('/', '_')}.error.txt"
     if result == 0
       register_project(name)
       File.unlink(errorfile) if File.file?(errorfile)
@@ -65,11 +65,7 @@ module ScmCheckout
     else
       fork_cmd = fork ? nil : "echo #{name.split('/').reverse.join('/')} > ../../.master_fork"
       checkout = if commit
-        if commit.length == 40
-          "git checkout #{commit_name}"
-        else
-          "git checkout -b #{commit_name} --track remotes/origin/#{commit_name}"
-        end
+        "git fetch && trap \"git pull origin #{commit_name}\" TERM && git checkout #{commit_name}"
       else
         nil
       end
