@@ -37,7 +37,7 @@ module ScmCheckout
     out = `#{co_cmd}`
     result = $?
     puts "#{Time.now}: Checkout command (#{result}): #{co_cmd}"
-    errorfile = "#{options.tmp}/#{name.gsub('/', '_')}.error.txt"
+    errorfile = "#{options.tmp}/#{[name.gsub('/', '_'), commit].join('_')}.error.txt"
     if result == 0
       register_project(name)
       File.unlink(errorfile) if File.file?(errorfile)

@@ -8,9 +8,10 @@ function pollCheckout(project) {
       $('#checkout').addClass('error');
       $('#submit')[0].disabled = false;
       return;
+    } else {
+      setTimeout("pollCheckout('" + project + "');", 2000);
     }
   }, 'text');
-  setTimeout("pollCheckout('" + project + "');", 2000);
 }
 
 function checkoutForm() {

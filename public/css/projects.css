@@ -21,7 +21,7 @@ h2 { font-size: 1.6em; }
 #checkout input, #checkout select { font-size: 1.1em; }
 #checkout .loadicon { display: none; float: right; position: relative; top: 6px; width: 16px; height: 16px; background: url(/images/loading.gif); }
 #checkout.error #url { background: #fdd; }
-#checkout.error:after { content: "Invalid git/svn repository URL"; margin-left: 3px; color: #888; }
+#checkout.error:after { content: "Invalid git/svn repository"; color: #f00; display: block; }
 #checkout.loading .loadicon { display: block; }
 
 #icon {
@@ -51,7 +51,7 @@ h2 { font-size: 1.6em; }
   -webkit-box-shadow: 0px 2px 15px #aaa; -moz-box-shadow: 0px 2px 15px #aaa;
   *font-size: 0.9em;
 }
-#checkout .url { width: 225px; }
+#checkout .url { width: 220px; }
 #checkout { width: 350px; margin: 15px auto; }
 
 #info {  
