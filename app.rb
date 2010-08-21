@@ -185,6 +185,7 @@ class DocServer < Sinatra::Base
     @letter = letter || 'a'
     @adapter = options.scm_adapter
     @libraries = @adapter.libraries
+    @sorted_libraries = @libraries.sorted_by_project(@letter)
     cache erb(:scm_index)
   end
   
@@ -201,6 +202,23 @@ class DocServer < Sinatra::Base
 
   get %r{^/((search|list)/)?gems(/|$)} do
     options.gems_adapter.call(env)
+  end
+
+  # Simple search interfaces
+
+  get %r{^/find/github} do
+    @search = params[:q]
+    @adapter = options.scm_adapter
+    @libraries = @adapter.libraries
+    @sorted_libraries = @libraries.sorted_by_project("*#{@search}")
+    cache erb(:scm_index)
+  end
+
+  get %r{^/find/gems} do
+    @search = params[:q]
+    @adapter = options.gems_adapter
+    @libraries = @adapter.libraries.find_all {|k,v| k.match(/#{@search}/) }
+    cache erb(:gems_index)
   end
 
   # Old URL structure redirection for yardoc.org

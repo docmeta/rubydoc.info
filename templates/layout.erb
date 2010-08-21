@@ -24,7 +24,23 @@
         })
       }
 
+      function searchClick() {
+        searchPrompt = $('#docSearch').val();
+
+        $('#docSearch').focus(function() {
+          if ($(this).val().match(/^Search/)) {
+            $(this).val('');
+          }
+        });
+        $('#docSearch').blur(function() {
+          if ($(this).val() == '') {
+            $(this).val(searchPrompt);
+          }
+        });
+      }
+
       $(framesLinks);
+      $(searchClick);
     </script>
     <style type="text/css" media="screen">
     </style>

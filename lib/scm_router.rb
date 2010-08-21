@@ -65,7 +65,7 @@ class ScmLibraryStore
   rescue Errno::ENOENT
     nil
   end
-  
+
   def sorted_by_project(filter = '')
     projects = {}
     Dir.glob("#{REPOS_PATH}/#{filter}*").each do |project|
