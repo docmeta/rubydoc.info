@@ -66,9 +66,10 @@ class ScmLibraryStore
     nil
   end
 
+  # PROBLEM: doesn't match upcase :(
   def sorted_by_project(filter = '')
     projects = {}
-    Dir.glob("#{REPOS_PATH}/#{filter}*").each do |project|
+    Dir.glob("#{REPOS_PATH}/#{filter}*", File::FNM_CASEFOLD).each do |project|
       project = File.basename(project)
       next unless dir_valid?(project)
       master = master_fork(project)
