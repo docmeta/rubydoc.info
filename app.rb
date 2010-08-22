@@ -15,6 +15,7 @@ require 'extensions'
 require 'scm_router'
 require 'scm_checkout'
 require 'gems_router'
+require 'recent_store'
 
 class DocServer < Sinatra::Base
   include YARD::Server
@@ -47,7 +48,7 @@ class DocServer < Sinatra::Base
       end
     end
   end
-  
+
   def self.load_gems_adapter
     remote_file = File.dirname(__FILE__) + "/remote_gems"
     contents = File.readlines(remote_file)
@@ -104,6 +105,10 @@ class DocServer < Sinatra::Base
   helpers do
     include ScmCheckout
     
+    def recent_store
+      @@recent_store ||= RecentStore.new(20)
+    end
+
     def notify_error
       if options.hoptoad && %w(staging production).include?(ENV['RACK_ENV'])
         @hoptoad_notifier ||= Rack::Hoptoad.new(self, options.hoptoad)
@@ -242,7 +247,9 @@ class DocServer < Sinatra::Base
   # Root URL redirection
   
   get '/' do
-    redirect '/gems'
+    @adapter = options.scm_adapter
+    @libraries = recent_store
+    cache erb(:home)
   end
   
   error do

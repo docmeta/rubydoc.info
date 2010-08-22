@@ -1,0 +1,77 @@
+<style type="text/css" media="screen">
+  #libraries { float: left; width: 60%; }
+  #libraries ul { background: #eee; }
+  #libraries { list-style: none; }
+  #libraries li { line-height: 2em; border-bottom: 1px solid #ddd; }
+  #libraries ul li { padding-bottom: 6px; background: #f0f0f0; }
+  #libraries ul { padding-bottom: 10px; background: transparent; }
+  #libraries li:hover { background: #eef; }
+  #libraries li.alternate, #libraries li.alternate:hover { background: transparent; }
+  #libraries li a:hover { background: transparent; color: #3ae; }
+</style>
+
+<div id="content">
+  <h1>YARD Documentation Server</h1>
+  <ul id="nav">
+    <li><a href="/gems">RubyGems</a></li>
+    <li class="selected">Github</li>
+    <li class="search"><form action="/find/github" method="GET"><input type="text" id="docSearch" name="q" value="<%= @search || 'Search Projects' %>"/></form></li>
+  </ul>
+  <h2>Recently Updated <small>(<a id="framelink" href="#">links without frames</a>)</small></h2>
+
+  <ul id="libraries">
+    <% if @libraries.size == 0 %>
+      <li>No projects match your criteria. You can generate new docs from the sidebar.</li>
+    <% end %>
+    <% @libraries.each do |lib| %>
+      <% latest_version = lib.versions.first %>
+      <li>
+        <a href="/<%= @adapter.router.docs_prefix %>/<%= latest_version %>/frames"><strong><%= lib.name %></strong></a> 
+        <small>(<%= latest_version.version %>)</small>
+      </li>
+    <% end %>
+  </ul>
+
+  <div id="info">
+    <h1 class="header">Welcome to Yardoc.org</h1>
+
+    <p class="info">Yardoc.org is your source for open source Ruby documentation, generating
+      docs for Ruby Gems and from popular Git repositories.</p>
+
+      <div id="icon">
+        <h1><a href="/">Yardoc.org</a>/docs</h1>
+        <p>Documentation for your favourite Ruby libraries.</p>
+      </div>
+
+
+    <p class="info">This site uses <a href="http://yardoc.org">YARD</a> to generate docs on the fly. To make your docs look better, you can check out
+      some of YARD's <a href="/docs/yard/file/README.md">killer features</a>.</p>
+
+    <p class="info"><strong>We have DISQUS integration!</strong> Click the <em>permalink</em> 
+      (<a href="/docs/yard/YARD/Templates/Engine.render">like this one</a>)
+      on a method to see user comments on a method page.
+    </p>
+    <p class="info">Looking for a <a href="http://github.com">GitHub</a> <a href="http://help.github.com/post-receive-hooks/">post-receive hook</a>?
+      Use <tt>http://yardoc.org/checkout</tt>.</p>
+
+    <p class="info">Problems or suggestions? <a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#121;&#97;&#114;&#100;&#111;&#99;&#64;&#103;&#111;&#111;&#103;&#108;&#101;&#103;&#114;&#111;&#117;&#112;&#115;&#46;&#99;&#111;&#109;'>Contact us</a>.</p>
+
+    <div id="checkout">
+      <h2>Add your own project <small>(eg. git://github.com/lsegal/yard)</small>:</h2>
+      <form id="checkout_form" action="/checkout" method="post">
+        <input class="url" type="text" id="url" name="url" /> 
+        <input type="hidden" id="scheme" name="scheme" value="git"/>
+        <div class="loadicon"></div>
+        <input type="submit" id="submit" value="Go" />
+        <br/>
+        <small>Commit (optional): <input type="text" id="commit" name="commit" value="" /></small>
+      </form>
+      <script type="text/javascript" charset="utf-8">
+        if (jQuery.browser.safari) $('#checkout_form .url').css('width', '225px');
+      </script>
+    </div>
+  </div>
+  
+  <div style="clear:both"></div>
+</div>
+

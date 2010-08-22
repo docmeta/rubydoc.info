@@ -1,10 +1,14 @@
 module ScmCheckout
   def register_project(name)
     puts "#{Time.now}: Registering project #{name}"
-    files = ["github.html", "github/#{name}.html", "github/#{name}", "list/github/#{name}"]
+    files = ["github.html", "github/#{name}.html", "github/#{name}", "list/github/#{name}", "index.html"]
     rm_cmd = "rm -rf #{files.map {|f| File.join(options.public, f) }.join(' ')}"
     `#{rm_cmd}`
     puts "#{Time.now}: Flushing cache for #{name} (#{$?}): #{rm_cmd}"
+
+    project_name = name.split('/', 2).reverse.join('/')
+    recent_store.push(options.scm_adapter.libraries[project_name])
+    puts "#{Time.now}: Adding #{project_name} to recent projects list"
   end
 
   def checkout(url, name, commit = nil, scheme = "git")
