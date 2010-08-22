@@ -71,8 +71,8 @@
   <div id="info">
     <h1 class="header">Welcome to Yardoc.org</h1>
 
-    <p class="info">Yardoc.org is your source for open source Ruby documentation, generating
-      docs from git or svn repositories.</p>
+    <p class="info">Yardoc.org is your source for open source Ruby library documentation, generating
+      fresh docs for Gems and popular Git repositories.</p>
 
       <div id="icon">
         <h1><a href="/">Yardoc.org</a>/docs</h1>
@@ -96,12 +96,10 @@
       <h2>Add your own project <small>(eg. git://github.com/lsegal/yard)</small>:</h2>
       <form id="checkout_form" action="/checkout" method="post">
         <input class="url" type="text" id="url" name="url" /> 
-        <select name="scheme" id="scheme">
-          <option value="git">git</option>
-          <option value="svn">svn</option>
-        </select>
+        <input type="hidden" id="scheme" name="scheme" />
         <div class="loadicon"></div>
         <input type="submit" id="submit" value="Go" />
+        <br/>
         <small>Commit (optional): <input type="text" id="commit" name="commit" value="" /></small>
       </form>
       <script type="text/javascript" charset="utf-8">
