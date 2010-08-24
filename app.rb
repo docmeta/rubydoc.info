@@ -175,11 +175,11 @@ class DocServer < Sinatra::Base
       return "YES" if libs.find {|l| l.version == params[:commit] }
     end
     
-    if File.file?("#{options.tmp}/#{[params[:project], params[:username], params[:commit]].join('_')}.error.txt")
-      puts "#{options.tmp}/#{[params[:project], params[:username], params[:commit]].join('_')}.error.txt found"
+    if File.file?("#{options.tmp}/#{[params[:project], params[:username], params[:commit] || 'master'].join('_')}.error.txt")
+      puts "#{options.tmp}/#{[params[:project], params[:username], params[:commit] || 'master'].join('_')}.error.txt found"
       "ERROR"
     else
-      puts "#{options.tmp}/#{[params[:project], params[:username], params[:commit]].join('_')}.error.txt not found"
+      puts "#{options.tmp}/#{[params[:project], params[:username], params[:commit] || 'master'].join('_')}.error.txt not found"
       "NO"
     end
   end
