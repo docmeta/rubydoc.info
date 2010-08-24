@@ -30,7 +30,11 @@ class DocServer < Sinatra::Base
   end
   
   def self.load_configuration
+    set :name, 'Yardoc.org'
+    set :url, 'http://yardoc.org'
+
     return unless File.file?(CONFIG_FILE)
+
     puts ">> Loading #{CONFIG_FILE}"
     YAML.load_file(CONFIG_FILE).each do |key, value|
       set key, value

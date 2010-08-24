@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta name="Content-Type" content="text/html; charset=UTF-8" />
-    <title>YARD Documentation Server <%= YARD::VERSION %> - Library Listing</title>
+    <title><%= options.name %> - Ruby Doc Server - Library Listing</title>
     <link rel="stylesheet" href="/css/style.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/css/custom.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/css/projects.css" type="text/css" media="screen" charset="utf-8" />
@@ -48,7 +48,7 @@
   <body>
     <%= yield %>
 
-    <div id="footer">Powered by <a href="/">yard</a> <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>)</div>
+    <div id="footer"><a href="http://github.com/lsegal/yardoc.org"><%= options.name %></a> is powered by <a href="http://yardoc.org/">yard</a> <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>)</div>
   </body>
 
   <% if defined? options.clicky %>

@@ -1,6 +1,17 @@
 # Sample configuration file
 
+# Display name. Defaults to Yardoc.org
+name: Rubydoc.info
+
+# Base URL. Defaults to http://yardoc.org
+url: http://rubydoc.info
+
 # If you have Hoptoad, uncomment the following line and add your API key:
 # hoptoad: YOUR_API_KEY
+
+# If you want to use Clicky, uncomment the following line and add your Site ID:
 # clicky: YOUR_SITE_ID
+
+# If you want to use Google Analytics, uncomment the following line and add
+# your Site ID:
 # google_analytics: YOUR_SITE_ID

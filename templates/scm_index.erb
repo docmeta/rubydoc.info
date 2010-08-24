@@ -11,7 +11,7 @@
 </style>
 
 <div id="content">
-  <h1>YARD Documentation Server</h1>
+  <h1><a href="/"><%= options.name %></a> Ruby Doc Server</h1>
   <ul id="nav">
     <li><a href="/gems">RubyGems</a></li>
     <li class="selected">Github</li>
@@ -69,13 +69,13 @@
   </ul>
 
   <div id="info">
-    <h1 class="header">Welcome to Yardoc.org</h1>
+    <h1 class="header">Welcome to <%= options.name %></h1>
 
-    <p class="info">Yardoc.org is your source for open source Ruby library documentation, generating
+    <p class="info"><%= options.name %> is your source for open source Ruby library documentation, generating
       fresh docs for Gems and popular Git repositories.</p>
 
       <div id="icon">
-        <h1><a href="/">Yardoc.org</a>/docs</h1>
+        <h1><a href="/"><%= options.name %></a></h1>
         <p>Documentation for your favourite Ruby libraries.</p>
       </div>
 
@@ -88,7 +88,7 @@
       on a method to see user comments on a method page.
     </p>
     <p class="info">Looking for a <a href="http://github.com">GitHub</a> <a href="http://help.github.com/post-receive-hooks/">post-receive hook</a>?
-      Use <tt>http://yardoc.org/checkout</tt>.</p>
+      Use <tt><%= options.url %>/checkout</tt>.</p>
 
     <p class="info">Problems or suggestions? <a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#121;&#97;&#114;&#100;&#111;&#99;&#64;&#103;&#111;&#111;&#103;&#108;&#101;&#103;&#114;&#111;&#117;&#112;&#115;&#46;&#99;&#111;&#109;'>Contact us</a>.</p>
 
