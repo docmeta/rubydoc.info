@@ -2,3 +2,5 @@
 
 # If you have Hoptoad, uncomment the following line and add your API key:
 # hoptoad: YOUR_API_KEY
+# clicky: YOUR_SITE_ID
+# google_analytics: YOUR_SITE_ID
