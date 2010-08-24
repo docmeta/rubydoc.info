@@ -1,10 +1,10 @@
 # Sample configuration file
 
 # Display name. Defaults to Yardoc.org
-name: Rubydoc.info
+# name: Rubydoc.info
 
 # Base URL. Defaults to http://yardoc.org
-url: http://rubydoc.info
+# url: http://rubydoc.info
 
 # If you have Hoptoad, uncomment the following line and add your API key:
 # hoptoad: YOUR_API_KEY
