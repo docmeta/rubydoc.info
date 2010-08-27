@@ -48,7 +48,14 @@
   <body>
     <%= yield %>
 
-    <div id="footer"><a href="http://github.com/lsegal/yardoc.org"><%= options.name %></a> is powered by <a href="http://yardoc.org/">yard</a> <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>)</div>
+    <div id="footer">
+      <a href="http://github.com/lsegal/yardoc.org"><%= options.name %></a> is powered by <a href="http://yardoc.org/">yard</a> <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>)
+      <% if defined? options.sponsor %>
+        <div class="sponsor">
+          <a href="http://<%= options.sponsor %>"><img src="/images/sponsor/<%= options.sponsor %>.png" alt="sponsored by <%= options.sponsor %>"/></a>
+        </div>
+      <% end %>
+    </div>
   </body>
 
   <% if defined? options.clicky %>

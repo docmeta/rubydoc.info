@@ -1,9 +1,9 @@
 # Sample configuration file
 
-# Display name. Defaults to Yardoc.org
+# Display name. Defaults to Rubydoc.info
 # name: Rubydoc.info
 
-# Base URL. Defaults to http://yardoc.org
+# Base URL. Defaults to http://rubydoc.info
 # url: http://rubydoc.info
 
 # If you have Hoptoad, uncomment the following line and add your API key:
@@ -15,3 +15,7 @@
 # If you want to use Google Analytics, uncomment the following line and add
 # your Site ID:
 # google_analytics: YOUR_SITE_ID
+
+# To display a sponsor link / image, uncomment the following line and add an
+# image named #{sponsor-site.com}.png to the public/images/sponsor directory.
+# sponsor: linode.com
