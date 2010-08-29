@@ -197,7 +197,7 @@ class DocServer < Sinatra::Base
       @libraries = recent_store
       cache erb(:home)
     else
-      @letter = letter || 'a'
+      @letter = letter
       @adapter = options.scm_adapter
       @libraries = @adapter.libraries
       @sorted_libraries = @libraries.sorted_by_project(@letter)
