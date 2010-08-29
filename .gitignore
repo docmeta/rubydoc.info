@@ -5,6 +5,7 @@ config.yaml
 tmp
 repos
 remote_gems
+recent.sqlite
 sinatra.log
 public/docs
 public/gems
