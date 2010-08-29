@@ -1,7 +1,7 @@
 # Sample configuration file
 
-# Display name. Defaults to Rubydoc.info
-# name: Rubydoc.info
+# Display name. Defaults to RubyDoc.info
+# name: RubyDoc.info
 
 # Base URL. Defaults to http://rubydoc.info
 # url: http://rubydoc.info
