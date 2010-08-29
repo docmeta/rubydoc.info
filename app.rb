@@ -95,7 +95,7 @@ class DocServer < Sinatra::Base
     enable :caching
     enable :logging
     # log to file
-    file = File.open("sinatra.log", "a")
+    file = File.open("log/sinatra.log", "a")
     STDOUT.reopen(file)
     STDERR.reopen(file)
   end
@@ -227,14 +227,14 @@ class DocServer < Sinatra::Base
     @adapter = options.scm_adapter
     @libraries = @adapter.libraries
     @sorted_libraries = @libraries.sorted_by_project("*#{@search}")
-    cache erb(:scm_index)
+    erb(:scm_index)
   end
 
   get %r{^/find/gems} do
     @search = params[:q]
     @adapter = options.gems_adapter
     @libraries = @adapter.libraries.find_all {|k,v| k.match(/#{@search}/) }
-    cache erb(:gems_index)
+    erb(:gems_index)
   end
 
   # Old URL structure redirection for yardoc.org
