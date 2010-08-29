@@ -1,12 +1,13 @@
-RubyDoc.info: A Yard Doc Server
+RubyDoc.info: YARD Doc Server
 ===============================
 
 RubyDoc.info is the next generation Ruby doc server, replacing
-http://rdoc.info and http://yardoc.org/docs. This doc server uses YARD to
-generate project documentation on the fly, for both published RubyGems as
-well as Github projects.
+[http://rdoc.info](http://rdoc.info) and
+[http://yardoc.org/docs](http://yardoc.org/docs). 
+This doc server uses YARD to generate project documentation on the fly, for
+both published RubyGems as well as GitHub projects.
 
-The public doc server is hosted at http://rubydoc.info
+The public doc server is hosted at [http://rubydoc.info](http://rubydoc.info)
 
 Getting Started
 ---------------
