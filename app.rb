@@ -95,7 +95,7 @@ class DocServer < Sinatra::Base
     enable :caching
     enable :logging
     # log to file
-    file = File.open("sinatra.log", "a")
+    file = File.open("log/sinatra.log", "a")
     STDOUT.reopen(file)
     STDERR.reopen(file)
   end
