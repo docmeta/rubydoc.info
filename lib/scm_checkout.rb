@@ -11,7 +11,7 @@ module ScmCheckout
     puts "#{Time.now}: Adding #{project_name} to recent projects list"
   end
 
-  def checkout(url, name, commit = nil, scheme = "git")
+  def checkout(url, name, commit = '', scheme = "git")
     commit = nil if commit.empty?
     github_project = nil
     name.gsub!(/[^a-z0-9-]/i, '_')
