@@ -23,6 +23,7 @@
     <li class="selected">Latest</li>
   </ul>
 
+  <%= erb :checkout, :layout => false %>
   <ul id="libraries">
     <% if @libraries.size == 0 %>
       <li>No projects match your criteria. You can generate new docs from the sidebar.</li>
@@ -35,7 +36,6 @@
       </li>
     <% end %>
   </ul>
-
-  <%= erb :sidebar, :layout => false %>
+  
 </div>
 

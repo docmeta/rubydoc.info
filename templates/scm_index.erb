@@ -28,6 +28,7 @@
     <li><a href="/github">Latest</a></li>
   </ul>
 
+  <%= erb :checkout, :layout => false %>
   <ul id="libraries">
     <% if @sorted_libraries.size == 0 %>
       <li>No projects match your criteria. You can generate new docs from the sidebar.</li>
@@ -68,6 +69,5 @@
     <% end %>
   </ul>
   
-  <%= erb :sidebar, :layout => false %>
 </div>
 
