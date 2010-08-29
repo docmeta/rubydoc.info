@@ -11,67 +11,60 @@ h2 { font-size: 1.6em; }
 #libraries ul li { list-style: none; line-height: 0.9em; font-size: 1.05em; padding: 3px 5px; font-weight: normal; padding-left: 25px; }
 
 #logo h1 { margin: 0; border: 0; color: #58b; }
-#logo small { color: #369; font-size: 0.6em; font-weight: normal; }
+#logo small { color: #369; font-size: 0.6em; font-weight: normal; opacity: 0.6; }
 #logo a { text-decoration: none; color: #58b; }
-#learn_yard { position: absolute; top: 0; right: 0; z-index: 9500; }
+#logo a:hover { color: #8cf; border-bottom: 8px solid #8cf; }
+
+#top_nav { padding: 0; list-style: none; position: absolute; right: 10px; top: 3px;}
+#top_nav li { float: left; margin-right: 10px; }
+#top_nav a { display: block; padding: 5px 8px; background: #58a; text-decoration: none; 
+  color: #eee;
+  opacity: 0.7;
+  -webkit-border-radius: 5px; -moz-border-radius: 5px; 
+  -webkit-transition: all 0.1s ease-in;
+}
+#top_nav a:hover { opacity: 1; color: #fff; }
+
+#info { 
+  font-size: 1.1em;
+  line-height: 1.4em;
+  display: none; position: absolute; width: 350px; padding: 10px 20px; top: 55px; 
+  right: 30px; background: #fff; z-index: 10000; border: 1px solid #aaa; 
+  -webkit-box-shadow: 0px 2px 15px #aaa; -moz-box-shadow: 0px 2px 15px #aaa;
+}
+#info a { color: #05a; }
+#info a:hover { color: #5af; }
+
+#learn_yard { position: absolute; top: 0; right: 0; z-index: 9500; opacity: 0.9; }
+#learn_yard:hover { opacity: 1; }
 #framelink { z-index: 9999; position: relative; }
+
+#notice { position: relative; padding: 12px; background: #333; color: #fff; width: 500px; font-size: 1em; line-height: 1.4em; }
+#notice a { color: #fff; }
 
 #checkout form { display: inline; }
 #checkout h2 { margin: 0; padding: 0; border: 0; font-weight: normal; font-size: 1.1em; }
+#checkout .example { color: #999; }
 #checkout input, #checkout select { font-size: 1.1em; }
-#checkout .loadicon { display: none; float: right; position: relative; top: 6px; width: 16px; height: 16px; background: url(/images/loading.gif); }
+#checkout .loadicon { display: none; float: right; position: relative; left: -20px; top: 6px; width: 16px; height: 16px; background: url(/images/loading.gif); }
 #checkout.error #url { background: #fdd; }
 #checkout.error:after { content: "Invalid git/svn repository"; color: #f00; display: block; }
 #checkout.loading .loadicon { display: block; }
-
-#icon {
-  background: url(/images/docslogo.png) no-repeat; 
-  width: 210px; height: 100px; margin-top: 0px; 
-  -webkit-border-radius: 7px; -moz-border-radius: 7px; 
-  
-}
-#icon p { font-size: 0.8em; color: #888; 
-  margin-top: 2px;
-  padding-left: 60px; 
-}
-#icon h1 { 
-  padding-top: 50px; padding-left: 73px; margin: 0;
-  border: 0; color: #000; font-size: 12px; 
-}
-
-#info #icon { margin: 5px auto; }
-
-#info, #maintitle, #checkout { 
-  padding: 8px 12px; color: #fff; background: #1a3f6c; border: 1px solid #78a; 
-  -webkit-border-radius: 10px; -moz-border-radius: 10px; 
-}
+#checkout .url { width: 250px; }
 #checkout { 
+  display: none;
+  position: absolute;
+  top: 42px;
+  right: 55px;
+  height: 120px;
+  padding: 8px 18px;
   margin: 12px;
-  background: #e5e5e5; color: #666; border: 1px solid #ccc; margin-bottom: 15px; margin-top: 40px;
+  background: #ddd; color: #666; border: 1px solid #ccc;
   -webkit-box-shadow: 0px 2px 15px #aaa; -moz-box-shadow: 0px 2px 15px #aaa;
   *font-size: 0.9em;
+  width: 280px;
 }
-#checkout .url { width: 220px; }
-#checkout { width: 350px; margin: 15px auto; }
-
-#info {  
-  padding: 0;
-  background: #eee;
-  border-color: #bbb;
-  color: #222;
-  float: right;
-  width: 400px;
-  border-width: 5px;
-}
-#info h1.header { 
-  padding: 12px;
-  background: #ff9a0f; margin: 0; border: 0; color: #fff;
-  -webkit-border-top-left-radius: 5px; -moz-border-radius-topleft: 5px; 
-  -webkit-border-top-right-radius: 5px; -moz-border-radius-topright: 5px; 
-}
-#info p.info { line-height: 1.3em; font-size: 1em; margin: 12px 16px; }
-
-#info a:link, #info a:visited { border-bottom: 1px dotted #aaf; }
+#top_nav #new_checkout { display: none; }
 
 .alpha_index { display: block; padding-left: 0; font-size: 1.2em; }
 .alpha_index li {
@@ -118,3 +111,6 @@ h2 { font-size: 1.6em; }
 
 #advanced_options { margin: 0; display: block; border: none; color: #111; }
 .extra_options { display: none; }
+
+.sponsor { margin-top: 12px; }
+#footer .sponsor a { border: 0; }

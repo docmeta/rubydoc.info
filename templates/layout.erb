@@ -38,20 +38,44 @@
           }
         });
       }
+      
+      function aboutLink() {
+        $('#about').click(function() {
+          if ($('#info').is(':hidden')) { $('#checkout').hide(); $('#info').fadeIn('fast'); }
+          else $('#info').fadeOut('fast');
+          return false;
+        });
+      }
+      
+      function checkoutLink() {
+        $('#new_checkout').click(function() {
+          if ($('#checkout').is(':hidden')) { $('#info').hide(); $('#checkout').fadeIn('fast'); }
+          else $('#checkout').fadeOut('fast');
+          return false;
+        });
+      }
 
       $(framesLinks);
       $(searchClick);
+      $(aboutLink);
+      $(checkoutLink);
     </script>
     <style type="text/css" media="screen">
     </style>
   </head>
   <body>
-    <a id="learn_yard" href="http://yardoc.org" title="Learn More About YARD"><img src="/images/learn.png" /></a>
+    <!--<a id="learn_yard" href="http://yardoc.org" title="Learn More About YARD"><img src="/images/learn.png" /></a>-->
     <div id="logo">
       <h1><a href="/"><%= options.name %></a> <small>YARD Documentation Server</small></h1>
     </div>
+    <p id="notice">
+      If you've arrived here from <strong>yardoc.org/docs</strong> or <strong>rdoc.info</strong>, don't be alarmed.<br/>
+      We've finally merged the two projects just like we said we'd do,<br/> And we made sure none of your projects were harmed.<br/>
+      You might have to re-checkout your Github code,<br/> But that shouldn't take too long,<br/> 
+      Thanks to our strong and powerful host, <a href="http://linode.com">Linode</a>!
+    </p>
     <ul id="top_nav">
-      <li><a id="new_checkout" href="#">Add Github Project</a></li>
+      <li><a id="new_checkout" href="#">Add Project</a></li>
       <li><a id="about" href="#">About</a></li>
     </ul>
     <div class="clear"></div>
@@ -79,6 +103,13 @@
       <p>
         Problems or suggestions? 
         <a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#121;&#97;&#114;&#100;&#111;&#99;&#64;&#103;&#111;&#111;&#103;&#108;&#101;&#103;&#114;&#111;&#117;&#112;&#115;&#46;&#99;&#111;&#109;'>Contact us</a>.
+      </p>
+      
+      <p>
+        <small>
+        RubyDoc.info was made possible by <strong>Loren Segal</strong> and <strong>Nick Plante</strong>.
+        Also thanks to <strong>Jeff Rafter</strong> for the original rdoc.info
+        </small>
       </p>
     </div>
     

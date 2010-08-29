@@ -1,4 +1,5 @@
 <style type="text/css" media="screen">
+  #top_nav #new_checkout { display: block; }
   #libraries ul { background: #eee; }
   #libraries { list-style: none; }
   #libraries li { line-height: 2em; border-bottom: 1px solid #ddd; }
@@ -26,7 +27,7 @@
   <%= erb :checkout, :layout => false %>
   <ul id="libraries">
     <% if @libraries.size == 0 %>
-      <li>No projects match your criteria. You can generate new docs from the sidebar.</li>
+      <li>No projects match your criteria. You can generate new docs by clicking "Add Project" on top.</li>
     <% end %>
     <% @libraries.each do |lib| %>
       <% latest_version = lib.versions.first %>
