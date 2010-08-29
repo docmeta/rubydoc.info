@@ -15,11 +15,12 @@
     <li class="selected">Github</li>
     <li class="search"><form action="/find/github" method="GET"><input type="text" id="docSearch" name="q" value="<%= @search || 'Search Projects' %>"/></form></li>
   </ul>
-  <h2>Recently Updated <small>(<a id="framelink" href="#">links without frames</a>)</small></h2>
+  <h2>Recently Updated Github Projects <small>(<a id="framelink" href="#">links without frames</a>)</small></h2>
   <ul class="alpha_index">
     <% (?a..?z).each do |letter| %>
       <li><a href="/github/<%= letter %>"><%= letter.upcase %></a></li>
     <% end %>
+    <li class="selected">Latest</li>
   </ul>
 
   <ul id="libraries">
