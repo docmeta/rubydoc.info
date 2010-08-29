@@ -50,10 +50,43 @@
     <div id="logo">
       <h1><a href="/"><%= options.name %></a> <small>YARD Documentation Server</small></h1>
     </div>
+    <ul id="top_nav">
+      <li><a id="new_checkout" href="#">Add Github Project</a></li>
+      <li><a id="about" href="#">About</a></li>
+    </ul>
+    <div class="clear"></div>
+    
+    <div id="info">
+      <p>
+        <strong><%= options.name %></strong> is your source for open source Ruby library documentation, 
+        generating fresh docs for Gems and popular Git repositories.
+      </p>
+      <p>
+        This site uses <a href="http://yardoc.org">YARD</a> to generate docs on the fly. 
+        To make your docs look better, you can check out some of YARD's 
+        <a href="/gems/yard/0.6.0/file/docs/WhatsNew.md">killer features</a>.
+      </p>
+      <p>
+        <strong>We have DISQUS integration!</strong> Click the <em>permalink</em> 
+        (<a href="/gems/yard/0.6.0/YARD/Templates/Engine.render">like this one</a>)
+        on a method to see user comments on a method page.
+      </p>
+      <p>
+        Looking for a <a href="http://github.com">GitHub</a> 
+        <a href="http://help.github.com/post-receive-hooks/">post-receive hook</a>?
+        Use <tt><%= options.url %>/checkout</tt>.
+      </p>
+      <p>
+        Problems or suggestions? 
+        <a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#121;&#97;&#114;&#100;&#111;&#99;&#64;&#103;&#111;&#111;&#103;&#108;&#101;&#103;&#114;&#111;&#117;&#112;&#115;&#46;&#99;&#111;&#109;'>Contact us</a>.
+      </p>
+    </div>
+    
+    
     <%= yield %>
 
     <div id="footer">
-      <a href="http://github.com/lsegal/yardoc.org"><%= options.name %></a> is powered by <a href="http://yardoc.org/">yard</a> <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>)
+      <a href="http://github.com/lsegal/rubydoc.info"><%= options.name %></a> is powered by <a href="http://yardoc.org/">yard</a> <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>)
       <% if defined? options.sponsor %>
         <div class="sponsor">
           <a href="http://<%= options.sponsor %>"><img src="/images/sponsor/<%= options.sponsor %>.png" alt="sponsored by <%= options.sponsor %>"/></a>
