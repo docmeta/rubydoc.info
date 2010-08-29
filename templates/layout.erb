@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta name="Content-Type" content="text/html; charset=UTF-8" />
-    <title><%= options.name %> - Ruby Doc Server - Library Listing</title>
+    <title><%= options.name %> - Library Listing</title>
     <link rel="stylesheet" href="/css/style.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/css/custom.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/css/projects.css" type="text/css" media="screen" charset="utf-8" />
@@ -46,6 +46,10 @@
     </style>
   </head>
   <body>
+    <a id="learn_yard" href="http://yardoc.org" title="Learn More About YARD"><img src="/images/learn.png" /></a>
+    <div id="logo">
+      <h1><a href="/"><%= options.name %></a> <small>YARD Documentation Server</small></h1>
+    </div>
     <%= yield %>
 
     <div id="footer">
