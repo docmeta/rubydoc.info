@@ -38,6 +38,7 @@ class DocServer < Sinatra::Base
     puts ">> Loading #{CONFIG_FILE}"
     YAML.load_file(CONFIG_FILE).each do |key, value|
       set key, value
+      $DISQUS = value if key == 'disqus' # HACK for DISQUS setting
     end
   end
   
