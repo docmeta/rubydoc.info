@@ -36,46 +36,6 @@
     <% end %>
   </ul>
 
-  <div id="info">
-    <h1 class="header">Welcome to <%= options.name %></h1>
-
-    <p class="info"><%= options.name %> is your source for open source Ruby library documentation, generating
-      fresh docs for Gems and popular Git repositories.</p>
-
-      <div id="icon">
-        <h1><a href="/"><%= options.name %></a></h1>
-        <p>Documentation for your favourite Ruby libraries.</p>
-      </div>
-
-
-    <p class="info">This site uses <a href="http://yardoc.org">YARD</a> to generate docs on the fly. To make your docs look better, you can check out
-      some of YARD's <a href="/docs/yard/file/README.md">killer features</a>.</p>
-
-    <p class="info"><strong>We have DISQUS integration!</strong> Click the <em>permalink</em> 
-      (<a href="/docs/yard/YARD/Templates/Engine.render">like this one</a>)
-      on a method to see user comments on a method page.
-    </p>
-    <p class="info">Looking for a <a href="http://github.com">GitHub</a> <a href="http://help.github.com/post-receive-hooks/">post-receive hook</a>?
-      Use <tt><%= options.url %>/checkout</tt>.</p>
-
-    <p class="info">Problems or suggestions? <a href='&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#121;&#97;&#114;&#100;&#111;&#99;&#64;&#103;&#111;&#111;&#103;&#108;&#101;&#103;&#114;&#111;&#117;&#112;&#115;&#46;&#99;&#111;&#109;'>Contact us</a>.</p>
-
-    <div id="checkout">
-      <h2>Add your own project <small>(eg. git://github.com/lsegal/yard)</small>:</h2>
-      <form id="checkout_form" action="/checkout" method="post">
-        <input class="url" type="text" id="url" name="url" /> 
-        <input type="hidden" id="scheme" name="scheme" value="git"/>
-        <div class="loadicon"></div>
-        <input type="submit" id="submit" value="Go" />
-        <br/>
-        <small>Commit (optional): <input type="text" id="commit" name="commit" value="" /></small>
-      </form>
-      <script type="text/javascript" charset="utf-8">
-        if (jQuery.browser.safari) $('#checkout_form .url').css('width', '225px');
-      </script>
-    </div>
-  </div>
-  
-  <div style="clear:both"></div>
+  <%= erb :sidebar, :layout => false %>
 </div>
 
