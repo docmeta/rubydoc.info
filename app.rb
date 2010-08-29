@@ -30,7 +30,7 @@ class DocServer < Sinatra::Base
   end
   
   def self.load_configuration
-    set :name, 'Rubydoc.info'
+    set :name, 'RubyDoc.info'
     set :url, 'http://rubydoc.info'
 
     return unless File.file?(CONFIG_FILE)
