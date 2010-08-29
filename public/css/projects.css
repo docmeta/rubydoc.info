@@ -114,3 +114,7 @@ h2 { font-size: 1.6em; }
 
 .sponsor { margin-top: 12px; }
 #footer .sponsor a { border: 0; }
+
+#content.fof h1 { margin-bottom: 0; font-size: 3em; }
+#content.fof h2.nomargin { margin-top: 0; border: 0; font-size: 1.2em; color: #888; margin-bottom: 20px; } 
+#content.fof.scm #checkout { display: block; position: relative; top: 0; right: 0; margin: 40px 0; }

@@ -212,12 +212,18 @@ class DocServer < Sinatra::Base
     cache erb(:gems_index)
   end
   
-  get %r{^/((search|list)/)?github(/|$)} do
-    options.scm_adapter.call(env)
+  get %r{^/(?:(?:search|list)/)?github/([^/]+)/([^/]+)} do |username, project|
+    @username, @project = username, project
+    result = options.scm_adapter.call(env)
+    return status(404) && erb(:scm_404) if result.first == 404
+    result
   end
 
-  get %r{^/((search|list)/)?gems(/|$)} do
-    options.gems_adapter.call(env)
+  get %r{^/(?:(?:search|list)/)?gems/([^/]+)} do |gemname|
+    @gemname = gemname
+    result = options.gems_adapter.call(env)
+    return status(404) && erb(:gems_404) if result.first == 404
+    result
   end
 
   # Simple search interfaces
