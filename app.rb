@@ -308,7 +308,7 @@ class DocServer < Sinatra::Base
   get '/' do
     @adapter = options.scm_adapter
     @libraries = recent_store
-    @featured = options.featured_adapter.libraries
+    @featured = options.featured_adapter.libraries if defined? options.featured_adapter
     cache erb(:home)
   end
   
