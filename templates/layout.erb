@@ -54,11 +54,22 @@
           return false;
         });
       }
+      
+      function reloadProject() {
+        $('#libraries .project_reload').click(function() {
+          var proj = $(this).parent().find('a:first-child').text();
+          $('#url').val("git://github.com/" + proj);
+          $('#commit').val('');
+          $('#checkout_form').submit();
+          $(this).find('img').attr('src', '/images/loading.gif');
+        });
+      }
 
       $(framesLinks);
       $(searchClick);
       $(aboutLink);
       $(checkoutLink);
+      $(reloadProject);
     </script>
     <style type="text/css" media="screen">
     </style>

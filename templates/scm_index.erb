@@ -45,6 +45,8 @@
             <small>(<%= first_lib.version %><% if library_versions.size > 0 %>, 
               <%= library_versions.reverse[0..2].map {|lib| "<a href=\"/#{@adapter.router.docs_prefix}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
           <% end %>
+          <a href="#" class="project_reload" title="Reload this project"><img class="icon reload" src="/images/reload.png" /></a>
+          <a href="http://github.com/<%= first_lib.name %>" title="View this project on Github"><img class="icon github" src="/images/git.png" /></a>
           <% repos.shift %>
         <% else %>
           <strong><%= project %></strong> <small>(No master fork)</small>

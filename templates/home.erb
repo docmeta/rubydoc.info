@@ -33,6 +33,8 @@
       <% latest_version = lib.versions.first %>
       <li>
         <a href="/<%= @adapter.router.docs_prefix %>/<%= latest_version %>/frames"><strong><%= lib.name %></strong></a> 
+        <a href="#" class="project_reload" title="Reload this project"><img class="icon reload" src="/images/reload.png" /></a>
+        <a href="http://github.com/<%= lib.name %>" title="View this project on Github"><img class="icon github" src="/images/git.png" /></a>
         <small>(<%= latest_version.version %>)</small>
       </li>
     <% end %>
