@@ -37,6 +37,7 @@ h2 { font-size: 1.6em; }
 
 #learn_yard { position: absolute; top: 0; right: 0; z-index: 9500; opacity: 0.9; }
 #learn_yard:hover { opacity: 1; }
+#learn_yard img { border: 0; }
 #framelink { z-index: 9999; position: relative; }
 
 #notice { position: relative; padding: 12px; background: #333; color: #fff; width: 500px; font-size: 1em; line-height: 1.4em; }
@@ -121,7 +122,3 @@ h2 { font-size: 1.6em; }
 
 #libraries .icon { width: 16px; height: 16px; position: relative; float: right; top: 6px; border: 1px solid #ccc; background: #eee; padding: 2px; -webkit-border-radius: 3px; -moz-border-radius: 3px; margin-left: 3px; }
 #libraries a:hover .icon { background: #fff; }
-
-img {
-  border: 0;
-}
