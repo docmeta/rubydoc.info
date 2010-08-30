@@ -11,5 +11,6 @@ CONFIG_FILE      = 'config.yaml'
 STATIC_PATH      = __p('public')
 REPOS_PATH       = __p('repos/github')
 REMOTE_GEMS_PATH = __p('repos/gems')
+FEATURED_PATH    = __p('repos/featured')
 TMP_PATH         = __p('tmp')
 TEMPLATES_PATH   = __p('templates')
