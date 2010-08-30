@@ -2,6 +2,7 @@
 doc
 .yardoc
 config.yaml
+featured.yaml
 tmp
 repos
 remote_gems

@@ -1,9 +1,9 @@
 <script type="text/javascript" charset="utf-8">
   function fixGemLinks() {
-    $('#libraries a').each(function() {
+    $('.libraries a').each(function() {
       var href = $(this).attr('href');
       if (href.substr(0, 2) == "#/") {
-        $(this).attr('href', href.substr(2));
+        $(this).attr('href', href.substr(1));
       }
     });
   }
@@ -13,11 +13,12 @@
 
 <div id="content">
   <ul id="nav">
+    <li><a href="/featured">Featured</a></li>
     <li class="selected">RubyGems</li>
     <li><a href="/github">Github</a></li>
     <li class="search"><form action="/find/gems" method="GET"><input type="text" id="docSearch" name="q" value="<%= @search || 'Search Gems' %>"/></form></li>
   </ul>
-  <h2>RubyGems <%= @search ? 'Search Results' : 'Listing' %> <small>(<a id="framelink" href="#">links without frames</a>)</small></h2>
+  <h2>RubyGems <%= @search ? 'Search Results' : 'Listing' %> <small>(<a class="framelink" href="#">links without frames</a>)</small></h2>
   <ul class="alpha_index">
     <% (?a..?z).each do |letter| %>
       <% if letter == @letter %>
@@ -28,12 +29,12 @@
     <% end %>
   </ul>
   
-  <ul id="libraries">
+  <ul class="libraries">
     <% @libraries.sort_by {|name, y| name.downcase }.each do |name, library_versions| %>
     <li class="r<%= @row = @row == 1 ? 2 : 1 %>">
       <% library_versions = library_versions.dup %>
       <% first_lib = library_versions.pop %>
-      <a href="/<%= @adapter.router.docs_prefix %>/<%= first_lib %>/frames"><%= name %></a> 
+      <a href="#/<%= @adapter.router.docs_prefix %>/<%= first_lib %>/frames"><%= name %></a> 
       <% if first_lib && first_lib.version %>
         <small>(<%= first_lib.version %><% if library_versions.size > 0 %>, 
           <%= library_versions.reverse[0..3].map {|lib| "<a href=\"#/#{@adapter.router.docs_prefix}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>

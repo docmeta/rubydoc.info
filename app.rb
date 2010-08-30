@@ -15,6 +15,7 @@ require 'extensions'
 require 'scm_router'
 require 'scm_checkout'
 require 'gems_router'
+require 'featured_router'
 require 'recent_store'
 
 class DocServer < Sinatra::Base
@@ -75,6 +76,33 @@ class DocServer < Sinatra::Base
     opts[:libraries] = ScmLibraryStore.new
     set :scm_adapter, RackAdapter.new(*opts.values)
   end
+  
+  def self.find_featured_yardoc(name, libdir)
+    [File.join(FEATURED_PATH, libdir, '.yardoc'), File.join(libdir, '.yardoc')].each do |path|
+      return path if File.directory?(path)
+    end
+    log.error "Invalid featured repository #{libdir} for #{name}"
+    exit
+  end
+  
+  def self.load_featured_adapter
+    featured_file = File.dirname(__FILE__) + "/featured.yaml"
+    opts = adapter_options
+    opts[:options][:router] = FeaturedRouter
+    YAML.load_file(featured_file).each do |key, value|
+      opts[:libraries][key] = case value
+      when String
+        [LibraryVersion.new(key, nil, find_featured_yardoc(key, value))]
+      when Array
+        value[0].map do |version, libdir|
+          LibraryVersion.new(key, version, find_featured_yardoc(key, libdir))
+        end
+      end
+    end
+    set :featured_adapter, RackAdapter.new(*opts.values)
+  rescue Errno::ENOENT
+    log.error "No featured.yaml file to load remote gems from, not serving featured docs."
+  end
 
   use Rack::Deflater
   use Rack::ConditionalGet
@@ -104,6 +132,7 @@ class DocServer < Sinatra::Base
     load_configuration
     load_gems_adapter
     load_scm_adapter
+    load_featured_adapter
     copy_static_files
   end
   
@@ -224,6 +253,21 @@ class DocServer < Sinatra::Base
     result
   end
 
+  # Featured libraries
+  
+  get %r{^/(?:(?:search|list)/)?docs/([^/]+)} do |libname|
+    @libname = libname
+    pass unless options.featured_adapter.libraries[libname]
+    result = options.featured_adapter.call(env)
+    return status(404) && erb(:featured_404) if result.first == 404
+    result
+  end
+  
+  get %r{^/(featured|docs/?$)} do
+    @featured = options.featured_adapter.libraries
+    cache erb(:featured_index)
+  end
+
   # Simple search interfaces
 
   get %r{^/find/github} do
@@ -264,6 +308,7 @@ class DocServer < Sinatra::Base
   get '/' do
     @adapter = options.scm_adapter
     @libraries = recent_store
+    @featured = options.featured_adapter.libraries if defined? options.featured_adapter
     cache erb(:home)
   end
   

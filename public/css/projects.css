@@ -1,14 +1,15 @@
 h2 { font-size: 1.6em; }
+a { outline: none; }
 
 #projects { font-size: 1.4em; list-style: circle; }
 
 #projects { list-style-position: inside; padding-left: 0; list-style: none; margin-left: 0; }
 #projects li { padding: 7px 15px; font-size: 1.1em; }
 
-#libraries { list-style: circle inside none; padding: 0; }
-#libraries li { font-size: 1.2em; line-height: 1.4em; padding: 3px 5px; }
-#libraries ul { padding: 0; margin-bottom: 5px; }
-#libraries ul li { list-style: none; line-height: 0.9em; font-size: 1.05em; padding: 3px 5px; font-weight: normal; padding-left: 25px; }
+.libraries { list-style: circle inside none; padding: 0; }
+.libraries li { font-size: 1.2em; line-height: 1.4em; padding: 3px 5px; }
+.libraries ul { padding: 0; margin-bottom: 5px; }
+.libraries ul li { list-style: none; line-height: 0.9em; font-size: 1.05em; padding: 3px 5px; font-weight: normal; padding-left: 25px; }
 
 #logo h1 { margin: 0; border: 0; color: #58b; }
 #logo small { color: #369; font-size: 0.6em; font-weight: normal; opacity: 0.6; }
@@ -38,7 +39,7 @@ h2 { font-size: 1.6em; }
 #learn_yard { position: absolute; top: 0; right: 0; z-index: 9500; opacity: 0.9; }
 #learn_yard:hover { opacity: 1; }
 #learn_yard img { border: 0; }
-#framelink { z-index: 9999; position: relative; }
+.framelink { z-index: 9999; position: relative; }
 
 #notice { position: relative; padding: 12px; background: #333; color: #fff; width: 500px; font-size: 1em; line-height: 1.4em; }
 #notice a { color: #fff; }
@@ -114,6 +115,7 @@ h2 { font-size: 1.6em; }
 .extra_options { display: none; }
 
 .sponsor { margin-top: 12px; }
+#footer { border-top: 0; margin-top: 20px; }
 #footer .sponsor img { border: 0; }
 #footer .sponsor a { border: 0; }
 
@@ -121,5 +123,5 @@ h2 { font-size: 1.6em; }
 #content.fof h2.nomargin { margin-top: 0; border: 0; font-size: 1.2em; color: #888; margin-bottom: 20px; } 
 #content.fof.scm #checkout { display: block; position: relative; top: 0; right: 0; margin: 40px 0; }
 
-#libraries .icon { width: 16px; height: 16px; position: relative; float: right; top: 6px; border: 1px solid #ccc; background: #eee; padding: 2px; -webkit-border-radius: 3px; -moz-border-radius: 3px; margin-left: 3px; }
-#libraries a:hover .icon { background: #fff; }
+.libraries .icon { width: 16px; height: 16px; position: relative; float: right; top: 6px; border: 1px solid #ccc; background: #eee; padding: 2px; -webkit-border-radius: 3px; -moz-border-radius: 3px; margin-left: 3px; }
+.libraries a:hover .icon { background: #fff; }
