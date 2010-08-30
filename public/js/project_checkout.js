@@ -1,17 +1,27 @@
 function pollCheckout(project) {
-  $.get('/checkout/' + project, function(data) {
-    if (data == "YES") {
-      window.location = '/github/' + project;
-    }
-    else if (data == "ERROR") {
+  $.ajax({ 
+    url: '/checkout/' + project, 
+    success: function(data) {
+      if (data == "YES") {
+        window.location = '/github/' + project;
+      }
+      else if (data == "ERROR") {
+        $('#checkout').removeClass('loading');
+        $('#checkout').addClass('error');
+        $('#submit')[0].disabled = false;
+        return;
+      } else {
+        setTimeout("pollCheckout('" + project + "');", 2000);
+      }
+    }, 
+    error: function(data) {
       $('#checkout').removeClass('loading');
       $('#checkout').addClass('error');
       $('#submit')[0].disabled = false;
       return;
-    } else {
-      setTimeout("pollCheckout('" + project + "');", 2000);
-    }
-  }, 'text');
+    },
+    dataType: 'text' 
+  });
 }
 
 function checkoutForm() {
@@ -23,7 +33,9 @@ function checkoutForm() {
       if (data == "OK") {
         var arr = url.split('/');
         var dirname = arr[arr.length-1].replace(/\.[^.]+$/, '');
-        if (name = url.match(/^git:\/\/(?:www\.)?github\.com\/([^\/]+)/)[1]) {
+        var match = url.match(/^git:\/\/(?:www\.)?github\.com\/([^\/]+)/);
+        if (match) {
+          var name = match[1];
           dirname = name + '/' + dirname + '/' + (commit.length == 0 ? "master" : commit.length == 40 ? commit.substring(0,6) : commit);
         }
         pollCheckout(dirname);
