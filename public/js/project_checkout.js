@@ -3,7 +3,7 @@ function pollCheckout(project) {
     url: '/checkout/' + project, 
     success: function(data) {
       if (data == "YES") {
-        window.location = '/github/' + project;
+        window.location = '/github/' + project + '/frames';
       }
       else if (data == "ERROR") {
         $('#checkout').removeClass('loading');
