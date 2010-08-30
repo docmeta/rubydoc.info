@@ -184,8 +184,7 @@ class DocServer < Sinatra::Base
         commit = nil
       else
         scheme = params[:scheme]
-        url = params[:url].gsub(%r{^http://}, 'git://')
-        url = "#{url}.git" unless url.match(%r{\.git$})
+        url = params[:url]
         commit = params[:commit]
       end
       dirname = File.basename(url).gsub(/\.[^.]+\Z/, '').gsub(/\s+/, '')
