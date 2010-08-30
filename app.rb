@@ -246,7 +246,7 @@ class DocServer < Sinatra::Base
   # Old URL structure redirection for yardoc.org
   
   get(%r{^/docs/([^/]+)-([^/]+)(/?.*)}) do |user, proj, extra|
-    redirect("/github/#{user}/#{project}#{translate_file_links extra}", 301)
+    redirect("/github/#{user}/#{proj}#{translate_file_links extra}", 301)
   end
 
   get(%r{^/docs/([^/]+)(/?.*)}) do |lib, extra|
