@@ -39,6 +39,10 @@ class ScmLibraryStore
     # read-only db
   end
   
+  def has_key?(key)
+    self[key] ? true : false
+  end
+  
   def keys
     dirs = []
     Dir.entries(REPOS_PATH).each do |project|
