@@ -202,7 +202,7 @@ class DocServer < Sinatra::Base
   end
   
   get %r{^/gems(?:/([a-z])?)?$} do |letter|
-    return status(503) && "Broken Pipe" if env['REMOTE_ADDR'] =~ /^66\.249\./
+    return status(503) && "Broken Pipe" if env['REMOTE_ADDR'] =~ /^(66\.249\.|91\.205\.)/
     @letter = letter || 'a'
     @adapter = options.gems_adapter
     @libraries = @adapter.libraries.find_all {|k, v| k[0].downcase == @letter }
@@ -217,7 +217,7 @@ class DocServer < Sinatra::Base
   end
 
   get %r{^/(?:(?:search|list)/)?gems/([^/]+)} do |gemname|
-    return status(503) && "Broken Pipe" if env['REMOTE_ADDR'] =~ /^66\.249\./
+    return status(503) && "Broken Pipe" if env['REMOTE_ADDR'] =~ /^(66\.249\.|91\.205\.)/
     @gemname = gemname
     result = options.gems_adapter.call(env)
     return status(404) && erb(:gems_404) if result.first == 404
