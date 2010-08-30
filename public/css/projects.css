@@ -15,7 +15,7 @@ h2 { font-size: 1.6em; }
 #logo a { text-decoration: none; color: #58b; }
 #logo a:hover { color: #8cf; border-bottom: 8px solid #8cf; }
 
-#top_nav { padding: 0; list-style: none; position: absolute; right: 10px; top: 3px;}
+#top_nav { padding: 0; list-style: none; position: absolute; right: 120px; top: 3px; z-index: 9999; }
 #top_nav li { float: left; margin-right: 10px; }
 #top_nav a { display: block; padding: 5px 8px; background: #58a; text-decoration: none; 
   color: #eee;
@@ -29,7 +29,7 @@ h2 { font-size: 1.6em; }
   font-size: 1.1em;
   line-height: 1.4em;
   display: none; position: absolute; width: 350px; padding: 10px 20px; top: 55px; 
-  right: 30px; background: #fff; z-index: 10000; border: 1px solid #aaa; 
+  right: 120px; background: #fff; z-index: 10000; border: 1px solid #aaa; 
   -webkit-box-shadow: 0px 2px 15px #aaa; -moz-box-shadow: 0px 2px 15px #aaa;
 }
 #info a { color: #05a; }
@@ -55,7 +55,7 @@ h2 { font-size: 1.6em; }
   display: none;
   position: absolute;
   top: 42px;
-  right: 55px;
+  right: 175px;
   height: 120px;
   padding: 8px 18px;
   margin: 12px;
