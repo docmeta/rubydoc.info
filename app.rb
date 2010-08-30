@@ -139,10 +139,6 @@ class DocServer < Sinatra::Base
       extra.sub(%r{^/(frames/)?file:}, '/\1file/')
     end
 
-    def translate_commit_links(extra)
-      extra.sub(%r{^/blob/([^/]+)(/?.*)?}) { "/#{shorten_commit_link($1)}/#{$2}" }
-    end
-
     def shorten_commit_link(commit)
       commit.slice(0..5)
     end
@@ -260,7 +256,7 @@ class DocServer < Sinatra::Base
   # Old URL structure redirection for rdoc.info
 
   get(%r{^/(?:projects|rdoc)/([^/]+)/([^/]+)(/?.*)}) do |user, proj, extra|
-    redirect("/github/#{user}/#{proj}#{translate_commit_links extra}", 301)
+    redirect("/github/#{user}/#{proj}", 301)
   end
 
   # Root URL redirection
