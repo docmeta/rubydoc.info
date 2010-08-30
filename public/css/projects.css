@@ -121,3 +121,7 @@ h2 { font-size: 1.6em; }
 
 #libraries .icon { width: 16px; height: 16px; position: relative; float: right; top: 6px; border: 1px solid #ccc; background: #eee; padding: 2px; -webkit-border-radius: 3px; -moz-border-radius: 3px; margin-left: 3px; }
 #libraries a:hover .icon { background: #fff; }
+
+img {
+  border: 0;
+}
