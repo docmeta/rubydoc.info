@@ -11,8 +11,8 @@ module ScmCheckout
     puts "#{Time.now}: Adding #{project_name} to recent projects list"
   end
 
-  def checkout(url, name, commit = '', scheme = "git")
-    commit = nil if commit.empty?
+  def checkout(url, name, commit = nil, scheme = "git")
+    commit = nil if !commit.nil? && commit.empty?
     github_project = nil
     name.gsub!(/[^a-z0-9-]/i, '_')
     if username = url[%r{\Agit://(?:www\.)?github.com/([^/]+)/}, 1]
