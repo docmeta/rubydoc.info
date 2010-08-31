@@ -39,6 +39,8 @@ class DocServer < Sinatra::Base
     YAML.load_file(CONFIG_FILE).each do |key, value|
       set key, value
       $DISQUS = value if key == 'disqus' # HACK for DISQUS setting
+      $CLICKY = value if key == 'clicky' # Hack for Clicky setting
+      $GOOGLE_ANALYTICS = value if key == 'google_analytics' # Hack for GA settings
     end
   end
   
