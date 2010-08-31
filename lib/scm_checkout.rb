@@ -163,8 +163,9 @@ class GithubCheckout < ScmCheckout
       else
         nil
       end
-      ["mkdir -p #{repository_path}", "cd #{repository_path}/../", 
-        "git clone #{url} #{commit}", "cd #{commit}", 
+      ["mkdir -p #{options.repos}/#{project}/#{username}", 
+        "cd #{options.repos}/#{project}/#{username}", 
+        "git clone #{url} #{commit}", "cd #{commit}",
         checkout, fork_cmd].compact.join(" && ")
     end
   end
