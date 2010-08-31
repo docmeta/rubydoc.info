@@ -33,7 +33,7 @@ function checkoutForm() {
       if (data == "OK") {
         var arr = url.split('/');
         var dirname = arr[arr.length-1].replace(/\.[^.]+$/, '');
-        var match = url.match(/^git:\/\/(?:www\.)?github\.com\/([^\/]+)/);
+        var match = url.match(/^(?:git|https?):\/\/(?:www\.)?github\.com\/([^\/]+)/);
         if (match) {
           var name = match[1];
           dirname = name + '/' + dirname + '/' + (commit.length == 0 ? "master" : commit.length == 40 ? commit.substring(0,6) : commit);

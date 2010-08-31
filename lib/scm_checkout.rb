@@ -1,82 +1,169 @@
-module ScmCheckout
-  def register_project(name)
-    name = name.split('/', 2).reverse.join('/')
+require 'open-uri'
+require 'json'
+
+class InvalidSchemeError < RuntimeError; end
+
+class ScmCheckout
+  attr_accessor :name, :url, :options, :app, :commit
+  
+  def initialize(app, url, commit = nil)
+    self.options = app.options
+    self.app = app
+    self.url = url
+    self.commit = commit
+  end
+  
+  def name=(name)
+    @name = name.gsub(/[^a-z0-9\-\/]/i, '_')
+  end
+  
+  def register_project
     puts "#{Time.now}: Registering project #{name}"
-    files = ["github.html", "github/#{name[0,1]}.html", 
+    ready_project
+    app.recent_store.push(options.scm_adapter.libraries[name])
+    puts "#{Time.now}: Adding #{name} to recent projects list"
+  end
+  
+  def remove_project
+  end
+  
+  def ready_project
+    cmd = "touch #{repository_path}/.yardoc/complete"
+    sh(cmd, "Readying project #{name}", false)
+    unlink_error_file
+  end
+  
+  def unready_project
+    cmd = "rm #{repository_path}/.yardoc/complete"
+    sh(cmd, "Unreadying project #{name}", false)
+  end
+  
+  def repository_path
+    File.join(options.repos, name, commit)
+  end
+  
+  def flush_cache
+    files = ["github.html", "github/#{project[0,1]}.html", 
       "github/#{name}.html", "github/#{name}", "list/github/#{name}", 
       "index.html", ".html"]
     rm_cmd = "rm -rf #{files.map {|f| File.join(options.public, f) }.join(' ')}"
-    `#{rm_cmd}`
-    puts "#{Time.now}: Flushing cache for #{name} (#{$?}): #{rm_cmd}"
+    sh(rm_cmd, "Flushing cache for #{name}", false)
+  end
+  
+  def checkout
+    unlink_error_file
+    unready_project
+    success = sh(checkout_command, "Checking out #{name}") == 0
+    if success
+      register_project 
+    else
+      remove_project
+    end
+    success
+  end
+  
+  def checkout_command
+    raise NotImplementedError
+  end
+  
+  def error_file
+    @error_file ||= 
+      "#{options.tmp}/#{[name.gsub('/', '_'), commit || 'master'].join('_')}.error.txt"
+  end
+  
+  def write_error_file(out)
+    File.open(error_file, "a") {|f| f.write(out + "\n") }
+  end
+  
+  def unlink_error_file
+    File.unlink(error_file) if File.file?(error_file)
+  end
+  
+  def sh(command, title = "", write_error = true)
+    puts(log = "#{Time.now}: #{title}: #{command}")
+    if write_error
+      result, out_data, err_data = 0, "", ""
+      Open3.popen3(command) do |_, out, err, thr|
+         out_data, err_data, result = out.read, err.read, thr.value
+      end
+    else
+      `#{command}`
+      result = $?
+    end
+    puts(log = "#{Time.now}: #{title}, result=#{result.to_i}")
+    if write_error && result != 0
+      data = "#{log}\n\nSTDOUT:\n#{out_data}\n\nSTDERR:\n#{err_data}\n\n"
+      write_error_file(data)
+    end
+    result
+  end
+end
 
-    recent_store.push(options.scm_adapter.libraries[name])
-    puts "#{Time.now}: Adding #{name} to recent projects list"
+class GithubCheckout < ScmCheckout
+  attr_accessor :username, :project
+  
+  def initialize(app, url, commit = nil)
+    super
+    case url
+    when Array
+      self.username, self.project = *url
+    when %r{^(?:https?|git)://(?:www\.?)?github\.com/([^/]+)/([^/]+?)(?:\.git)?/?$}
+      self.username, self.project = $1, $2
+    else
+      raise InvalidSchemeError
+    end
+    self.name = "#{username}/#{project}"
+  end
+  
+  def commit=(value)
+    value = nil if value == ''
+    @commit = value || 'master'
+    @commit = @commit[0,6] if @commit.length == 40
+    @commit
+  end
+  
+  def repository_path
+    File.join(options.repos, project, username, commit)
+  end
+  
+  def remove_project
+    cmd = "rmdir #{options.repos}/#{project}/#{username} #{options.repos}/#{project}"
+    sh(cmd, "Removing #{name}", false)
   end
 
-  def checkout(url, name, commit = nil, scheme = "git")
-    commit = nil if commit && commit.empty?
-    github_project = nil
-    name.gsub!(/[^a-z0-9-]/i, '_')
-    if username = url[%r{\Agit://(?:www\.)?github.com/([^/]+)/}, 1]
-      github_project = name
-      name = "#{name}/#{username}"
-    end
-    cmd = case scheme
-    when "git"
-      fork = true
-      begin
-        if github_project && !File.directory?(File.join(options.repos, name))
-          json = JSON.parse(open("http://github.com/api/v1/json/#{username}").read)
-          proj_json = json["user"]["repositories"].find {|s| s["name"] == github_project }
-          fork = proj_json["fork"] if proj_json
-        end
-      rescue IOError, OpenURI::HTTPError
-      end
-      checkout_command_for_git(url, name, commit, fork)
-    when "svn"
-      checkout_command_for_svn(url, name)
+  def checkout_command
+    "#{git_checkout_command} && yardoc -n -q"
+  end
+  
+  def fork?
+    return @is_fork unless @is_fork.nil?
+    if !File.directory?(File.join(options.repos, name))
+      json = JSON.parse(open("http://github.com/api/v1/json/#{username}").read)
+      proj_json = json["user"]["repositories"].find {|s| s["name"] == project }
+      @is_fork = proj_json["fork"] if proj_json
     else
-      return
+      @is_fork = true
     end
-    
-    co_cmd = "cd #{options.repos} && #{cmd} && yardoc -n -q --no-cache && touch .yardoc/complete"
-    out = `#{co_cmd}`
-    result = $?
-    puts "#{Time.now}: Checkout command (#{result}): #{co_cmd}"
-    errorfile = "#{options.tmp}/#{[name.gsub('/', '_'), commit || 'master'].join('_')}.error.txt"
-    if result == 0
-      register_project(name)
-      File.unlink(errorfile) if File.file?(errorfile)
-    else
-      File.open(errorfile, "w") {|f| f.write(out) }
-    end
+    @is_fork
+  rescue IOError, OpenURI::HTTPError, Timeout::Error
+    @is_fork = false
+  ensure
   end
   
   private
 
-  def checkout_command_for_svn(url, name)
-    if File.directory?(File.join(options.repos, name))
-      "cd #{name} && svn up"
+  def git_checkout_command
+    if File.directory?(repository_path)
+      "cd #{repository_path} && git reset --hard && git pull --force"
     else
-      "svn co #{url} #{name} && cd #{name}"
-    end
-  end
-
-  def checkout_command_for_git(url, name, commit = nil, fork = true)
-    commit_name = commit || 'master'
-    commit_name = commit_name[0,6] if commit && commit.length == 40
-    dirname = File.join(options.repos, name, commit_name)
-    if File.directory?(dirname)
-      "cd #{name}/#{commit_name} && git reset --hard && git pull --force"
-    else
-      fork_cmd = fork ? nil : "echo #{name.split('/').reverse.join('/')} > ../../.master_fork"
+      fork_cmd = fork? ? nil : "echo #{project}/#{username} > ../../.master_fork"
       checkout = if commit
-        "git fetch && trap \"git pull origin #{commit_name}\" TERM && git checkout #{commit_name}"
+        "git fetch && trap \"git pull origin #{commit}\" TERM && git checkout #{commit}"
       else
         nil
       end
-      ["mkdir -p #{name}", "cd #{name}", 
-        "git clone #{url} #{commit_name}", "cd #{commit_name}", 
+      ["mkdir -p #{repository_path}", "cd #{repository_path}/../", 
+        "git clone #{url} #{commit}", "cd #{commit}", 
         checkout, fork_cmd].compact.join(" && ")
     end
   end

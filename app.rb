@@ -7,7 +7,6 @@ require 'sinatra'
 require 'json'
 require 'yaml'
 require 'fileutils'
-require 'open-uri'
 require 'rack/hoptoad'
 
 require 'init'
@@ -104,6 +103,10 @@ class DocServer < Sinatra::Base
   rescue Errno::ENOENT
     log.error "No featured.yaml file to load remote gems from, not serving featured docs."
   end
+  
+  def self.post_all(*args, &block)
+    args.each {|arg| post(arg, &block) }
+  end
 
   use Rack::Deflater
   use Rack::ConditionalGet
@@ -138,8 +141,6 @@ class DocServer < Sinatra::Base
   end
   
   helpers do
-    include ScmCheckout
-    
     def recent_store
       @@recent_store ||= RecentStore.new(20)
     end
@@ -176,41 +177,42 @@ class DocServer < Sinatra::Base
   
   # Checkout and post commit hooks
   
-  ['/checkout', '/projects/update'].each do |path|
-    post path do
+  post_all '/checkout', '/projects/update' do
+    begin
       if params[:payload]
         payload = JSON.parse(params[:payload])
-        url = payload["repository"]["url"].gsub(%r{^http://}, 'git://')
-        scheme = "git"
+        url = payload["repository"]["url"]
         commit = nil
       else
-        scheme = params[:scheme]
         url = params[:url]
         commit = params[:commit]
+        commit = nil if commit == ''
       end
-      dirname = File.basename(url).gsub(/\.[^.]+\Z/, '').gsub(/\s+/, '')
-      return "INVALIDSCHEME" unless url.include?("://")
-      case scheme
-      when "git", "svn"
-        fork { checkout(url, dirname, commit, scheme) }
-        "OK"
-      else
-        "INVALIDSCHEME"
-      end
+
+      url = url.sub(%r{^http://}, 'git://')
+      scm = GithubCheckout.new(self, url, commit)
+      scm.flush_cache
+      fork { scm.checkout }
+      "OK"
+    rescue InvalidSchemeError
+      "INVALIDSCHEME"
     end
   end
 
   get '/checkout/:username/:project/:commit' do
-    projname = params[:username] + '/' + params[:project]
-    if libs = options.scm_adapter.libraries[projname]
-      return "YES" if libs.find {|l| l.version == params[:commit] }
+    git = GithubCheckout.new(self, [params[:username], params[:project]], params[:commit])
+    if libs = options.scm_adapter.libraries[git.name]
+      if lib = libs.find {|l| l.version == git.commit }
+        return "NO" unless File.exist?(File.join(lib.source_path, '.yardoc', 'complete'))
+        return "YES" 
+      end
     end
     
-    if File.file?("#{options.tmp}/#{[params[:project], params[:username], params[:commit] || 'master'].join('_')}.error.txt")
-      puts "#{options.tmp}/#{[params[:project], params[:username], params[:commit] || 'master'].join('_')}.error.txt found"
+    if File.exist?(git.error_file)
+      puts "#{git.error_file} found"
       "ERROR"
     else
-      puts "#{options.tmp}/#{[params[:project], params[:username], params[:commit] || 'master'].join('_')}.error.txt not found"
+      puts "#{git.error_file} not found"
       "NO"
     end
   end

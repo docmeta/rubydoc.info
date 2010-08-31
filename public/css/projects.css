@@ -51,7 +51,7 @@ a { outline: none; }
 #checkout .loadicon { display: none; float: right; position: relative; left: -20px; top: 6px; width: 16px; height: 16px; background: url(/images/loading.gif); }
 #checkout.error #url { background: #fdd; }
 #checkout #commit { width: 131px; }
-#checkout.error:after { content: "Invalid git/svn repository"; color: #e00; display: block; }
+#checkout.error:after { content: "Invalid git repository or URL"; color: #e00; display: block; }
 #checkout.loading .loadicon { display: block; }
 #checkout .url { width: 225px; margin-bottom: 3px; }
 #checkout { 
