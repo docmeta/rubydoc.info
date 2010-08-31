@@ -9,4 +9,7 @@
     <small>Commit (optional): <input type="text" id="commit" name="commit" value="" /></small>
     <input type="submit" id="submit" value="Go" />
   </form>
+  <script type="text/javascript" charset="utf-8">
+    if (jQuery.browser.safari) $('#checkout_form #commit').css('width', '122px');
+  </script>
 </div>

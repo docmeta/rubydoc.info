@@ -47,12 +47,13 @@ a { outline: none; }
 #checkout form { display: inline; }
 #checkout h2 { margin: 0; padding: 0; border: 0; font-weight: normal; font-size: 1.1em; }
 #checkout .example { color: #999; }
-#checkout input, #checkout select { font-size: 1.1em; }
+#checkout input { font-size: 1em; }
 #checkout .loadicon { display: none; float: right; position: relative; left: -20px; top: 6px; width: 16px; height: 16px; background: url(/images/loading.gif); }
 #checkout.error #url { background: #fdd; }
-#checkout.error:after { content: "Invalid git/svn repository"; color: #f00; display: block; }
+#checkout #commit { width: 131px; }
+#checkout.error:after { content: "Invalid git/svn repository"; color: #e00; display: block; }
 #checkout.loading .loadicon { display: block; }
-#checkout .url { width: 225px; font-size: 0.9em; }
+#checkout .url { width: 225px; margin-bottom: 3px; }
 #checkout { 
   display: none;
   position: absolute;
