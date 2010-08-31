@@ -1,4 +1,5 @@
 require 'open-uri'
+require 'open3'
 require 'json'
 
 class InvalidSchemeError < RuntimeError; end
