@@ -2,6 +2,7 @@
 doc
 .*.swp
 .yardoc
+.rvmrc
 config.yaml
 featured.yaml
 tmp
