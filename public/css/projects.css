@@ -52,7 +52,7 @@ a { outline: none; }
 #checkout.error #url { background: #fdd; }
 #checkout.error:after { content: "Invalid git/svn repository"; color: #f00; display: block; }
 #checkout.loading .loadicon { display: block; }
-#checkout .url { width: 250px; }
+#checkout .url { width: 225px; }
 #checkout { 
   display: none;
   position: absolute;
