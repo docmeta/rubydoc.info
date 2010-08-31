@@ -6,7 +6,7 @@ a { outline: none; }
 #projects { list-style-position: inside; padding-left: 0; list-style: none; margin-left: 0; }
 #projects li { padding: 7px 15px; font-size: 1.1em; }
 
-.libraries { list-style: circle inside none; padding: 0; }
+.libraries { list-style: none; padding: 0; }
 .libraries li { font-size: 1.2em; line-height: 1.4em; padding: 3px 5px; }
 .libraries ul { padding: 0; margin-bottom: 5px; }
 .libraries ul li { list-style: none; line-height: 0.9em; font-size: 1.05em; padding: 3px 5px; font-weight: normal; padding-left: 25px; }
