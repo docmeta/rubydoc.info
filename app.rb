@@ -93,8 +93,9 @@ class DocServer < Sinatra::Base
       opts[:libraries][key] = case value
       when String
         [LibraryVersion.new(key, nil, find_featured_yardoc(key, value))]
-      when Array
-        value[0].map do |version, libdir|
+      when Array, Hash
+        value = value.first if Array === value
+        value.map do |version, libdir|
           LibraryVersion.new(key, version, find_featured_yardoc(key, libdir))
         end
       end

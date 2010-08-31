@@ -5,5 +5,5 @@ ruby: /path/to/ruby_core
 
 # You can also add libraries by version:
 yard:
-  - 0.6.0: /path/to/yard/0.6.0
-  - 0.5.8: /path/to/yard/0.5.8
+  0.6.0: /path/to/yard/0.6.0
+  0.5.8: /path/to/yard/0.5.8
