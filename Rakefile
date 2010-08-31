@@ -20,3 +20,11 @@ namespace :docs do
     load('scripts/clean_docs.rb')
   end
 end
+
+namespace :cache do
+  desc 'Clean index cache pages (github, gems, featured)'
+  task :clean_index do
+    puts '>> Removing index cache pages'
+    load('scripts/clean_index_cache.rb')
+  end
+end
