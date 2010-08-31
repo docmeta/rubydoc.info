@@ -10,6 +10,14 @@ a { outline: none; }
 .libraries li { font-size: 1.2em; line-height: 1.4em; padding: 3px 5px; }
 .libraries ul { padding: 0; margin-bottom: 5px; }
 .libraries ul li { list-style: none; line-height: 0.9em; font-size: 1.05em; padding: 3px 5px; font-weight: normal; padding-left: 25px; }
+.libraries ul { background: #eee; }
+.libraries { list-style: none; }
+.libraries li { line-height: 2em; border-bottom: 1px solid #ddd; }
+.libraries ul li { padding-bottom: 6px; background: #f0f0f0; }
+.libraries ul { padding-bottom: 10px; background: transparent; }
+.libraries li:hover { background: #eef; }
+.libraries li.alternate, .libraries li.alternate:hover { background: transparent; }
+.libraries li a:hover { background: transparent; color: #3ae; }
 
 #logo h1 { margin: 0; border: 0; color: #58b; }
 #logo small { color: #369; font-size: 0.6em; font-weight: normal; opacity: 0.6; }
