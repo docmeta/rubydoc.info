@@ -136,7 +136,7 @@ class DocServer < Sinatra::Base
   
   configure do
     load_configuration
-    load_gems_adapter
+    #load_gems_adapter
     load_scm_adapter
     load_featured_adapter
     copy_static_files
@@ -237,6 +237,7 @@ class DocServer < Sinatra::Base
   
   get %r{^/gems(?:/([a-z])?)?$} do |letter|
     return status(503) && "Broken Pipe" if env['REMOTE_ADDR'] =~ /^(66\.249\.|91\.205\.)/
+    self.class.load_gems_adapter unless defined? options.gems_adapter
     @letter = letter || 'a'
     @adapter = options.gems_adapter
     @libraries = @adapter.libraries.find_all {|k, v| k[0].downcase == @letter }
@@ -252,6 +253,7 @@ class DocServer < Sinatra::Base
 
   get %r{^/(?:(?:search|list)/)?gems/([^/]+)} do |gemname|
     return status(503) && "Broken Pipe" if env['REMOTE_ADDR'] =~ /^(66\.249\.|91\.205\.)/
+    self.class.load_gems_adapter unless defined? options.gems_adapter
     @gemname = gemname
     result = options.gems_adapter.call(env)
     return status(404) && erb(:gems_404) if result.first == 404
@@ -284,6 +286,7 @@ class DocServer < Sinatra::Base
   end
 
   get %r{^/find/gems} do
+    self.class.load_gems_adapter unless defined? options.gems_adapter
     @search = params[:q]
     @adapter = options.gems_adapter
     @libraries = @adapter.libraries.find_all {|k,v| k.match(/#{@search}/) }
