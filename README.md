@@ -30,3 +30,4 @@ Additional help was provided by:
 
 * Jeff Rafter (rdoc.info)
 * Brian Turnbull (rdoc.info)
+* Lee Jarvis
