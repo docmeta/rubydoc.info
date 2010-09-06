@@ -196,7 +196,7 @@ class DocServer < Sinatra::Base
       url = url.sub(%r{^http://}, 'git://')
       scm = GithubCheckout.new(self, url, commit)
       scm.flush_cache
-      fork { scm.checkout }
+      scm.checkout
       "OK"
     rescue InvalidSchemeError
       "INVALIDSCHEME"
