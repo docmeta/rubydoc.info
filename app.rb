@@ -19,6 +19,8 @@ require 'recent_store'
 
 class DocServer < Sinatra::Base
   include YARD::Server
+  
+  DISALLOWED_GEMS = %w(netsuite_client)
 
   def self.adapter_options
     caching = %w(staging production).include?(ENV['RACK_ENV'])
@@ -253,6 +255,7 @@ class DocServer < Sinatra::Base
 
   get %r{^/(?:(?:search|list)/)?gems/([^/]+)} do |gemname|
     return status(503) && "Broken Pipe" if env['REMOTE_ADDR'] =~ /^(66\.249\.|91\.205\.)/
+    return status(503) && "Cannot parse this gem" if DISALLOWED_GEMS.include?(gemname)
     self.class.load_gems_adapter unless defined? options.gems_adapter
     @gemname = gemname
     result = options.gems_adapter.call(env)
