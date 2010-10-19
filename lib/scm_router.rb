@@ -65,7 +65,8 @@ class ScmLibraryStore
   
   def master_fork(name)
     project = name.split('/', 2).last
-    File.read(File.join(REPOS_PATH, project, '.master_fork')).strip
+    File.read(File.join(REPOS_PATH, project, '.master_fork')).strip.split('/').
+      reverse.join('/')
   rescue Errno::ENOENT
     nil
   end
