@@ -4,6 +4,6 @@ $:.unshift(File.dirname(__FILE__) + '/../')
 
 require 'init'
 
-[File.join(REPOS_PATH, '*'), File.join(REMOTE_GEMS_PATH, '*')].each do |dir|
+[File.join(REPOS_PATH, '*'), File.join(REMOTE_GEMS_PATH, '*', '**')].each do |dir|
   Dir[dir].each { |d| FileUtils.rm_rf(d) }
 end
