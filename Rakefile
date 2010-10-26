@@ -21,6 +21,14 @@ namespace :docs do
   end
 end
 
+namespace :repos do
+  desc 'Cleana up the cached gem sources and repositories'
+  task :clean do
+    puts ">> Removing cached gem sources and repositories"
+    load('scripts/clean_repos.rb')
+  end
+end
+
 namespace :cache do
   desc 'Clean index cache pages (github, gems, featured)'
   task :clean_index do
