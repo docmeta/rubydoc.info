@@ -5,6 +5,23 @@ require 'yard'
 
 task :default => 'gems:update'
 
+namespace :server do
+  desc 'Start the server'
+  task :start do
+    sh "unicorn -E production -D -c unicorn.conf.rb"
+  end
+  
+  desc 'Restart the server'
+  task :restart do
+    sh "kill -HUP `cat unicorn.pid`"
+  end
+  
+  desc 'Shut down the server'
+  task :stop do
+    sh "kill -9 `cat unicorn.pid`"
+  end
+end
+
 namespace :gems do
   desc 'Update gem list from Rubygems.org'
   task :update do
