@@ -157,7 +157,7 @@ class GithubCheckout < ScmCheckout
     if File.directory?(repository_path)
       "cd #{repository_path} && git reset --hard && git pull --force"
     else
-      fork_cmd = fork? ? nil : "echo #{project}/#{username} > ../../.master_fork"
+      fork_cmd = fork? ? nil : "echo #{name} > ../../.master_fork"
       checkout = if commit
         "git fetch && trap \"git pull origin #{commit}\" TERM && git checkout #{commit}"
       else
