@@ -239,7 +239,6 @@ class DocServer < Sinatra::Base
   end
   
   get %r{^/gems(?:/([a-z])?)?$} do |letter|
-    return status(503) && "Broken Pipe" if env['REMOTE_ADDR'] =~ /^(66\.249\.|91\.205\.)/
     self.class.load_gems_adapter unless defined? options.gems_adapter
     @letter = letter || 'a'
     @adapter = options.gems_adapter
@@ -255,7 +254,6 @@ class DocServer < Sinatra::Base
   end
 
   get %r{^/(?:(?:search|list)/)?gems/([^/]+)} do |gemname|
-    return status(503) && "Broken Pipe" if env['REMOTE_ADDR'] =~ /^(66\.249\.|91\.205\.)/
     return status(503) && "Cannot parse this gem" if DISALLOWED_GEMS.include?(gemname)
     self.class.load_gems_adapter unless defined? options.gems_adapter
     @gemname = gemname
