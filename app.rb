@@ -119,7 +119,7 @@ class DocServer < Sinatra::Base
     opts = adapter_options
     opts[:options][:router] = StdlibRouter
     versions = Dir.glob(File.join(STDLIB_PATH, '*'))
-    versions.sort_by {|v| File.basename(v) }.reverse.each do |version|
+    versions.sort_by {|v| File.basename(v) }.each do |version|
       next unless File.directory?(version)
       version = File.basename(version)
       libs = Dir.glob(File.join(STDLIB_PATH, version, '*'))
