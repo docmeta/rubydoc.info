@@ -6,6 +6,25 @@ module YARD
   module Server
     class LibraryVersion
       protected
+      
+      def load_yardoc_from_disk_on_demand
+        yfile = File.join(source_path, '.yardoc')
+        if File.directory?(yfile)
+          if File.exist?(File.join(yfile, 'complete'))
+            self.yardoc_file = yfile 
+            return
+          else
+            raise LibraryNotPreparedError 
+          end
+        end
+
+        # Generate
+        Thread.new do
+          generate_yardoc
+          self.yardoc_file = yfile
+        end
+        raise LibraryNotPreparedError
+      end
 
       def load_yardoc_from_remote_gem
         yfile = File.join(source_path, '.yardoc')
@@ -38,6 +57,10 @@ module YARD
 
       def source_path_for_remote_gem
         File.join(::REMOTE_GEMS_PATH, name[0].downcase, name, version)
+      end
+      
+      def source_path_for_disk_on_demand
+        File.join(::STDLIB_PATH, version, name)
       end
       
       alias load_yardoc_from_github load_yardoc_from_disk

@@ -18,6 +18,7 @@ a { outline: none; }
 .libraries li:hover { background: #eef; }
 .libraries li.alternate, .libraries li.alternate:hover { background: transparent; }
 .libraries li a:hover { background: transparent; color: #3ae; }
+.libraries li.core > a:first-child { font-weight: bold; }
 
 #logo h1 { margin: 0; border: 0; color: #58b; }
 #logo small { color: #369; font-size: 0.6em; font-weight: normal; opacity: 0.6; }

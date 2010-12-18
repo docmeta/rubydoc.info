@@ -53,3 +53,11 @@ namespace :cache do
     load('scripts/clean_index_cache.rb')
   end
 end
+
+namespace :stdlib do
+  desc 'Installs a standard library PATH=pathtolib VERSION=targetversion' 
+  task :install do
+    require 'stdlib_installer'
+    StdlibInstaller.new(ENV['PATH'], ENV['VERSION']).install
+  end
+end

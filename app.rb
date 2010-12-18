@@ -15,6 +15,7 @@ require 'scm_router'
 require 'scm_checkout'
 require 'gems_router'
 require 'featured_router'
+require 'stdlib_router'
 require 'recent_store'
 
 class DocServer < Sinatra::Base
@@ -107,6 +108,31 @@ class DocServer < Sinatra::Base
   rescue Errno::ENOENT
     log.error "No featured.yaml file to load remote gems from, not serving featured docs."
   end
+
+  
+  def self.load_stdlib_adapter
+    unless File.directory?(STDLIB_PATH)
+      log.error "No stdlib repository, not serving standard library"
+      return
+    end
+
+    opts = adapter_options
+    opts[:options][:router] = StdlibRouter
+    versions = Dir.glob(File.join(STDLIB_PATH, '*'))
+    versions.each do |version|
+      next unless File.directory?(version)
+      version = File.basename(version)
+      libs = Dir.glob(File.join(STDLIB_PATH, version, '*'))
+      libs.each do |lib|
+        next unless File.directory?(lib)
+        libname = File.basename(lib)
+        yardoc = File.join(lib, '.yardoc')
+        opts[:libraries][libname] ||= []
+        opts[:libraries][libname] << LibraryVersion.new(libname, version, nil, :disk_on_demand)
+      end
+    end
+    set :stdlib_adapter, RackAdapter.new(*opts.values)
+  end
   
   def self.post_all(*args, &block)
     args.each {|arg| post(arg, &block) }
@@ -141,6 +167,7 @@ class DocServer < Sinatra::Base
     #load_gems_adapter
     load_scm_adapter
     load_featured_adapter
+    load_stdlib_adapter
     copy_static_files
   end
   
@@ -261,6 +288,21 @@ class DocServer < Sinatra::Base
     return status(404) && erb(:gems_404) if result.first == 404
     result
   end
+  
+  # Stdlib
+   
+  get %r{^/(?:(?:search|list)/)?stdlib/([^/]+)} do |libname|
+    @libname = libname
+    pass unless options.stdlib_adapter.libraries[libname]
+    result = options.stdlib_adapter.call(env)
+    return status(404) && erb(:stdlib_404) if result.first == 404
+    result
+  end
+  
+  get %r{^/stdlib/?$} do
+    @stdlib = options.stdlib_adapter.libraries
+    cache erb(:stdlib_index)
+  end
 
   # Featured libraries
   
@@ -295,6 +337,16 @@ class DocServer < Sinatra::Base
     erb(:gems_index)
   end
 
+  # Redirect /docs/ruby-core
+  get(%r{^/docs/ruby-core/?(.*)}) do |all|
+    redirect("/stdlib/core/#{all}", 301)
+  end
+  
+  # Redirect /docs/ruby-stdlib
+  get(%r{^/docs/ruby-stdlib/?(.*)}) do |all|
+    redirect("/stdlib")
+  end
+
   # Old URL structure redirection for yardoc.org
   
   get(%r{^/docs/([^/]+)-([^/]+)(/?.*)}) do |user, proj, extra|
@@ -306,7 +358,7 @@ class DocServer < Sinatra::Base
   end
   
   get('/docs/?') { redirect('/github', 301) }
-
+  
   # Old URL structure redirection for rdoc.info
 
   get(%r{^/(?:projects|rdoc)/([^/]+)/([^/]+)(/?.*)}) do |user, proj, extra|
