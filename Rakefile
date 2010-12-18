@@ -13,12 +13,12 @@ namespace :server do
   
   desc 'Restart the server'
   task :restart do
-    sh "kill -USR2 `cat unicorn.pid`"
+    sh "kill -USR2 `cat tmp/pids/unicorn.pid`"
   end
   
   desc 'Shut down the server'
   task :stop do
-    sh "kill -QUIT `cat unicorn.pid`"
+    sh "kill -QUIT `cat tmp/pids/unicorn.pid`"
   end
 end
 
