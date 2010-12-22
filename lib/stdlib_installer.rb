@@ -34,26 +34,40 @@ class StdlibInstaller
   def install_exts
     exts = Dir[File.join(path, 'ext', '*')].select {|t| File.directory?(t) }
     exts = exts.reject {|t| t =~ /-test-/ }
-    puts "Installing extensions: #{exts.map {|t| clean_glob(t) }.join(', ')}"
     exts.each do |ext|
-      FileUtils.cp_r(ext, repo_path(ext))
+      extpath = repo_path(ext)
+      if File.directory?(extpath)
+        puts "Skipping #{clean_glob(ext)}, already installed."
+        next
+      end
+      puts "Installing extension #{clean_glob(ext)}..."
+      FileUtils.cp_r(ext, extpath)
       write_yardopts(ext)
     end
   end
   
   def install_libs
-    libs = Dir[File.join(path, 'lib', '*.rb')]
-    puts "Installing Ruby libraries: #{libs.map {|t| clean_glob(t) }.join(', ')}"
+    libs = Dir[File.join(path, 'lib', '*')]
+    installed = {}
     libs.each do |lib|
       libname = clean_glob(lib)
+      next if installed[libname]
       libpath = repo_path(lib)
-      libdirname = lib.sub(/\.rb$/, '')
+      if File.directory?(libpath)
+        puts "Skipping #{libname}, already installed."
+        next
+      end
+      puts "Installing library #{libname}..."
+      libfilename = lib + '.rb'
       dstpath = File.join(libpath, 'lib')
       FileUtils.mkdir_p(dstpath)
-      FileUtils.cp_r(libdirname, dstpath) if File.directory?(libdirname)
-      FileUtils.cp(lib, dstpath)
-      extract_readme(lib)
+      FileUtils.cp_r(lib, dstpath) if lib !~ /\.rb$/
+      if File.file?(libfilename)
+        FileUtils.cp(libfilename, dstpath)
+        extract_readme(libfilename)
+      end
       write_yardopts(lib)
+      installed[lib] = true
     end
   end
   
