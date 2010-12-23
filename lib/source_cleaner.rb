@@ -41,7 +41,7 @@ class SourceCleaner
         del = File.directory?(fullfile) ? Dir : File
         log.debug "Deleting #{fullfile}"
         del.delete(fullfile)
-      rescue Errno::ENOTEMPTY, Errno::ENOENT
+      rescue Errno::ENOTEMPTY, Errno::ENOENT, Errno::ENOTDIR
       end
     end
   end
