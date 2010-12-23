@@ -1,6 +1,7 @@
 require 'open-uri'
 require 'open3'
 require 'json'
+require_relative 'source_cleaner'
 
 class InvalidSchemeError < RuntimeError; end
 
@@ -56,6 +57,7 @@ class ScmCheckout
     unready_project
     success = sh(checkout_command, "Checking out #{name}") == 0
     if success
+      clear_source_files
       register_project 
     else
       remove_project
@@ -98,6 +100,9 @@ class ScmCheckout
     end
     result
   end
+  
+  def clear_source_files
+  end
 end
 
 class GithubCheckout < ScmCheckout
@@ -134,6 +139,10 @@ class GithubCheckout < ScmCheckout
 
   def checkout_command
     "#{git_checkout_command} && yardoc -n -q"
+  end
+  
+  def clear_source_files
+    SourceCleaner.new(repository_path).clean
   end
   
   def fork?

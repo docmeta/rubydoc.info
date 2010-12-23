@@ -45,6 +45,7 @@ module YARD
             open(url) do |io| 
               expand_gem(io)
               generate_yardoc
+              clean_source
             end
             self.yardoc_file = yfile
           rescue OpenURI::HTTPError
@@ -83,6 +84,10 @@ module YARD
             pkg.extract_entry(source_path, entry)
           end
         end
+      end
+      
+      def clean_source
+        SourceCleaner.new(source_path).clean
       end
     end
   end
