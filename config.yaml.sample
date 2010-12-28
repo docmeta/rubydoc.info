@@ -19,6 +19,10 @@
 # your Site ID:
 # google_analytics: YOUR_SITE_ID
 
+# If you want to add a Tender help desk support link, uncomment the following
+# line and add your Site ID:
+# tender: YOUR_SITE_ID
+
 # To display a sponsor link / image, uncomment the following line and add an
 # image named #{sponsor-site.com}.png to the public/images/sponsor directory.
 # sponsor: linode.com
