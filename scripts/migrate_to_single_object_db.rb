@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+# Migrates .yardocs to --single-db
+$:.unshift(File.dirname(__FILE__) + '/../')
+$:.unshift(File.dirname(__FILE__) + '/../lib')
+$:.unshift(File.expand_path(File.dirname(__FILE__) + '/../yard/lib'))
+
+require 'yard'
+require 'init'
+
+include YARD
+
+[File.join(REPOS_PATH, '*', '*', '*'), File.join(REMOTE_GEMS_PATH, '*', '*', '*')].each do |dir|
+  Dir[dir].each do |d| 
+    puts ">> Migrating .yardoc to single db for #{d}"
+    Dir.chdir(d)
+    Registry.load!
+    Registry.save
+    `touch .yardoc/complete`
+  end
+end
