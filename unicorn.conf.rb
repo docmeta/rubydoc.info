@@ -1,4 +1,4 @@
-worker_processes 4
+worker_processes 1
 working_directory Dir.pwd
 listen 8080, :tcp_nopush => true
 pid "#{Dir.pwd}/tmp/pids/unicorn.pid"
