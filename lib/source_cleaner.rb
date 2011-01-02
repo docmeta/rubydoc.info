@@ -8,6 +8,7 @@ class SourceCleaner
   def clean
     yardopts = File.join(basepath, '.yardopts')
     exclude = ['.yardoc', '.yardopts', '.git']
+    exclude += Dir.glob(File.join(basepath, 'README*')).map {|f| f.sub(/^#{basepath}\//, '') }
     if File.file?(yardopts)
       yardoc = YARD::CLI::Yardoc.new
       class << yardoc
