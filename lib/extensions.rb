@@ -5,6 +5,8 @@ require 'rubygems/package'
 module YARD
   module Server
     class LibraryVersion
+      attr_accessor :platform
+      
       protected
       
       def load_yardoc_from_disk_on_demand
@@ -38,7 +40,8 @@ module YARD
         end
 
         # Remote gemfile from rubygems.org
-        url = "http://rubygems.org/downloads/#{to_s(false)}.gem"
+        suffix = platform ? "-#{platform}" : ""
+        url = "http://rubygems.org/downloads/#{to_s(false)}#{suffix}.gem"
         log.debug "Searching for remote gem file #{url}"
         Thread.new do
           begin

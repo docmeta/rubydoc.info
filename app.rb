@@ -66,7 +66,12 @@ class DocServer < Sinatra::Base
     opts = adapter_options
     contents.each do |line|
       name, *versions = *line.split(/\s+/)
-      opts[:libraries][name] = versions.map {|v| LibraryVersion.new(name, v, nil, :remote_gem) }
+      opts[:libraries][name] = versions.map do |v|
+        ver, platform = *v.split(',')
+        lib = LibraryVersion.new(name, ver, nil, :remote_gem)
+        lib.platform = platform
+        lib
+      end
     end
     opts[:options][:router] = GemsRouter
     set :gems_adapter, RackAdapter.new(*opts.values)
