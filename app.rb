@@ -178,10 +178,6 @@ class DocServer < Sinatra::Base
   end
   
   helpers do
-    def save_index
-      session["default_index"] = request.path
-    end
-    
     def recent_store
       @@recent_store ||= RecentStore.new(20)
     end
@@ -214,14 +210,6 @@ class DocServer < Sinatra::Base
 
     def shorten_commit_link(commit)
       commit.slice(0..5)
-    end
-  end
-  
-  # Filters
-  
-  before do
-    if request.path == '/' && index = session['default_index']
-      request.path_info = index
     end
   end
   
@@ -271,7 +259,6 @@ class DocServer < Sinatra::Base
   
   get %r{^/github(?:/([a-z])?)?$} do |letter|
     if letter.nil?
-      save_index
       @adapter = options.scm_adapter
       @libraries = recent_store
       cache erb(:home)
@@ -285,7 +272,6 @@ class DocServer < Sinatra::Base
   end
   
   get %r{^/gems(?:/([a-z])?)?$} do |letter|
-    save_index if letter.nil?
     self.class.load_gems_adapter unless defined? options.gems_adapter
     @letter = letter || 'a'
     @adapter = options.gems_adapter
@@ -320,7 +306,6 @@ class DocServer < Sinatra::Base
   end
   
   get %r{^/stdlib/?$} do
-    save_index
     @stdlib = options.stdlib_adapter.libraries
     cache erb(:stdlib_index)
   end
@@ -389,7 +374,6 @@ class DocServer < Sinatra::Base
   # Root URL redirection
   
   get '/' do
-    save_index
     @adapter = options.scm_adapter
     @libraries = recent_store
     @featured = options.featured_adapter.libraries if defined? options.featured_adapter
