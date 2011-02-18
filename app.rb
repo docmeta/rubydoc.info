@@ -146,7 +146,6 @@ class DocServer < Sinatra::Base
   use Rack::Deflater
   use Rack::ConditionalGet
   use Rack::Head
-  use Rack::Session::Cookie, :expire_after => 999999
 
   enable :static
   enable :dump_errors
