@@ -76,6 +76,12 @@
           $(this).find('img').attr('src', '/images/loading.gif');
         });
       }
+      
+      function saveIndex(url) {
+        var date = new Date();
+        date.setDate(date.getDate() + (url == '' ? -999 : 99999));
+        document.cookie = "defaultIndex=" + escape(url) + ";expires=" + date.toUTCString();
+      }
 
       $(framesLinks);
       $(searchClick);

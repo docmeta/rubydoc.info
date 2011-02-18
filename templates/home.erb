@@ -1,3 +1,27 @@
+<script type="text/javascript" charset="utf-8">
+  $(function() {
+    if (document.referrer) {
+      var refurl = document.referrer;
+      var re = new RegExp("^" + window.location.protocol + "//" + window.location.host + "/");
+      if (refurl.match(re)) {
+        saveIndex('');
+        return;
+      }
+    }
+    
+    var list = document.cookie.split(/\s*;\s*/);
+    for (var i = 0; i < list.length; i++) {
+      var key = list[i].split('=', 1)[0];
+      if (key == 'defaultIndex') {
+        var name = list[i].substr(key.length + 1);
+        window.location = '/' + name;
+        saveIndex('');
+        return;
+      }
+    }
+  });
+</script>
+
 <div id="content">
   <ul id="nav">
     <li><a href="/featured">Featured</a></li>
