@@ -1,5 +1,6 @@
 #!/bin/env ruby
 require 'rubygems'
+require 'init'
 
 class GemVersion
   attr_accessor :name, :version, :platform
@@ -28,7 +29,7 @@ Gem::SpecFetcher.fetcher.list(true).values.flatten(1).each do |info|
   (libs[info[0]] ||= []) << GemVersion.new(*info)
 end
 
-File.open(File.join(File.dirname(__FILE__), '..', 'remote_gems'), 'w') do |file|
+File.open(REMOTE_GEMS_FILE, 'w') do |file|
   libs.each do |k, v|
     file.puts("#{k} #{pick_best_versions(v).join(' ')}")
   end

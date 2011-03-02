@@ -60,7 +60,7 @@ class DocServer < Sinatra::Base
   end
 
   def self.load_gems_adapter
-    remote_file = File.dirname(__FILE__) + "/remote_gems"
+    remote_file = REMOTE_GEMS_FILE
     contents = File.readlines(remote_file)
     puts ">> Loading remote gems list..."
     opts = adapter_options
@@ -95,10 +95,10 @@ class DocServer < Sinatra::Base
   end
   
   def self.load_featured_adapter
-    featured_file = File.dirname(__FILE__) + "/featured.yaml"
+    raise Errno::ENOENT unless defined?(settings.featured)
     opts = adapter_options
     opts[:options][:router] = FeaturedRouter
-    YAML.load_file(featured_file).each do |key, value|
+    settings.featured.each do |key, value|
       opts[:libraries][key] = case value
       when String
         [LibraryVersion.new(key, nil, find_featured_yardoc(key, value))]
@@ -111,7 +111,7 @@ class DocServer < Sinatra::Base
     end
     set :featured_adapter, RackAdapter.new(*opts.values)
   rescue Errno::ENOENT
-    log.error "No featured.yaml file to load remote gems from, not serving featured docs."
+    log.error "No featured section in config.yaml, not serving featured docs."
   end
 
   
@@ -169,7 +169,7 @@ class DocServer < Sinatra::Base
   
   configure do
     load_configuration
-    #load_gems_adapter
+    load_gems_adapter
     load_scm_adapter
     load_featured_adapter
     load_stdlib_adapter
@@ -271,7 +271,6 @@ class DocServer < Sinatra::Base
   end
   
   get %r{^/gems(?:/([a-z])?)?$} do |letter|
-    self.class.load_gems_adapter unless defined? options.gems_adapter
     @letter = letter || 'a'
     @adapter = options.gems_adapter
     @libraries = @adapter.libraries.find_all {|k, v| k[0].downcase == @letter }
@@ -287,7 +286,6 @@ class DocServer < Sinatra::Base
 
   get %r{^/(?:(?:search|list)/)?gems/([^/]+)} do |gemname|
     return status(503) && "Cannot parse this gem" if DISALLOWED_GEMS.include?(gemname)
-    self.class.load_gems_adapter unless defined? options.gems_adapter
     @gemname = gemname
     result = options.gems_adapter.call(env)
     return status(404) && erb(:gems_404) if result.first == 404

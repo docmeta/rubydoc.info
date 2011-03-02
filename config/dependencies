@@ -1,0 +1,6 @@
+# comment out a line to ignore
+sinatra
+sequel
+sqlite3
+rack_hoptoad
+yard

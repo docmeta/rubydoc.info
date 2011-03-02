@@ -3,11 +3,12 @@ doc
 .*.swp
 .yardoc
 .rvmrc
-config.yaml
-featured.yaml
+config/config.yaml
 tmp
 repos
-remote_gems
+data
+yard
+log
 recent.sqlite
 sinatra.log
 public/docs

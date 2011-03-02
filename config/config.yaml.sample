@@ -26,3 +26,19 @@
 # To display a sponsor link / image, uncomment the following line and add an
 # image named #{sponsor-site.com}.png to the public/images/sponsor directory.
 # sponsor: linode.com
+
+# To add a "Featured" section to the site with a set of statically generated
+# YARD documentation directories, add your own projects below followed by the 
+# path to the library root relative to repos/featured. You can also use an 
+# absolute path.
+#
+# featured:
+#   yard: yard
+#   ruby: /path/to/ruby_core
+#
+# You can also add libraries by version:
+#
+# featured:
+#   yard:
+#     0.6.4: /path/to/yard/0.6.4
+#     0.6.0: /path/to/yard/0.6.0

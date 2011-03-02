@@ -1,9 +1,0 @@
-# Add your own projects below followed by the path to the library root
-# relative to repos/featured. You can also use an absolute path.
-yard: yard
-ruby: /path/to/ruby_core
-
-# You can also add libraries by version:
-yard:
-  0.6.0: /path/to/yard/0.6.0
-  0.5.8: /path/to/yard/0.5.8

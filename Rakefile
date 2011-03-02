@@ -2,10 +2,17 @@ $:.unshift(File.dirname(__FILE__))
 $:.unshift(File.dirname(__FILE__) + '/lib')
 $:.unshift(File.dirname(__FILE__) + '/yard/lib')
 require 'yard'
+require 'init'
 
 task :default => 'gems:update'
 
 namespace :server do
+  desc 'Setup the server (load dependencies, check configs)'
+  task :setup do
+    
+    load('scripts/setup.rb')
+  end
+  
   desc 'Start the server'
   task :start do
     sh "unicorn -E production -D -c unicorn.conf.rb"
