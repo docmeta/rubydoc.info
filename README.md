@@ -18,8 +18,8 @@ enhancements are welcome.
 Running the doc server locally is easy:
 
 * git clone git://github.com/lsegal/rubydoc.info && cd rubydoc.info
-* rake gems:update (to retrieve the latest list of published gems)
-* git clone git://github.com/lsegal/yard yard
+* rake server:setup
+* git clone git://github.com/lsegal/yard yard (optional)
 * rackup config.ru
 
 Contributors
