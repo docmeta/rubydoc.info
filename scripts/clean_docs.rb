@@ -1,9 +1,4 @@
-$:.unshift(File.dirname(__FILE__))
-$:.unshift(File.dirname(__FILE__) + '/lib')
-$:.unshift(File.dirname(__FILE__) + '/yard/lib')
-
-require 'yard'
-require 'init'
+require_relative '../init'
 
 MAX_DOCS_PER_PROJECT = 4
 

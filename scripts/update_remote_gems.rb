@@ -1,6 +1,6 @@
 #!/bin/env ruby
 require 'rubygems'
-require 'init'
+require_relative '../init'
 
 class GemVersion
   attr_accessor :name, :version, :platform

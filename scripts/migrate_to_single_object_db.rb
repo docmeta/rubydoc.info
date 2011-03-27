@@ -1,12 +1,6 @@
 #!/usr/bin/env ruby
 # Migrates .yardocs to --single-db
-$:.unshift(File.dirname(__FILE__) + '/../')
-$:.unshift(File.dirname(__FILE__) + '/../lib')
-$:.unshift(File.expand_path(File.dirname(__FILE__) + '/../yard/lib'))
-
-require 'yard'
-require 'init'
-
+require_relative '../init'
 include YARD
 
 [File.join(REPOS_PATH, '*', '*', '*'), File.join(REMOTE_GEMS_PATH, '*', '*', '*')].each do |dir|

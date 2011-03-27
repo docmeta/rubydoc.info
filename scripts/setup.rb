@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'init'
+require_relative '../init'
 require 'rubygems/dependency_installer'
 puts ">> Running initial setup for site..."
 deps = File.readlines(DEPS_FILE).reject {|l| l =~ /^\s*#/ }.map(&:strip)

@@ -1,8 +1,4 @@
-$:.unshift(File.dirname(__FILE__))
-$:.unshift(File.dirname(__FILE__) + '/lib')
-$:.unshift(File.dirname(__FILE__) + '/yard/lib')
-require 'yard'
-require 'init'
+require_relative 'init'
 
 task :default => 'gems:update'
 
