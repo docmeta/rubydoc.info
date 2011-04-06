@@ -37,6 +37,7 @@ class DocServer < Sinatra::Base
     puts ">> Loading #{CONFIG_FILE}"
     YAML.load_file(CONFIG_FILE).each do |key, value|
       set key, value
+      the_options[key.to_sym] = value
       $DISQUS = value if key == 'disqus' # HACK for DISQUS setting
       $CLICKY = value if key == 'clicky' # Hack for Clicky setting
       $GOOGLE_ANALYTICS = value if key == 'google_analytics' # Hack for GA settings
@@ -91,10 +92,10 @@ class DocServer < Sinatra::Base
   end
   
   def self.load_featured_adapter
-    raise Errno::ENOENT unless defined?(settings.featured)
+    raise unless the_options.has_key?(:featured)
     opts = adapter_options
     opts[:options][:router] = FeaturedRouter
-    settings.featured.each do |key, value|
+    the_options[:featured].each do |key, value|
       opts[:libraries][key] = case value
       when String
         [LibraryVersion.new(key, nil, find_featured_yardoc(key, value))]
@@ -108,6 +109,7 @@ class DocServer < Sinatra::Base
     set :featured_adapter, RackAdapter.new(*opts.values)
   rescue Errno::ENOENT
     log.error "No featured section in config.yaml, not serving featured docs."
+    set :featured_adapter, nil
   end
 
   
@@ -138,6 +140,9 @@ class DocServer < Sinatra::Base
   def self.post_all(*args, &block)
     args.each {|arg| post(arg, &block) }
   end
+
+  class << self; attr_accessor :the_options end
+  @the_options = {}
 
   use Rack::Deflater
   use Rack::ConditionalGet

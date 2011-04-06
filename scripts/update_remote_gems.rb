@@ -39,7 +39,7 @@ end
 File.open(REMOTE_GEMS_FILE, 'w') do |file|
   libs.each do |k, v|
     line = pick_best_versions(v).join(' ')
-    changed_gems.delete(k) if changed_gems[k].strip == line.strip
+    changed_gems.delete(k) if changed_gems[k] && changed_gems[k].strip == line.strip
     file.puts("#{k} #{line}")
   end
 end
@@ -47,7 +47,7 @@ end
 # Clear cache for gem frames page with new gems
 changed_gems.keys.each do |gem|
   file = File.join(STATIC_PATH, 'gems', gem, 'frames.html')
-  `rm #{file}` if File.file?(file)
+  system "rm #{file}" if File.file?(file)
 end
 
 if changed_gems.size > 0
