@@ -8,7 +8,7 @@ class SourceCleaner
   def clean
     yardopts = File.join(basepath, '.yardopts')
     exclude = ['.yardoc', '.yardopts', '.git']
-    exclude += Dir.glob(File.join(basepath, 'README*')).map {|f| f.sub(/^#{basepath}\//, '') }
+    exclude += Dir.glob(File.join(basepath, 'README*')).map {|f| remove_basepath(f) }
     if File.file?(yardopts)
       yardoc = YARD::CLI::Yardoc.new
       class << yardoc
@@ -22,14 +22,30 @@ class SourceCleaner
       yardoc.basepath = basepath
       yardoc.options_file = yardopts
       yardoc.parse_arguments
+
       exclude += yardoc.options[:files]
       exclude += yardoc.assets.keys
     end
-    
+
+    # make sure to keep relevant symlink targets
+    link_exclude = exclude.inject(Array.new) do |lx, filespec|
+      Dir.glob(File.join(basepath, filespec)) do |file|
+        if File.symlink?(file)
+          ep = remove_basepath(File.realpath(file, basepath))
+          log.debug "Not deleting #{ep} (linked by #{file})"
+          lx << ep
+        end
+      end
+
+      lx
+    end
+
+    exclude += link_exclude
+
     # delete all source files minus excluded ones
     files = Dir.glob(basepath + '/**/**') + 
             Dir.glob(basepath + '/.*')
-    files = files.map {|f| f.sub(/^#{basepath}\//, '') }
+    files = files.map {|f| remove_basepath(f) }
     files -= ['.', '..']
     files = files.sort_by {|f| f.length }.reverse
     files.each do |file|
@@ -45,5 +61,11 @@ class SourceCleaner
       rescue Errno::ENOTEMPTY, Errno::ENOENT, Errno::ENOTDIR
       end
     end
+  end
+
+  private
+
+  def remove_basepath(p)
+    p.sub(/^#{basepath}\//, '')
   end
 end
