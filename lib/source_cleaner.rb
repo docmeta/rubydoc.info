@@ -66,6 +66,6 @@ class SourceCleaner
   private
 
   def remove_basepath(p)
-    p.sub(/^#{basepath}\//, '')
+    p.sub(/^(#{File.realpath(basepath)}|#{basepath})\//, '')
   end
 end
