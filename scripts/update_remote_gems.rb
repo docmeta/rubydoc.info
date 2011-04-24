@@ -34,7 +34,7 @@ changed_gems = {}
 File.readlines(REMOTE_GEMS_FILE).each do |line|
   name, rest = line.split(/\s+/, 2)
   changed_gems[name] = rest
-end
+end if File.exist?(REMOTE_GEMS_FILE)
 
 File.open(REMOTE_GEMS_FILE, 'w') do |file|
   libs.each do |k, v|
