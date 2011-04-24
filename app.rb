@@ -92,7 +92,7 @@ class DocServer < Sinatra::Base
   end
   
   def self.load_featured_adapter
-    raise unless the_options.has_key?(:featured)
+    raise(Errno::ENOENT) unless the_options.has_key?(:featured)
     opts = adapter_options
     opts[:options][:router] = FeaturedRouter
     the_options[:featured].each do |key, value|
