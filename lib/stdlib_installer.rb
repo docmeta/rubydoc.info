@@ -23,11 +23,11 @@ class StdlibInstaller
     puts "Installing core libraries"
     FileUtils.mkdir_p(repo_path('core'))
     dstpath = repo_path('core')
-    ['*.c', 'README', 'README.EXT', 'LEGAL'].each do |file|
+    ['*.c', '*.y', 'README', 'README.EXT', 'LEGAL'].each do |file|
       FileUtils.cp(Dir.glob(File.join(path, file)), dstpath)
     end
     File.open(File.join(dstpath, '.yardopts'), 'w') do |file|
-      file.puts '*.c - README.EXT LEGAL'
+      file.puts '*.c *.y - README.EXT LEGAL'
     end
   end
   
