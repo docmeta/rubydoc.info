@@ -3,7 +3,7 @@ require 'sinatra'
 require 'json'
 require 'yaml'
 require 'fileutils'
-require 'rack/hoptoad'
+require 'hoptoad_notifier'
 
 require 'init'
 require 'extensions'
@@ -13,6 +13,9 @@ require 'gems_router'
 require 'featured_router'
 require 'stdlib_router'
 require 'recent_store'
+
+class Hash; alias blank? empty? end
+class NilClass; def blank?; true end end
 
 class DocServer < Sinatra::Base
   include YARD::Server
@@ -184,8 +187,18 @@ class DocServer < Sinatra::Base
 
     def notify_error
       if options.hoptoad && %w(staging production).include?(ENV['RACK_ENV'])
-        @hoptoad_notifier ||= Rack::Hoptoad.new(self, options.hoptoad)
-        @hoptoad_notifier.send(:send_notification, request.env['sinatra.error'], request.env)
+        HoptoadNotifier.configure do |config|
+          config.api_key = options.hoptoad
+          config.secure = true
+        end unless @hoptoad_configured
+        @hoptoad_configured = true
+        exc = request.env['sinatra.error']
+        HoptoadNotifier.notify exc,
+          error_message: exc.message,
+          request: request,
+          environment: request.env,
+          session: request.session,
+          backtrace: caller
       end
       erb(:error)
     end

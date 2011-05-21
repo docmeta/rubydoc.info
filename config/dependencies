@@ -2,5 +2,5 @@
 sinatra
 sequel
 sqlite3
-rack_hoptoad
+hoptoad_notifier
 yard
