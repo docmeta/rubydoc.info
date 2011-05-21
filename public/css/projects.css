@@ -17,6 +17,7 @@ a { outline: none; }
 .libraries ul { padding-bottom: 10px; background: transparent; }
 .libraries li:hover { background: #eef; }
 .libraries li.alternate, .libraries li.alternate:hover { background: transparent; }
+.libraries li.alternate_fork img { position: relative; top: -3px; }
 .libraries li a:hover { background: transparent; color: #3ae; }
 .libraries li.core > a:first-child { font-weight: bold; }
 
