@@ -99,7 +99,10 @@ module YARD
     class Yardoc
       def yardopts
         list = IO.read(options_file).shell_split
-        list.map {|a| %w(-e --load -c --use-cache --db -b --query -r --readme).include?(a) ? '-o' : a }
+        idx = list.index('--readme') || list.index('-r')
+        readme_file = File.join(File.dirname(options_file), list[idx+1])
+        list[idx+1] = readme_file
+        list.map {|a| %w(-e --load -c --use-cache --db -b --query).include?(a) ? '-o' : a }
       rescue Errno::ENOENT
         []
       end

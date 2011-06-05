@@ -1,10 +1,10 @@
 class SourceCleaner
   attr_accessor :basepath
-  
+
   def initialize(basepath)
     self.basepath = basepath
   end
-  
+
   def clean
     yardopts = File.join(basepath, '.yardopts')
     exclude = ['.yardoc', '.yardopts', '.git']
@@ -29,6 +29,7 @@ class SourceCleaner
 
     # make sure to keep relevant symlink targets
     link_exclude = exclude.inject(Array.new) do |lx, filespec|
+      filespec = filespec.filename if filespec.respond_to?(:filename)
       Dir.glob(File.join(basepath, filespec)) do |file|
         if File.symlink?(file)
           ep = remove_basepath(File.realpath(file, basepath))
