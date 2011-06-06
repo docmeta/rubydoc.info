@@ -42,7 +42,7 @@ namespace :docs do
 end
 
 namespace :repos do
-  desc 'Cleana up the cached gem sources and repositories'
+  desc 'Clean up the cached gem sources and repositories'
   task :clean do
     puts ">> Removing cached gem sources and repositories"
     load('scripts/clean_repos.rb')
