@@ -1,3 +1,5 @@
+require 'init'
+
 require 'yard'
 require 'sinatra'
 require 'json'
@@ -5,7 +7,6 @@ require 'yaml'
 require 'fileutils'
 require 'hoptoad_notifier'
 
-require 'init'
 require 'extensions'
 require 'scm_router'
 require 'scm_checkout'
