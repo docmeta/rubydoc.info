@@ -45,9 +45,12 @@ File.open(REMOTE_GEMS_FILE, 'w') do |file|
 end
 
 # Clear cache for gem frames page with new gems
+# TODO: improve this cache invalidation to be version specific
 changed_gems.keys.each do |gem|
-  file = File.join(STATIC_PATH, 'gems', gem, 'frames.html')
-  system "rm #{file}" if File.file?(file)
+  paths = [File.join(STATIC_PATH, 'gems', gem), File.join(STATIC_PATH, 'list', 'gems', gem)]
+  paths.each do |path|
+    system "rm -rf #{path}" if File.directory?(path)
+  end
 end
 
 if changed_gems.size > 0
