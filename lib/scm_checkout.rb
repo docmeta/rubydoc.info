@@ -133,7 +133,7 @@ class GithubCheckout < ScmCheckout
   end
   
   def remove_project
-    cmd = "rmdir #{options.repos}/#{project}/#{username} #{options.repos}/#{project}"
+    cmd = "rm -rf #{options.repos}/#{project}/#{username} #{options.repos}/#{project}"
     sh(cmd, "Removing #{name}", false)
   end
 
