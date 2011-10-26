@@ -16,14 +16,17 @@ class SourceCleaner
         def basepath; @basepath end
         def add_extra_files(*files)
           files.map! {|f| f.include?("*") ? Dir.glob(File.join(basepath, f)) : f }.flatten!
-          files.each {|f| options[:files] << f.sub(/^#{basepath}\//, '') }
+          files.each do |f|
+            filename = f.sub(/^#{File.realpath(basepath)}\/*/, '')
+            options[:files] << YARD::CodeObjects::ExtraFileObject.new(filename, '')
+          end
         end
       end
       yardoc.basepath = basepath
       yardoc.options_file = yardopts
       yardoc.parse_arguments
 
-      exclude += yardoc.options[:files]
+      exclude += yardoc.options[:files].map {|f| f.filename }
       exclude += yardoc.assets.keys
     end
 
