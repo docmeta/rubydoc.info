@@ -1,13 +1,14 @@
 $:.unshift(File.dirname(__FILE__) + '/../lib')
 require 'scm_checkout'
+require 'ostruct'
 
 describe GithubCheckout do
   before do
-    @options = OpenStruct.new(:options => OpenStruct.new(:repos => 'x'))
+    @settings = OpenStruct.new(:settings => OpenStruct.new(:repos => 'x'))
   end
     
   def git(url, commit = nil)
-    @git = GithubCheckout.new(@options, url, commit)
+    @git = GithubCheckout.new(@settings, url, commit)
   end
   
   describe '#initialize' do
@@ -33,7 +34,7 @@ describe GithubCheckout do
     end
     
     it "should sanitize SHA-1 commit" do
-      @git = GithubCheckout.new(@options, "git://github.com/lsegal/yard", "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3")
+      @git = GithubCheckout.new(@settings, "git://github.com/lsegal/yard", "a94a8fe5ccb19ba61c4c0873d391e987982fbbd3")
       @git.commit.should == "a94a8f"
     end
     
@@ -45,7 +46,7 @@ describe GithubCheckout do
     it "should throw InvalidSchemeError on non github URL" do
       %w( http:// git:// sgdfhij gi://github.com/lsegal/yard git://github.com 
         git://github.com/lsegal/ ).each do |url|
-          lambda { GithubCheckout.new(@options, url) }.should raise_error(InvalidSchemeError)
+          lambda { GithubCheckout.new(@settings, url) }.should raise_error(InvalidSchemeError)
       end
     end
   end
