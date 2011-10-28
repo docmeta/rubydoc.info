@@ -5,7 +5,7 @@ require 'sinatra'
 require 'json'
 require 'yaml'
 require 'fileutils'
-require 'hoptoad_notifier'
+require 'airbrake'
 
 require 'extensions'
 require 'scm_router'
@@ -20,7 +20,7 @@ class NilClass; def blank?; true end end
 
 class DocServer < Sinatra::Base
   include YARD::Server
-  
+
   DISALLOWED_GEMS = %w(netsuite_client)
 
   def self.adapter_options
@@ -187,14 +187,14 @@ class DocServer < Sinatra::Base
     end
 
     def notify_error
-      if options.hoptoad && %w(staging production).include?(ENV['RACK_ENV'])
-        HoptoadNotifier.configure do |config|
-          config.api_key = options.hoptoad
+      if settings.airbrake && %w(staging production).include?(ENV['RACK_ENV'])
+        Airbrake.configure do |config|
+          config.api_key = settings.airbrake
           config.secure = true
-        end unless @hoptoad_configured
-        @hoptoad_configured = true
+        end unless @airbrake_configured
+        @airbrake_configured = true
         exc = request.env['sinatra.error']
-        HoptoadNotifier.notify exc,
+        Airbrake.notify exc,
           error_message: exc.message,
           request: request,
           environment: request.env,
@@ -205,10 +205,10 @@ class DocServer < Sinatra::Base
     end
     
     def cache(output)
-      return output if options.caching != true
+      return output if settings.caching != true
       path = request.path.gsub(%r{^/|/$}, '')
       path = 'index' if path == ''
-      path = File.join(options.public_folder, path + '.html')
+      path = File.join(settings.public_folder, path + '.html')
       FileUtils.mkdir_p(File.dirname(path))
       File.open(path, "w") {|f| f.write(output) }
       output
@@ -253,7 +253,7 @@ class DocServer < Sinatra::Base
 
   get '/checkout/:username/:project/:commit' do
     git = GithubCheckout.new(self, [params[:username], params[:project]], params[:commit])
-    if libs = options.scm_adapter.libraries[git.name]
+    if libs = settings.scm_adapter.libraries[git.name]
       if lib = libs.find {|l| l.version == git.commit }
         return "NO" unless File.exist?(File.join(lib.source_path, '.yardoc', 'complete'))
         return "YES" 
@@ -273,12 +273,12 @@ class DocServer < Sinatra::Base
   
   get %r{^/github(?:/([a-z])?)?$} do |letter|
     if letter.nil?
-      @adapter = options.scm_adapter
+      @adapter = settings.scm_adapter
       @libraries = recent_store
       cache erb(:home)
     else
       @letter = letter
-      @adapter = options.scm_adapter
+      @adapter = settings.scm_adapter
       @libraries = @adapter.libraries
       @sorted_libraries = @libraries.sorted_by_project(@letter)
       cache erb(:scm_index)
@@ -287,14 +287,14 @@ class DocServer < Sinatra::Base
   
   get %r{^/gems(?:/([a-z])?)?$} do |letter|
     @letter = letter || 'a'
-    @adapter = options.gems_adapter
+    @adapter = settings.gems_adapter
     @libraries = @adapter.libraries.find_all {|k, v| k[0].downcase == @letter }
     cache erb(:gems_index)
   end
   
   get %r{^/(?:(?:search|list)/)?github/([^/]+)/([^/]+)} do |username, project|
     @username, @project = username, project
-    result = options.scm_adapter.call(env)
+    result = settings.scm_adapter.call(env)
     return status(404) && erb(:scm_404) if result.first == 404
     result
   end
@@ -302,7 +302,7 @@ class DocServer < Sinatra::Base
   get %r{^/(?:(?:search|list)/)?gems/([^/]+)} do |gemname|
     return status(503) && "Cannot parse this gem" if DISALLOWED_GEMS.include?(gemname)
     @gemname = gemname
-    result = options.gems_adapter.call(env)
+    result = settings.gems_adapter.call(env)
     return status(404) && erb(:gems_404) if result.first == 404
     result
   end
@@ -311,14 +311,14 @@ class DocServer < Sinatra::Base
    
   get %r{^/(?:(?:search|list)/)?stdlib/([^/]+)} do |libname|
     @libname = libname
-    pass unless options.stdlib_adapter.libraries[libname]
-    result = options.stdlib_adapter.call(env)
+    pass unless settings.stdlib_adapter.libraries[libname]
+    result = settings.stdlib_adapter.call(env)
     return status(404) && erb(:stdlib_404) if result.first == 404
     result
   end
   
   get %r{^/stdlib/?$} do
-    @stdlib = options.stdlib_adapter.libraries
+    @stdlib = settings.stdlib_adapter.libraries
     cache erb(:stdlib_index)
   end
 
@@ -326,14 +326,14 @@ class DocServer < Sinatra::Base
   
   get %r{^/(?:(?:search|list)/)?docs/([^/]+)} do |libname|
     @libname = libname
-    pass unless options.featured_adapter.libraries[libname]
-    result = options.featured_adapter.call(env)
+    pass unless settings.featured_adapter.libraries[libname]
+    result = settings.featured_adapter.call(env)
     return status(404) && erb(:featured_404) if result.first == 404
     result
   end
   
   get %r{^/(featured|docs/?$)} do
-    @featured = options.featured_adapter.libraries
+    @featured = settings.featured_adapter.libraries
     cache erb(:featured_index)
   end
 
@@ -341,16 +341,16 @@ class DocServer < Sinatra::Base
 
   get %r{^/find/github} do
     @search = params[:q]
-    @adapter = options.scm_adapter
+    @adapter = settings.scm_adapter
     @libraries = @adapter.libraries
     @sorted_libraries = @libraries.sorted_by_project("*#{@search}")
     erb(:scm_index)
   end
 
   get %r{^/find/gems} do
-    self.class.load_gems_adapter unless defined? options.gems_adapter
+    self.class.load_gems_adapter unless defined? settings.gems_adapter
     @search = params[:q]
-    @adapter = options.gems_adapter
+    @adapter = settings.gems_adapter
     @libraries = @adapter.libraries.find_all {|k,v| k.match(/#{@search}/) }
     erb(:gems_index)
   end
@@ -386,17 +386,17 @@ class DocServer < Sinatra::Base
   # Root URL redirection
   
   get '/' do
-    @adapter = options.scm_adapter
+    @adapter = settings.scm_adapter
     @libraries = recent_store
-    @featured = options.featured_adapter.libraries if options.featured_adapter
+    @featured = settings.featured_adapter.libraries if settings.featured_adapter
     cache erb(:home)
   end
   
   error do
     @page_title = "Unknown Error!"
-    @error = "Something quite unexpected just happened. 
-      Thanks to <a href='http://hoptoadapp.com'>Hoptoad</a> we know about the
-      issue, but feel free to email <a href='mailto:lsegal@soen.ca'>someone</a>
+    @error = "Something quite unexpected just happened.
+      Thanks to <a href='http://airbrake.io'>Airbrake</a> we know about the
+      issue, but feel free to email <a href='mailto:support@rdoc.info'>someone</a>
       about it."
     notify_error
   end

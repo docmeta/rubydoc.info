@@ -2,5 +2,6 @@
 sinatra
 sequel
 sqlite3
-hoptoad_notifier
+airbrake
 yard
+rdiscount

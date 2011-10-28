@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title><%= options.name %> - Library Listing</title>
+    <title><%= settings.name %> - Library Listing</title>
     <link rel="stylesheet" href="/css/style.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/css/custom.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/css/projects.css" type="text/css" media="screen" charset="utf-8" />
@@ -108,19 +108,19 @@
         as much as possible, but sometimes it needs to be used. We apologize for any inconvenience and hope you understand.</div>
     </noscript>
     <div id="logo">
-      <h1><a href="/"><%= options.name %></a> <small>YARD Documentation Server</small></h1>
+      <h1><a href="/"><%= settings.name %></a> <small>YARD Documentation Server</small></h1>
     </div>
     <ul id="top_nav">
       <li><a id="new_checkout" href="#">Add Project</a></li>
       <li><a id="about" href="#">About</a></li>
-    <% if defined? options.tender %><li><a id="help" href="#">Help</a></li><% end %>
+    <% if defined? settings.tender %><li><a id="help" href="#">Help</a></li><% end %>
     </ul>
     <a id="help_tender" href="#" style="display:none;"/>
     <div class="clear"></div>
     
     <div id="info">
       <p>
-        <strong><%= options.name %></strong> is your source for open source Ruby library documentation, 
+        <strong><%= settings.name %></strong> is your source for open source Ruby library documentation, 
         generating fresh docs for Gems and popular Git repositories.
       </p>
       <p>
@@ -136,11 +136,11 @@
       <p>
         Looking for a <a href="http://github.com">GitHub</a> 
         <a href="http://help.github.com/post-receive-hooks/">post-receive hook</a>?
-        Use <tt><%= options.url %>/checkout</tt>.
+        Use <tt><%= settings.url %>/checkout</tt>.
       </p>
       <p>
         <small>
-          <%= options.name %> was made possible by <strong>Loren Segal</strong> and <strong>Nick Plante</strong>, with help from a <a href="http://groups.google.com/group/yardoc">community</a> of <a href="http://github.com/lsegal/rubydoc.info">friendly contributors</a>.
+          <%= settings.name %> was made possible by <strong>Loren Segal</strong> and <strong>Nick Plante</strong>, with help from a <a href="http://groups.google.com/group/yardoc">community</a> of <a href="http://github.com/lsegal/rubydoc.info">friendly contributors</a>.
         </small>
       </p>
     </div>
@@ -149,38 +149,38 @@
     <%= yield %>
 
     <div id="footer">
-      <a href="http://github.com/lsegal/rubydoc.info"><%= options.name %></a> is powered by <a href="http://yardoc.org/">yard</a> <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>)
-      <% if defined? options.sponsor %>
+      <a href="http://github.com/lsegal/rubydoc.info"><%= settings.name %></a> is powered by <a href="http://yardoc.org/">yard</a> <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>)
+      <% if defined? settings.sponsor %>
         <div class="sponsor">
-          <a href="http://<%= options.sponsor %>"><img src="/images/sponsor/<%= options.sponsor %>.png" alt="sponsored by <%= options.sponsor %>"/></a>
+          <a href="http://<%= settings.sponsor %>"><img src="/images/sponsor/<%= settings.sponsor %>.png" alt="sponsored by <%= settings.sponsor %>"/></a>
         </div>
       <% end %>
     </div>
-    <% if defined? options.tender %>
+    <% if defined? settings.tender %>
       <script type="text/javascript" charset="utf-8">
         Tender = {
           hideToggle: true,
           widgetToggles: [document.getElementById('help_tender')]
         }
       </script>
-      <script src="https://<%= options.tender %>.tenderapp.com/tender_widget.js" type="text/javascript"></script>
+      <script src="https://<%= settings.tender %>.tenderapp.com/tender_widget.js" type="text/javascript"></script>
     <% end %>
   </body>
 
-  <% if defined? options.clicky %>
+  <% if defined? settings.clicky %>
     <script src="http://static.getclicky.com/js" type="text/javascript"></script>
-    <script type="text/javascript">clicky.init(<%= options.clicky %>);</script>
-    <noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/<%= options.clicky %>ns.gif" /></p></noscript>
+    <script type="text/javascript">clicky.init(<%= settings.clicky %>);</script>
+    <noscript><p><img alt="Clicky" width="1" height="1" src="http://static.getclicky.com/<%= settings.clicky %>ns.gif" /></p></noscript>
   <% end %>
 
-  <% if defined? options.google_analytics %>
+  <% if defined? settings.google_analytics %>
     <script type='text/javascript'>
       var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
       document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
     </script>
     <script type='text/javascript'>
       try {
-      var pageTracker = _gat._getTracker("<%= options.google_analytics %>");
+      var pageTracker = _gat._getTracker("<%= settings.google_analytics %>");
       pageTracker._trackPageview();
       } catch(err) {}
     </script>

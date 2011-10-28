@@ -6,10 +6,10 @@ require_relative 'source_cleaner'
 class InvalidSchemeError < RuntimeError; end
 
 class ScmCheckout
-  attr_accessor :name, :url, :options, :app, :commit
+  attr_accessor :name, :url, :settings, :app, :commit
   
   def initialize(app, url, commit = nil)
-    self.options = app.options
+    self.settings = app.settings
     self.app = app
     self.url = url
     self.commit = commit
@@ -22,7 +22,7 @@ class ScmCheckout
   def register_project
     puts "#{Time.now}: Registering project #{name}"
     ready_project
-    app.recent_store.push(options.scm_adapter.libraries[name])
+    app.recent_store.push(settings.scm_adapter.libraries[name])
     puts "#{Time.now}: Adding #{name} to recent projects list"
   end
   
@@ -41,14 +41,14 @@ class ScmCheckout
   end
   
   def repository_path
-    File.join(options.repos, name, commit)
+    File.join(settings.repos, name, commit)
   end
   
   def flush_cache
     files = ["github.html", "github/#{project[0,1]}.html", 
       "github/#{name}.html", "github/#{name}", "list/github/#{name}", 
       "index.html", ".html"]
-    rm_cmd = "rm -rf #{files.map {|f| File.join(options.public_folder, f) }.join(' ')}"
+    rm_cmd = "rm -rf #{files.map {|f| File.join(settings.public_folder, f) }.join(' ')}"
     sh(rm_cmd, "Flushing cache for #{name}", false)
   end
   
@@ -71,7 +71,7 @@ class ScmCheckout
   
   def error_file
     @error_file ||= 
-      "#{options.tmp}/#{[name.gsub('/', '_'), commit || 'master'].join('_')}.error.txt"
+      "#{settings.tmp}/#{[name.gsub('/', '_'), commit || 'master'].join('_')}.error.txt"
   end
   
   def write_error_file(out)
@@ -129,11 +129,11 @@ class GithubCheckout < ScmCheckout
   end
   
   def repository_path
-    File.join(options.repos, project, username, commit)
+    File.join(settings.repos, project, username, commit)
   end
   
   def remove_project
-    cmd = "rm -rf #{options.repos}/#{project}/#{username} #{options.repos}/#{project}"
+    cmd = "rm -rf #{settings.repos}/#{project}/#{username} #{settings.repos}/#{project}"
     sh(cmd, "Removing #{name}", false)
   end
 
@@ -147,7 +147,7 @@ class GithubCheckout < ScmCheckout
   
   def fork?
     return @is_fork unless @is_fork.nil?
-    if !File.directory?(File.join(options.repos, name))
+    if !File.directory?(File.join(settings.repos, name))
       json = JSON.parse(open("http://github.com/api/v1/json/#{username}").read)
       proj_json = json["user"]["repositories"].find {|s| s["name"] == project }
       @is_fork = proj_json["fork"] if proj_json
@@ -172,8 +172,8 @@ class GithubCheckout < ScmCheckout
       else
         nil
       end
-      ["mkdir -p #{options.repos}/#{project}/#{username}", 
-        "cd #{options.repos}/#{project}/#{username}", 
+      ["mkdir -p #{settings.repos}/#{project}/#{username}", 
+        "cd #{settings.repos}/#{project}/#{username}", 
         "git clone #{url} #{commit}", "cd #{commit}",
         checkout, fork_cmd].compact.join(" && ")
     end

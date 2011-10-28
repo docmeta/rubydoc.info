@@ -1,6 +1,6 @@
 <div id="content" class="scm fof">
   <h1>Oops,</h1>
-  <% if options.scm_adapter.libraries.has_key?(@username + '/' + @project) %>
+  <% if settings.scm_adapter.libraries.has_key?(@username + '/' + @project) %>
     <h2 class="nomargin">We Couldn't Find That Page</h2>
     <p>Sorry, but we couldn't find the page <strong><%= request.path %></strong> in the <strong><%= @username %>/<%= @project %></strong> Github repository. Are you sure that class, method, or file exists?</p>
   <% else %>
