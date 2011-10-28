@@ -190,7 +190,6 @@ class DocServer < Sinatra::Base
       if settings.airbrake && %w(staging production).include?(ENV['RACK_ENV'])
         Airbrake.configure do |config|
           config.api_key = settings.airbrake
-          config.secure = true
         end unless @airbrake_configured
         @airbrake_configured = true
         exc = request.env['sinatra.error']
