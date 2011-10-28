@@ -3,7 +3,10 @@ $:.unshift(File.expand_path(File.dirname(__FILE__) + '/lib'))
 $:.unshift(File.expand_path(File.dirname(__FILE__) + '/yard/lib'))
 $:.unshift(File.expand_path(File.dirname(__FILE__) + '/../yard/lib'))
 
+require 'rubygems'
+require 'bundler/setup'
 require 'yard'
+
 YARD::Server::Adapter.setup
 YARD::Templates::Engine.template_paths.push(File.dirname(__FILE__) + '/templates')
 
