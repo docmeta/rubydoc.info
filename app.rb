@@ -1,4 +1,4 @@
-require 'init'
+require File.join(File.dirname(__FILE__), 'init')
 
 require 'yard'
 require 'sinatra'
@@ -159,7 +159,7 @@ class DocServer < Sinatra::Base
   disable :raise_errors
 
   set :views, TEMPLATES_PATH
-  set :public, STATIC_PATH
+  set :public_folder, STATIC_PATH
   set :repos, REPOS_PATH
   set :tmp, TMP_PATH
 
