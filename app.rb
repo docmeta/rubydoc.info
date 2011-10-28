@@ -208,7 +208,7 @@ class DocServer < Sinatra::Base
       return output if options.caching != true
       path = request.path.gsub(%r{^/|/$}, '')
       path = 'index' if path == ''
-      path = File.join(options.public, path + '.html')
+      path = File.join(options.public_folder, path + '.html')
       FileUtils.mkdir_p(File.dirname(path))
       File.open(path, "w") {|f| f.write(output) }
       output
