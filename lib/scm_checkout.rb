@@ -48,7 +48,7 @@ class ScmCheckout
     files = ["github.html", "github/#{project[0,1]}.html", 
       "github/#{name}.html", "github/#{name}", "list/github/#{name}", 
       "index.html", ".html"]
-    rm_cmd = "rm -rf #{files.map {|f| File.join(options.public, f) }.join(' ')}"
+    rm_cmd = "rm -rf #{files.map {|f| File.join(options.public_folder, f) }.join(' ')}"
     sh(rm_cmd, "Flushing cache for #{name}", false)
   end
   
