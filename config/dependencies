@@ -1,7 +1,0 @@
-# comment out a line to ignore
-sinatra
-sequel
-sqlite3
-airbrake
-yard
-rdiscount

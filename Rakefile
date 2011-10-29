@@ -3,12 +3,6 @@ require_relative 'init'
 task :default => 'gems:update'
 
 namespace :server do
-  desc 'Setup the server (load dependencies, check configs)'
-  task :setup do
-    
-    load('scripts/setup.rb')
-  end
-  
   desc 'Start the server'
   task :start do
     sh "unicorn -E production -D -c unicorn.conf.rb"
