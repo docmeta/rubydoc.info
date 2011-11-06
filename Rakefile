@@ -52,9 +52,9 @@ namespace :cache do
 end
 
 namespace :stdlib do
-  desc 'Installs a standard library PATH=pathtolib VERSION=targetversion' 
+  desc 'Installs a standard library SOURCE=pathtolib VERSION=targetversion' 
   task :install do
     require 'stdlib_installer'
-    StdlibInstaller.new(ENV['PATH'], ENV['VERSION']).install
+    StdlibInstaller.new(ENV['SOURCE'], ENV['VERSION']).install
   end
 end
