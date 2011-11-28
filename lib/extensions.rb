@@ -76,7 +76,7 @@ module YARD
       private
 
       def generate_yardoc
-        `cd #{source_path} && yardoc -n -q && touch .yardoc/complete`
+        `cd #{source_path} && bundle exec yardoc -n -q && touch .yardoc/complete`
       end
 
       def expand_gem(io)
