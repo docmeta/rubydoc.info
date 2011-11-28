@@ -15,6 +15,7 @@ gem 'syntax'
 gem 'json'
 gem 'rake'
 gem 'yard'
+gem 'yard-rails'
 gem 'i18n'
 
 group :test do
