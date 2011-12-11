@@ -1,3 +1,8 @@
+PATH
+  remote: ../yard
+  specs:
+    yard (0.7.4)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -44,7 +49,8 @@ GEM
       kgio (~> 2.4)
       rack
       raindrops (~> 0.6)
-    yard (0.7.3)
+    yard-rails (0.2.0)
+      yard
 
 PLATFORMS
   ruby
@@ -67,4 +73,5 @@ DEPENDENCIES
   sqlite3
   syntax
   unicorn
-  yard
+  yard!
+  yard-rails
