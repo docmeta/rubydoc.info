@@ -182,6 +182,8 @@ class DocServer < Sinatra::Base
   end
   
   helpers do
+    include YARD::Templates::Helpers::HtmlHelper
+    
     def recent_store
       @@recent_store ||= RecentStore.new(20)
     end
@@ -350,7 +352,7 @@ class DocServer < Sinatra::Base
     self.class.load_gems_adapter unless defined? settings.gems_adapter
     @search = params[:q]
     @adapter = settings.gems_adapter
-    @libraries = @adapter.libraries.find_all {|k,v| k.match(/#{@search}/) }
+    @libraries = @adapter.libraries.find_all {|k,v| k.match(/#{Regexp.quote @search}/) }
     erb(:gems_index)
   end
 

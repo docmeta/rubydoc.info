@@ -18,9 +18,9 @@
     <li><a href="/stdlib">Stdlib</a></li>
     <li class="selected">RubyGems</li>
     <li><a href="/github">Github</a></li>
-    <li class="search"><form action="/find/gems" method="GET"><input type="text" id="docSearch" name="q" value="<%= @search || 'Search Gems' %>"/></form></li>
+    <li class="search"><form action="/find/gems" method="GET"><input type="text" id="docSearch" name="q" value="<%= h @search || 'Search Gems' %>"/></form></li>
   </ul>
-  <h2>RubyGems <%= @search ? 'Search Results' : 'Listing' %> <small>(<a class="framelink" href="#">links without frames</a>)</small></h2>
+  <h2>RubyGems <%= h @search ? 'Search Results' : 'Listing' %> <small>(<a class="framelink" href="#">links without frames</a>)</small></h2>
   <ul class="alpha_index">
     <% (?a..?z).each do |letter| %>
       <% if letter == @letter %>

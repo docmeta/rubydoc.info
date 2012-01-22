@@ -28,7 +28,7 @@
     <li><a href="/stdlib">Stdlib</a></li>
     <li><a href="/gems">RubyGems</a></li>
     <li class="selected">Github</li>
-    <li class="search"><form action="/find/github" method="GET"><input type="text" id="docSearch" name="q" value="<%= @search || 'Search Github Projects' %>"/></form></li>
+    <li class="search"><form action="/find/github" method="GET"><input type="text" id="docSearch" name="q" value="<%= h @search || 'Search Github Projects' %>"/></form></li>
   </ul>
   
   <% if @featured && @featured.size > 0 %>
