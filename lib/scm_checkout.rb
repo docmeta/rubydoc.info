@@ -138,7 +138,7 @@ class GithubCheckout < ScmCheckout
   end
 
   def checkout_command
-    "#{git_checkout_command} && bundle exec yardoc -n -q"
+    "#{git_checkout_command} && yardoc -n -q"
   end
   
   def clear_source_files
