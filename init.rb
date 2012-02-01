@@ -6,6 +6,8 @@ $:.unshift(File.expand_path(File.dirname(__FILE__) + '/../yard/lib'))
 require 'rubygems'
 require 'bundler/setup'
 require 'yard'
+require 'yard-sd'
+require 'yard-rails'
 
 YARD::Server::Adapter.setup
 YARD::Templates::Engine.template_paths.push(File.dirname(__FILE__) + '/templates')
