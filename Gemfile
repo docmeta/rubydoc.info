@@ -16,6 +16,7 @@ gem 'json'
 gem 'rake'
 gem 'yard', :path => '../yard'
 gem 'yard-rails'
+gem 'yard-sd'
 gem 'i18n'
 
 group :test do
