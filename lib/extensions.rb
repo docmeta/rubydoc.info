@@ -4,6 +4,28 @@ require 'rubygems/package'
 
 module YARD
   module Server
+    class DocServerSerializer
+      def initialize(command = nil)
+        @asset_path = File.join('assets', command.library.to_s)
+        super(:basepath => command.adapter.document_root, :extension => '')
+      end
+      
+      def serialized_path(object)
+        if String === object
+          File.join(@asset_path, object) 
+        else
+          super(object)
+        end
+      end
+    end
+    
+    class Commands::LibraryCommand
+      def initialize(opts = {})
+        super
+        self.serializer = DocServerSerializer.new(self)
+      end
+    end
+    
     class LibraryVersion
       attr_accessor :platform
       
