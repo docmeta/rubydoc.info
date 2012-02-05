@@ -9,8 +9,10 @@ class ScmRouter < YARD::Server::Router
     if libs = adapter.libraries[github_proj]
       paths.shift; paths.shift
       if library = libs.find {|l| l.version == paths.first }
+        request.version_supplied = true if request
         paths.shift
       else # use the last lib in the list
+        request.version_supplied = false if request
         library = libs.last
       end
     end
