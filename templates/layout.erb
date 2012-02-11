@@ -152,7 +152,10 @@
       <a href="http://github.com/lsegal/rubydoc.info"><%= settings.name %></a> is powered by <a href="http://yardoc.org/">yard</a> <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>)
       <% if defined? settings.sponsor %>
         <div class="sponsor">
-          <a href="http://<%= settings.sponsor %>"><img src="/images/sponsor/<%= settings.sponsor %>.png" alt="sponsored by <%= settings.sponsor %>"/></a>
+          <p>Sponsored by</p>
+          <% [settings.sponsor].flatten.each do |sponsor| %>
+            <a href="http://<%= sponsor %>"><img src="/images/sponsor/<%= sponsor %>.png" alt="Sponsored by <%= sponsor %>"/></a>
+          <% end %>
         </div>
       <% end %>
     </div>
