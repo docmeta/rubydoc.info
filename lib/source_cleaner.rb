@@ -17,7 +17,7 @@ class SourceCleaner
         def add_extra_files(*files)
           files.map! {|f| f.include?("*") ? Dir.glob(File.join(basepath, f)) : f }.flatten!
           files.each do |f|
-            filename = f.sub(/^#{File.realpath(basepath)}\/*/, '')
+            filename = f.sub(/^(#{File.realpath(basepath)}|#{basepath})\//, '')
             options[:files] << YARD::CodeObjects::ExtraFileObject.new(filename, '')
           end
         end
