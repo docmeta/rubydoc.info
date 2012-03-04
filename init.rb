@@ -8,6 +8,7 @@ require 'bundler/setup'
 require 'yard'
 require 'yard-sd'
 require 'yard-rails'
+require 'yard-kramdown'
 
 YARD::Server::Adapter.setup
 YARD::Templates::Engine.template_paths.push(File.dirname(__FILE__) + '/templates')
