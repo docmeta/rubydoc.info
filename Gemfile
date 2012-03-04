@@ -17,6 +17,7 @@ gem 'json'
 gem 'rake'
 gem 'yard', :path => '../yard'
 gem 'yard-rails'
+gem 'yard-kramdown'
 gem 'yard-sd'
 gem 'i18n'
 
