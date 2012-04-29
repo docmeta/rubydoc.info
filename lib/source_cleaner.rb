@@ -47,7 +47,7 @@ class SourceCleaner
     exclude += link_exclude
 
     # delete all source files minus excluded ones
-    files = Dir.glob(basepath + '/**/**') + 
+    files = Dir.glob(basepath + '/**/**') +
             Dir.glob(basepath + '/.*')
     files = files.map {|f| remove_basepath(f) }
     files -= ['.', '..']

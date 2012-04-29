@@ -7,81 +7,81 @@ class InvalidSchemeError < RuntimeError; end
 
 class ScmCheckout
   attr_accessor :name, :url, :settings, :app, :commit
-  
+
   def initialize(app, url, commit = nil)
     self.settings = app.settings
     self.app = app
     self.url = url
     self.commit = commit
   end
-  
+
   def name=(name)
     @name = name.gsub(/[^a-z0-9\-\/]/i, '_')
   end
-  
+
   def register_project
     puts "#{Time.now}: Registering project #{name}"
     ready_project
     app.recent_store.push(settings.scm_adapter.libraries[name])
     puts "#{Time.now}: Adding #{name} to recent projects list"
   end
-  
+
   def remove_project
   end
-  
+
   def ready_project
     cmd = "touch #{repository_path}/.yardoc/complete"
     sh(cmd, "Readying project #{name}", false)
     unlink_error_file
   end
-  
+
   def unready_project
     cmd = "rm #{repository_path}/.yardoc/complete"
     sh(cmd, "Unreadying project #{name}", false)
   end
-  
+
   def repository_path
     File.join(settings.repos, name, commit)
   end
-  
+
   def flush_cache
-    files = ["github.html", "github/#{project[0,1]}.html", 
-      "github/#{name}.html", "github/#{name}", "list/github/#{name}", 
+    files = ["github.html", "github/#{project[0,1]}.html",
+      "github/#{name}.html", "github/#{name}", "list/github/#{name}",
       "index.html", ".html"]
     rm_cmd = "rm -rf #{files.map {|f| File.join(settings.public_folder, f) }.join(' ')}"
     sh(rm_cmd, "Flushing cache for #{name}", false)
   end
-  
+
   def checkout
     unlink_error_file
     unready_project
     success = sh(checkout_command, "Checking out #{name}") == 0
     if success
       clear_source_files
-      register_project 
+      register_project
     else
       remove_project
     end
     success
   end
-  
+
   def checkout_command
     raise NotImplementedError
   end
-  
+
   def error_file
-    @error_file ||= 
+    @error_file ||=
       "#{settings.tmp}/#{[name.gsub('/', '_'), commit || 'master'].join('_')}.error.txt"
   end
-  
+
   def write_error_file(out)
     File.open(error_file, "a") {|f| f.write(out + "\n") }
   end
-  
+
   def unlink_error_file
     File.unlink(error_file) if File.file?(error_file)
   end
-  
+
   def sh(command, title = "", write_error = true)
     puts(log = "#{Time.now}: #{title}: #{command}")
     if write_error
@@ -100,14 +100,14 @@ class ScmCheckout
     end
     result
   end
-  
+
   def clear_source_files
   end
 end
 
 class GithubCheckout < ScmCheckout
   attr_accessor :username, :project
-  
+
   def initialize(app, url, commit = nil)
     super
     case url
@@ -120,18 +120,18 @@ class GithubCheckout < ScmCheckout
     end
     self.name = "#{username}/#{project}"
   end
-  
+
   def commit=(value)
     value = nil if value == ''
     @commit = value || 'master'
     @commit = @commit[0,6] if @commit.length == 40
     @commit
   end
-  
+
   def repository_path
     File.join(settings.repos, project, username, commit)
   end
-  
+
   def remove_project
     cmd = "rm -rf #{settings.repos}/#{project}/#{username} #{settings.repos}/#{project}"
     sh(cmd, "Removing #{name}", false)
@@ -140,11 +140,11 @@ class GithubCheckout < ScmCheckout
   def checkout_command
     "#{git_checkout_command} && #{YARD::ROOT}/../bin/yardoc -n -q --safe"
   end
-  
+
   def clear_source_files
     SourceCleaner.new(repository_path).clean
   end
-  
+
   def fork?
     return @is_fork unless @is_fork.nil?
     if !File.directory?(File.join(settings.repos, name))
@@ -159,7 +159,7 @@ class GithubCheckout < ScmCheckout
     @is_fork = false
   ensure
   end
-  
+
   private
 
   def git_checkout_command
@@ -172,8 +172,8 @@ class GithubCheckout < ScmCheckout
       else
         nil
       end
-      ["mkdir -p #{settings.repos}/#{project}/#{username}", 
-        "cd #{settings.repos}/#{project}/#{username}", 
+      ["mkdir -p #{settings.repos}/#{project}/#{username}",
+        "cd #{settings.repos}/#{project}/#{username}",
         "git clone #{url} #{commit}", "cd #{commit}",
         checkout, fork_cmd].compact.join(" && ")
     end

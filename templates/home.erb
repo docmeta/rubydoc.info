@@ -8,7 +8,7 @@
         return;
       }
     }
-    
+
     var list = document.cookie.split(/\s*;\s*/);
     for (var i = 0; i < list.length; i++) {
       var key = list[i].split('=', 1)[0];
@@ -30,7 +30,7 @@
     <li class="selected">Github</li>
     <li class="search"><form action="/find/github" method="GET"><input type="text" id="docSearch" name="q" value="<%= h @search || 'Search Github Projects' %>"/></form></li>
   </ul>
-  
+
   <% if @featured && @featured.size > 0 %>
   <h2>Featured Libraries <small>(<a class="framelink" href="#">links without frames</a>)</small></h2>
   <ul class="libraries">
@@ -38,16 +38,16 @@
     <li class="r<%= @row = @row == 1 ? 2 : 1 %>">
       <% library_versions = library_versions.dup %>
       <% first_lib = library_versions.pop %>
-      <a href="/docs/<%= first_lib %>/frames"><%= name %></a> 
+      <a href="/docs/<%= first_lib %>/frames"><%= name %></a>
       <% if first_lib && first_lib.version %>
-        <small>(<%= first_lib.version %><% if library_versions.size > 0 %>, 
+        <small>(<%= first_lib.version %><% if library_versions.size > 0 %>,
           <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/docs/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
       <% end %>
     </li>
     <% end %>
   </ul>
   <% end %>
-  
+
   <h2>Recently Updated Github Projects <small>(<a class="framelink" href="#">links without frames</a>)</small></h2>
   <ul class="alpha_index">
     <% (?a..?z).each do |letter| %>
@@ -64,13 +64,13 @@
     <% @libraries.each do |lib| %>
       <% latest_version = lib.versions.first %>
       <li>
-        <a href="/<%= @adapter.router.docs_prefix %>/<%= latest_version %>/frames"><strong><%= lib.name %></strong></a> 
+        <a href="/<%= @adapter.router.docs_prefix %>/<%= latest_version %>/frames"><strong><%= lib.name %></strong></a>
         <a href="#" class="project_reload" title="Reload this project"><img class="icon reload" src="/images/reload.png" /></a>
         <a href="http://github.com/<%= lib.name %>" title="View this project on Github"><img class="icon github" src="/images/git.png" /></a>
         <small>(<%= latest_version.version %>)</small>
       </li>
     <% end %>
   </ul>
-  
+
 </div>
 

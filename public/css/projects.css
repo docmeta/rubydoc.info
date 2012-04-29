@@ -28,19 +28,19 @@ a { outline: none; }
 
 #top_nav { padding: 0; list-style: none; position: absolute; right: 140px; top: 3px; z-index: 9999; }
 #top_nav li { float: left; margin-right: 10px; }
-#top_nav a { display: block; padding: 5px 8px; background: #58a; text-decoration: none; 
+#top_nav a { display: block; padding: 5px 8px; background: #58a; text-decoration: none;
   color: #eee;
   opacity: 0.7;
-  -webkit-border-radius: 5px; -moz-border-radius: 5px; 
+  -webkit-border-radius: 5px; -moz-border-radius: 5px;
   -webkit-transition: all 0.1s ease-in;
 }
 #top_nav a:hover { opacity: 1; color: #fff; }
 
-#info { 
+#info {
   font-size: 1.1em;
   line-height: 1.4em;
-  display: none; position: absolute; width: 350px; padding: 10px 20px; top: 55px; 
-  right: 120px; background: #fff; z-index: 10000; border: 1px solid #aaa; 
+  display: none; position: absolute; width: 350px; padding: 10px 20px; top: 55px;
+  right: 120px; background: #fff; z-index: 10000; border: 1px solid #aaa;
   -webkit-box-shadow: 0px 2px 15px #aaa; -moz-box-shadow: 0px 2px 15px #aaa;
 }
 #info a { color: #05a; }
@@ -64,7 +64,7 @@ a { outline: none; }
 #checkout.error:after { content: "Invalid git repository or URL"; color: #e00; display: block; }
 #checkout.loading .loadicon { display: block; }
 #checkout .url { width: 225px; margin-bottom: 3px; }
-#checkout { 
+#checkout {
   display: none;
   position: absolute;
   top: 42px;
@@ -134,7 +134,7 @@ a { outline: none; }
 #footer .sponsor a { border: 0; }
 
 #content.fof h1 { margin-bottom: 0; font-size: 3em; }
-#content.fof h2.nomargin { margin-top: 0; border: 0; font-size: 1.2em; color: #888; margin-bottom: 20px; } 
+#content.fof h2.nomargin { margin-top: 0; border: 0; font-size: 1.2em; color: #888; margin-bottom: 20px; }
 #content.fof.scm #checkout { display: block; position: relative; top: 0; right: 0; margin: 40px 0; }
 
 .libraries .icon { width: 16px; height: 16px; position: relative; float: right; top: 6px; border: 1px solid #ccc; background: #eee; padding: 2px; -webkit-border-radius: 3px; -moz-border-radius: 3px; margin-left: 3px; }

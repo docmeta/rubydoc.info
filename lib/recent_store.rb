@@ -25,9 +25,9 @@ class RecentStore
     library_name = library_versions.first.name
     unless LibraryStore.select(:name).where(:name => library_name).first
       LibraryStore.create(
-        :name => library_name, 
-        :versions => library_versions, 
-        :source => 'github', 
+        :name => library_name,
+        :versions => library_versions,
+        :source => 'github',
         :created_at => Time.now)
     end
   end

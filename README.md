@@ -3,7 +3,7 @@ RubyDoc.info: YARD Doc Server
 
 RubyDoc.info is the next generation Ruby doc server, replacing
 [http://rdoc.info](http://rdoc.info) and
-[http://yardoc.org/docs](http://yardoc.org/docs). 
+[http://yardoc.org/docs](http://yardoc.org/docs).
 This doc server uses YARD to generate project documentation on the fly, for
 both published RubyGems as well as GitHub projects.
 

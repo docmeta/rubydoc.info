@@ -13,7 +13,7 @@ require 'yard-kramdown'
 YARD::Server::Adapter.setup
 YARD::Templates::Engine.template_paths.push(File.dirname(__FILE__) + '/templates')
 
-def __p(*extra) 
+def __p(*extra)
   file = extra.last == :file
   extra.pop if file
   path = File.join(File.dirname(__FILE__), *extra)

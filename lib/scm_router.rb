@@ -2,7 +2,7 @@ class ScmRouter < YARD::Server::Router
   def docs_prefix; 'github' end
   def list_prefix; 'list/github' end
   def search_prefix; 'search/github' end
-  
+
   def parse_library_from_path(paths)
     library, paths = nil, paths.dup
     github_proj = paths[0, 2].join('/')
@@ -22,7 +22,7 @@ end
 
 class ScmLibraryStore
   include Enumerable
-  
+
   def [](name)
     path = File.join(REPOS_PATH, project_dirname(name))
     return unless File.directory?(path)
@@ -36,15 +36,15 @@ class ScmLibraryStore
       end
     end.compact
   end
-  
+
   def []=(name, value)
     # read-only db
   end
-  
+
   def has_key?(key)
     self[key] ? true : false
   end
-  
+
   def keys
     dirs = []
     Dir.entries(REPOS_PATH).each do |project|
@@ -56,15 +56,15 @@ class ScmLibraryStore
     end
     dirs
   end
-  
+
   def values
     keys.map {|key| self[key] }
   end
-  
+
   def each(&block)
     keys.zip(values).each(&block)
   end
-  
+
   def master_fork(name)
     project = name.split('/', 2).last
     File.read(File.join(REPOS_PATH, project, '.master_fork')).strip
@@ -89,17 +89,17 @@ class ScmLibraryStore
     end
     projects.sort_by {|name, users| name.downcase }
   end
-  
+
   def sorted_versions(name)
     self[name].sort_by {|lib| [lib.version == "master" ? 0 : 1, File.ctime(lib.source_path)] }
   end
-  
+
   private
-  
+
   def project_dirname(name)
     name.split('/', 2).reverse.join('/')
   end
-  
+
   def dir_valid?(*dir)
     File.directory?(File.join(REPOS_PATH, *dir)) && dir.last !~ /^\.\.?$/
   end

@@ -9,36 +9,36 @@ module YARD
         @asset_path = File.join('assets', command.library.to_s)
         super(:basepath => command.adapter.document_root, :extension => '')
       end
-      
+
       def serialized_path(object)
         if String === object
-          File.join(@asset_path, object) 
+          File.join(@asset_path, object)
         else
           super(object)
         end
       end
     end
-    
+
     class Commands::LibraryCommand
       def initialize(opts = {})
         super
         self.serializer = DocServerSerializer.new(self)
       end
     end
-    
+
     class LibraryVersion
       attr_accessor :platform
-      
+
       protected
-      
+
       def load_yardoc_from_disk_on_demand
         yfile = File.join(source_path, '.yardoc')
         if File.directory?(yfile)
           if File.exist?(File.join(yfile, 'complete'))
-            self.yardoc_file = yfile 
+            self.yardoc_file = yfile
             return
           else
-            raise LibraryNotPreparedError 
+            raise LibraryNotPreparedError
           end
         end
 
@@ -54,10 +54,10 @@ module YARD
         yfile = File.join(source_path, '.yardoc')
         if File.directory?(yfile)
           if File.exist?(File.join(yfile, 'complete'))
-            self.yardoc_file = yfile 
+            self.yardoc_file = yfile
             return
           else
-            raise LibraryNotPreparedError 
+            raise LibraryNotPreparedError
           end
         end
 
@@ -67,7 +67,7 @@ module YARD
         log.debug "Searching for remote gem file #{url}"
         Thread.new do
           begin
-            open(url) do |io| 
+            open(url) do |io|
               expand_gem(io)
               generate_yardoc
               clean_source
@@ -84,13 +84,13 @@ module YARD
       def source_path_for_remote_gem
         File.join(::REMOTE_GEMS_PATH, name[0].downcase, name, version)
       end
-      
+
       def source_path_for_disk_on_demand
         File.join(::STDLIB_PATH, version, name)
       end
-      
+
       alias load_yardoc_from_github load_yardoc_from_disk
-      
+
       def source_path_for_github
         File.join(::REPOS_PATH, name.split('/', 2).reverse.join('/'), version)
       end
@@ -112,13 +112,13 @@ module YARD
           end
         end
       end
-      
+
       def clean_source
         SourceCleaner.new(source_path).clean
       end
     end
   end
-  
+
   module CLI
     class Yardoc
       def yardopts

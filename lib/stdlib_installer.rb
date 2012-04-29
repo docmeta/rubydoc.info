@@ -2,14 +2,14 @@ require 'fileutils'
 
 class StdlibInstaller
   PREFIX = File.join(File.dirname(__FILE__), '..', 'repos', 'stdlib')
-  
+
   attr_accessor :path, :version
-  
+
   def initialize(path, version)
     self.path = File.expand_path(path)
     self.version = version
   end
-  
+
   def install
     FileUtils.mkdir_p(File.join(PREFIX, version))
     install_exts
@@ -18,7 +18,7 @@ class StdlibInstaller
   end
 
   private
-  
+
   def install_core
     puts "Installing core libraries"
     FileUtils.mkdir_p(repo_path('core'))
@@ -30,7 +30,7 @@ class StdlibInstaller
       file.puts '*.c *.y - README.EXT LEGAL'
     end
   end
-  
+
   def install_exts
     exts = Dir[File.join(path, 'ext', '*')].select {|t| File.directory?(t) }
     exts = exts.reject {|t| t =~ /-test-/ }
@@ -45,7 +45,7 @@ class StdlibInstaller
       write_yardopts(ext)
     end
   end
-  
+
   def install_libs
     libs = Dir[File.join(path, 'lib', '*')]
     installed = {}
@@ -70,15 +70,15 @@ class StdlibInstaller
       installed[lib] = true
     end
   end
-  
+
   def clean_glob(directory)
     directory.sub(/^#{path}\/(ext|lib)\//, '').sub(/\.rb$/, '')
   end
-  
+
   def mkdir_repo(name)
     FileUtils.mkdir_p(repo_path(name))
   end
-  
+
   def repo_path(name)
     File.join(PREFIX, version, clean_glob(name))
   end
@@ -88,7 +88,7 @@ class StdlibInstaller
       file.puts '**/*.rb **/*.c'
     end
   end
-  
+
   def extract_readme(name)
     puts "Extracting README from #{clean_glob(name)}"
     readme_contents = ""

@@ -1,6 +1,6 @@
 function pollCheckout(project) {
-  $.ajax({ 
-    url: '/checkout/' + project, 
+  $.ajax({
+    url: '/checkout/' + project,
     success: function(data) {
       if (data == "YES") {
         window.location = '/github/' + project + '/frames';
@@ -13,14 +13,14 @@ function pollCheckout(project) {
       } else {
         setTimeout("pollCheckout('" + project + "');", 2000);
       }
-    }, 
+    },
     error: function(data) {
       $('#checkout').removeClass('loading');
       $('#checkout').addClass('error');
       $('#submit')[0].disabled = false;
       return;
     },
-    dataType: 'text' 
+    dataType: 'text'
   });
 }
 

@@ -7,12 +7,12 @@ namespace :server do
   task :start do
     sh "unicorn -E production -D -c unicorn.conf.rb"
   end
-  
+
   desc 'Restart the server'
   task :restart do
     sh "kill -USR2 `cat tmp/pids/unicorn.pid`"
   end
-  
+
   desc 'Shut down the server'
   task :stop do
     sh "kill -QUIT `cat tmp/pids/unicorn.pid`"
@@ -52,7 +52,7 @@ namespace :cache do
 end
 
 namespace :stdlib do
-  desc 'Installs a standard library SOURCE=pathtolib VERSION=targetversion' 
+  desc 'Installs a standard library SOURCE=pathtolib VERSION=targetversion'
   task :install do
     require 'stdlib_installer'
     StdlibInstaller.new(ENV['SOURCE'], ENV['VERSION']).install

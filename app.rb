@@ -31,7 +31,7 @@ class DocServer < Sinatra::Base
       :server_options => {DocumentRoot: STATIC_PATH}
     }
   end
-  
+
   def self.load_configuration
     set :name, 'RubyDoc.info'
     set :url, 'http://rubydoc.info'
@@ -47,7 +47,7 @@ class DocServer < Sinatra::Base
       $GOOGLE_ANALYTICS = value if key == 'google_analytics' # Hack for GA settings
     end
   end
-  
+
   def self.copy_static_files
     # Copy template files
     puts ">> Copying static system files..."
@@ -79,14 +79,14 @@ class DocServer < Sinatra::Base
   rescue Errno::ENOENT
     log.error "No remote_gems file to load remote gems from, not serving gems."
   end
-  
+
   def self.load_scm_adapter
     opts = adapter_options
     opts[:options][:router] = ScmRouter
     opts[:libraries] = ScmLibraryStore.new
     set :scm_adapter, RackAdapter.new(*opts.values)
   end
-  
+
   def self.find_featured_yardoc(name, libdir)
     [File.join(FEATURED_PATH, libdir, '.yardoc'), File.join(libdir, '.yardoc')].each do |path|
       return path if File.directory?(path)
@@ -94,7 +94,7 @@ class DocServer < Sinatra::Base
     log.error "Invalid featured repository #{libdir} for #{name}"
     exit
   end
-  
+
   def self.load_featured_adapter
     raise(Errno::ENOENT) unless the_options.has_key?(:featured)
     opts = adapter_options
@@ -116,7 +116,7 @@ class DocServer < Sinatra::Base
     set :featured_adapter, nil
   end
 
-  
+
   def self.load_stdlib_adapter
     unless File.directory?(STDLIB_PATH)
       log.error "No stdlib repository, not serving standard library"
@@ -140,7 +140,7 @@ class DocServer < Sinatra::Base
     end
     set :stdlib_adapter, RackAdapter.new(*opts.values)
   end
-  
+
   def self.post_all(*args, &block)
     args.each {|arg| post(arg, &block) }
   end
@@ -171,7 +171,7 @@ class DocServer < Sinatra::Base
     STDOUT.reopen(file)
     STDERR.reopen(file)
   end
-  
+
   configure do
     load_configuration
     load_gems_adapter
@@ -180,10 +180,10 @@ class DocServer < Sinatra::Base
     load_stdlib_adapter
     copy_static_files
   end
-  
+
   helpers do
     include YARD::Templates::Helpers::HtmlHelper
-    
+
     def recent_store
       @@recent_store ||= RecentStore.new(20)
     end
@@ -204,7 +204,7 @@ class DocServer < Sinatra::Base
       end
       erb(:error)
     end
-    
+
     def cache(output)
       return output if settings.caching != true
       path = request.path.gsub(%r{^/|/$}, '')
@@ -214,11 +214,11 @@ class DocServer < Sinatra::Base
       File.open(path, "w") {|f| f.write(output) }
       output
     end
-    
+
     def next_row(prefix = 'r', base = 1)
       prefix + (@row = @row == base ? base + 1 : base).to_s
     end
-    
+
     def translate_file_links(extra)
       extra.sub(%r{^/(frames/)?file:}, '/\1file/')
     end
@@ -227,9 +227,9 @@ class DocServer < Sinatra::Base
       commit.slice(0..5)
     end
   end
-  
+
   # Checkout and post commit hooks
-  
+
   post_all '/checkout', '/projects/update' do
     begin
       if params[:payload]
@@ -257,10 +257,10 @@ class DocServer < Sinatra::Base
     if libs = settings.scm_adapter.libraries[git.name]
       if lib = libs.find {|l| l.version == git.commit }
         return "NO" unless File.exist?(File.join(lib.source_path, '.yardoc', 'complete'))
-        return "YES" 
+        return "YES"
       end
     end
-    
+
     if File.exist?(git.error_file)
       puts "#{git.error_file} found"
       "ERROR"
@@ -269,9 +269,9 @@ class DocServer < Sinatra::Base
       "NO"
     end
   end
-  
+
   # Main URL handlers
-  
+
   get %r{^/github(?:/([a-z])?)?$} do |letter|
     if letter.nil?
       @adapter = settings.scm_adapter
@@ -285,14 +285,14 @@ class DocServer < Sinatra::Base
       cache erb(:scm_index)
     end
   end
-  
+
   get %r{^/gems(?:/([a-z])?)?$} do |letter|
     @letter = letter || 'a'
     @adapter = settings.gems_adapter
     @libraries = @adapter.libraries.find_all {|k, v| k[0].downcase == @letter }
     cache erb(:gems_index)
   end
-  
+
   get %r{^/(?:(?:search|list)/)?github/([^/]+)/([^/]+)} do |username, project|
     @username, @project = username, project
     result = settings.scm_adapter.call(env)
@@ -307,9 +307,9 @@ class DocServer < Sinatra::Base
     return status(404) && erb(:gems_404) if result.first == 404
     result
   end
-  
+
   # Stdlib
-   
+
   get %r{^/(?:(?:search|list)/)?stdlib/([^/]+)} do |libname|
     @libname = libname
     pass unless settings.stdlib_adapter.libraries[libname]
@@ -317,14 +317,14 @@ class DocServer < Sinatra::Base
     return status(404) && erb(:stdlib_404) if result.first == 404
     result
   end
-  
+
   get %r{^/stdlib/?$} do
     @stdlib = settings.stdlib_adapter.libraries
     cache erb(:stdlib_index)
   end
 
   # Featured libraries
-  
+
   get %r{^/(?:(?:search|list)/)?docs/([^/]+)} do |libname|
     @libname = libname
     pass unless settings.featured_adapter.libraries[libname]
@@ -332,7 +332,7 @@ class DocServer < Sinatra::Base
     return status(404) && erb(:featured_404) if result.first == 404
     result
   end
-  
+
   get %r{^/(featured|docs/?$)} do
     @featured = settings.featured_adapter.libraries
     cache erb(:featured_index)
@@ -360,14 +360,14 @@ class DocServer < Sinatra::Base
   get(%r{^/docs/ruby-core/?(.*)}) do |all|
     redirect("/stdlib/core/#{all}", 301)
   end
-  
+
   # Redirect /docs/ruby-stdlib
   get(%r{^/docs/ruby-stdlib/?(.*)}) do |all|
     redirect("/stdlib")
   end
 
   # Old URL structure redirection for yardoc.org
-  
+
   get(%r{^/docs/([^/]+)-([^/]+)(/?.*)}) do |user, proj, extra|
     redirect("/github/#{user}/#{proj}#{translate_file_links extra}", 301)
   end
@@ -375,9 +375,9 @@ class DocServer < Sinatra::Base
   get(%r{^/docs/([^/]+)(/?.*)}) do |lib, extra|
     redirect("/gems/#{lib}#{translate_file_links extra}", 301)
   end
-  
+
   get('/docs/?') { redirect('/github', 301) }
-  
+
   # Old URL structure redirection for rdoc.info
 
   get(%r{^/(?:projects|rdoc)/([^/]+)/([^/]+)(/?.*)}) do |user, proj, extra|
@@ -385,14 +385,14 @@ class DocServer < Sinatra::Base
   end
 
   # Root URL redirection
-  
+
   get '/' do
     @adapter = settings.scm_adapter
     @libraries = recent_store
     @featured = settings.featured_adapter.libraries if settings.featured_adapter
     cache erb(:home)
   end
-  
+
   error do
     @page_title = "Unknown Error!"
     @error = "Something quite unexpected just happened.

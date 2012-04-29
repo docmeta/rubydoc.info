@@ -8,7 +8,7 @@ class GemVersion
   def initialize(name, version, platform)
     @name, @version, @platform = name.to_s, version.to_s, platform.to_s
   end
-  
+
   def to_s
     platform == "ruby" ? version : [version,platform].join(',')
   end
@@ -54,6 +54,6 @@ changed_gems.keys.each do |gem|
 end
 
 if changed_gems.size > 0
-  puts ">> Updated #{changed_gems.size} gems:" 
+  puts ">> Updated #{changed_gems.size} gems:"
   puts changed_gems.keys.join(', ')
 end

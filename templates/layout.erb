@@ -38,7 +38,7 @@
           }
         });
       }
-      
+
       function aboutLink() {
         $('#about').click(function() {
           if ($('#info').is(':hidden')) { $('#checkout').hide(); $('#tender_window').hide(); $('#info').fadeIn('fast'); }
@@ -46,7 +46,7 @@
           return false;
         });
       }
-      
+
       function checkoutLink() {
         $('#new_checkout').click(function() {
           if ($('#checkout').is(':hidden')) { $('#info').hide(); $('#tender_window').hide(); $('#checkout').fadeIn('fast'); }
@@ -57,7 +57,7 @@
 
       function helpLink() {
         $('#help').click(function() {
-          if ($('#tender_window').is(':visible')) { 
+          if ($('#tender_window').is(':visible')) {
             $('#tender_window').hide();
           } else {
             $('#help_tender').click();
@@ -77,7 +77,7 @@
           return false;
         });
       }
-      
+
       function saveIndex(url) {
         var date = new Date();
         date.setDate(date.getDate() + (url == '' ? -999 : 99999));
@@ -104,7 +104,7 @@
         #noscript { background: #111; color: #fff; padding: 10px 20px; }
         #top_nav { top: 48px; }
       </style>
-      <div id="noscript"><strong>It seems you've disabled Javascript.</strong> 
+      <div id="noscript"><strong>It seems you've disabled Javascript.</strong>
         That's okay, but you might run into some problems. We try to make things work without script support
         as much as possible, but sometimes it needs to be used. We apologize for any inconvenience and hope you understand.</div>
     </noscript>
@@ -118,24 +118,24 @@
     </ul>
     <a id="help_tender" href="#" style="display:none;"/>
     <div class="clear"></div>
-    
+
     <div id="info">
       <p>
-        <strong><%= settings.name %></strong> is your source for open source Ruby library documentation, 
+        <strong><%= settings.name %></strong> is your source for open source Ruby library documentation,
         generating fresh docs for Gems and popular Git repositories.
       </p>
       <p>
-        This site uses <a href="http://yardoc.org">YARD</a> to generate docs on the fly. 
-        To make your docs look better, you can check out some of YARD's 
+        This site uses <a href="http://yardoc.org">YARD</a> to generate docs on the fly.
+        To make your docs look better, you can check out some of YARD's
         <a href="/gems/yard/frames/file/docs/WhatsNew.md">killer features</a>.
       </p>
       <p>
-        <strong>We have DISQUS integration!</strong> Click the <em>permalink</em> 
+        <strong>We have DISQUS integration!</strong> Click the <em>permalink</em>
         (<a href="/gems/yard/frames/YARD/Templates/Engine.render">like this one</a>)
         on a method to see user comments on a method page.
       </p>
       <p>
-        Looking for a <a href="http://github.com">GitHub</a> 
+        Looking for a <a href="http://github.com">GitHub</a>
         <a href="http://help.github.com/post-receive-hooks/">post-receive hook</a>?
         Use <tt><%= settings.url %>/checkout</tt>.
       </p>
@@ -145,8 +145,8 @@
         </small>
       </p>
     </div>
-    
-    
+
+
     <%= yield %>
 
     <div id="footer">

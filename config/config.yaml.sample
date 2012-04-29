@@ -28,8 +28,8 @@
 # sponsor: linode.com
 
 # To add a "Featured" section to the site with a set of statically generated
-# YARD documentation directories, add your own projects below followed by the 
-# path to the library root relative to repos/featured. You can also use an 
+# YARD documentation directories, add your own projects below followed by the
+# path to the library root relative to repos/featured. You can also use an
 # absolute path.
 #
 # featured:
