@@ -98,7 +98,9 @@ module YARD
       private
 
       def generate_yardoc
-        `cd #{source_path} && yardoc -n -q && touch .yardoc/complete`
+        `cd #{source_path} &&
+          #{YARD::ROOT}/../bin/yardoc -n -q --safe &&
+          touch .yardoc/complete`
       end
 
       def expand_gem(io)

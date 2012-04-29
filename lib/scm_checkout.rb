@@ -138,7 +138,7 @@ class GithubCheckout < ScmCheckout
   end
 
   def checkout_command
-    "#{git_checkout_command} && yardoc -n -q"
+    "#{git_checkout_command} && #{YARD::ROOT}/../bin/yardoc -n -q --safe"
   end
   
   def clear_source_files
