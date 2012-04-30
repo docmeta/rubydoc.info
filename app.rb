@@ -157,7 +157,7 @@ class DocServer < Sinatra::Base
 
   enable :static
   enable :dump_errors
-  disable :lock
+  enable :lock
   disable :caching
   disable :raise_errors
 
