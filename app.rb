@@ -22,6 +22,9 @@ class DocServer < Sinatra::Base
   include YARD::Server
 
   DISALLOWED_GEMS = %w(netsuite_client)
+  DISALLOWED_PROJECTS = %w()
+  WHITELISTED_GEMS = %w(yard)
+  WHITELISTED_PROJECTS = %w(lsegal/yard)
 
   def self.adapter_options
     caching = %w(staging production).include?(ENV['RACK_ENV'])
@@ -228,6 +231,11 @@ class DocServer < Sinatra::Base
     end
   end
 
+  # Filters
+
+  # Always reset safe mode
+  before { YARD::Config.options[:safe_mode] = true }
+
   # Checkout and post commit hooks
 
   post_all '/checkout', '/projects/update' do
@@ -243,6 +251,17 @@ class DocServer < Sinatra::Base
       end
 
       url = url.sub(%r{^http://}, 'git://')
+      if url =~ %r{github\.com/([^/]+)/([^/]+)}
+        username, project = $1, $2
+        if WHITELISTED_PROJECTS.include?("#{username}/#{project}")
+          puts "Dropping safe mode for #{username}/#{project}"
+          YARD::Config.options[:safe_mode] = false
+        end
+        if DISALLOWED_PROJECTS.include?("#{username}/#{project}")
+          return status(503) && "Cannot parse this project"
+        end
+      end
+
       scm = GithubCheckout.new(self, url, commit)
       scm.flush_cache
       scm.checkout
@@ -295,6 +314,10 @@ class DocServer < Sinatra::Base
 
   get %r{^/(?:(?:search|list)/)?github/([^/]+)/([^/]+)} do |username, project|
     @username, @project = username, project
+    if WHITELISTED_PROJECTS.include?("#{username}/#{project}")
+      puts "Dropping safe mode for #{username}/#{project}"
+      YARD::Config.options[:safe_mode] = false
+    end
     result = settings.scm_adapter.call(env)
     return status(404) && erb(:scm_404) if result.first == 404
     result
@@ -302,6 +325,10 @@ class DocServer < Sinatra::Base
 
   get %r{^/(?:(?:search|list)/)?gems/([^/]+)} do |gemname|
     return status(503) && "Cannot parse this gem" if DISALLOWED_GEMS.include?(gemname)
+    if WHITELISTED_GEMS.include?(gemname)
+      puts "Dropping safe mode for #{gemname}"
+      YARD::Config.options[:safe_mode] = false
+    end
     @gemname = gemname
     result = settings.gems_adapter.call(env)
     return status(404) && erb(:gems_404) if result.first == 404
@@ -311,6 +338,7 @@ class DocServer < Sinatra::Base
   # Stdlib
 
   get %r{^/(?:(?:search|list)/)?stdlib/([^/]+)} do |libname|
+    YARD::Config.options[:safe_mode] = false
     @libname = libname
     pass unless settings.stdlib_adapter.libraries[libname]
     result = settings.stdlib_adapter.call(env)
@@ -326,6 +354,7 @@ class DocServer < Sinatra::Base
   # Featured libraries
 
   get %r{^/(?:(?:search|list)/)?docs/([^/]+)} do |libname|
+    YARD::Config.options[:safe_mode] = false
     @libname = libname
     pass unless settings.featured_adapter.libraries[libname]
     result = settings.featured_adapter.call(env)

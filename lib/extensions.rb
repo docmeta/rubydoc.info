@@ -123,7 +123,7 @@ module YARD
     class Yardoc
       def yardopts
         list = IO.read(options_file).shell_split
-        list.map {|a| %w(-e --load -c --use-cache --db -b --query).include?(a) ? '-o' : a }
+        list.map {|a| %w(-c --use-cache --db -b --query).include?(a) ? '-o' : a }
       rescue Errno::ENOENT
         []
       end
@@ -140,7 +140,7 @@ module YARD
           file = File.join(File.dirname(options_file), file) unless file[0] == '/'
           if File.file?(file)
             fname = file.gsub(File.dirname(options_file) + '/', '')
-            options[:files] << CodeObjects::ExtraFileObject.new(fname)
+            options.files << CodeObjects::ExtraFileObject.new(fname)
           end
         end
       end

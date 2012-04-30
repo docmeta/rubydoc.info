@@ -6,6 +6,7 @@ class SourceCleaner
   end
 
   def clean
+    return unless YARD::Config.options[:safe_mode]
     yardopts = File.join(basepath, '.yardopts')
     exclude = ['.yardoc', '.yardopts', '.git']
     exclude += Dir.glob(File.join(basepath, 'README*')).map {|f| remove_basepath(f) }
