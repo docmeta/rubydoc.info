@@ -141,7 +141,7 @@ module YARD
           file = File.join(File.dirname(options_file), file) unless file[0] == '/'
           if File.file?(file)
             fname = file.gsub(File.dirname(options_file) + '/', '')
-            options.files << CodeObjects::ExtraFileObject.new(fname)
+            options[:files] << CodeObjects::ExtraFileObject.new(fname)
           end
         end
       end
