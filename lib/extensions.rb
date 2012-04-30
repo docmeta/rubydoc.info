@@ -4,10 +4,11 @@ require 'rubygems/package'
 
 module YARD
   module Server
-    class DocServerSerializer
+    class RubyDocServerSerializer < DocServerSerializer
       def initialize(command = nil)
         @asset_path = File.join('assets', command.library.to_s)
-        super(:basepath => command.adapter.document_root, :extension => '')
+        super
+        self.basepath = command.adapter.document_root
       end
 
       def serialized_path(object)
@@ -22,7 +23,7 @@ module YARD
     class Commands::LibraryCommand
       def initialize(opts = {})
         super
-        self.serializer = DocServerSerializer.new(self)
+        self.serializer = RubyDocServerSerializer.new(self)
       end
     end
 
