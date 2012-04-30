@@ -58,7 +58,7 @@ class StdlibInstaller
         next
       end
       puts "Installing library #{libname}..."
-      libfilename = lib + '.rb'
+      libfilename = lib.gsub(/\.rb$/, '') + '.rb'
       dstpath = File.join(libpath, 'lib')
       FileUtils.mkdir_p(dstpath)
       FileUtils.cp_r(lib, dstpath) if lib !~ /\.rb$/
