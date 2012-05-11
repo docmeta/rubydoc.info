@@ -36,7 +36,8 @@ class ScmCheckout
   end
 
   def unready_project
-    cmd = "rm #{repository_path}/.yardoc/complete"
+    path = "#{repository_path}/.yardoc/complete"
+    cmd = "rm #{path}" if File.exists?(path)
     sh(cmd, "Unreadying project #{name}", false)
   end
 
