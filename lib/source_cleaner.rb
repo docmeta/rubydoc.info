@@ -8,7 +8,7 @@ class SourceCleaner
   def clean
     return unless YARD::Config.options[:safe_mode]
     yardopts = File.join(basepath, '.yardopts')
-    exclude = ['.yardoc', '.yardopts', '.git']
+    exclude = ['.yardoc', '.yardopts', '.git', '.document']
     exclude += Dir.glob(File.join(basepath, 'README*')).map {|f| remove_basepath(f) }
     if File.file?(yardopts)
       yardoc = YARD::CLI::Yardoc.new
@@ -22,9 +22,16 @@ class SourceCleaner
             options[:files] << YARD::CodeObjects::ExtraFileObject.new(filename, '')
           end
         end
+        def support_rdoc_document_file!
+          return [] unless use_document_file
+          File.read(File.join(basepath, '.document')).
+            gsub(/^[ \t]*#.+/m, '').split(/\s+/)
+        rescue Errno::ENOENT
+          []
+        end
       end
       yardoc.basepath = basepath
-      yardoc.options_file = yardopts
+      yardoc.options_file = yardopts if File.file?(yardopts)
       yardoc.parse_arguments
 
       exclude += yardoc.options[:files].map {|f| f.filename }
