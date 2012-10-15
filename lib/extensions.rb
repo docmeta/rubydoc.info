@@ -122,15 +122,15 @@ module YARD
 
   module CLI
     class Yardoc
-      def yardopts
-        list = IO.read(options_file).shell_split
+      def yardopts(file = options_file)
+        list = IO.read(file).shell_split
         list.map {|a| %w(-c --use-cache --db -b --query).include?(a) ? '-o' : a }
       rescue Errno::ENOENT
         []
       end
 
-      def support_rdoc_document_file!
-        IO.read(File.join(File.dirname(options_file), '.document')).gsub(/^[ \t]*#.+/m, '').split(/\s+/)
+      def support_rdoc_document_file!(file = '.document')
+        IO.read(File.join(File.dirname(options_file), file)).gsub(/^[ \t]*#.+/m, '').split(/\s+/)
       rescue Errno::ENOENT
         []
       end
