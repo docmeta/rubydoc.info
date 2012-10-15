@@ -22,7 +22,7 @@ class DocServer < Sinatra::Base
   include YARD::Server
 
   DISALLOWED_GEMS = %w(netsuite_client)
-  DISALLOWED_PROJECTS = %w()
+  DISALLOWED_PROJECTS = %w(kraeftemessen/spider-network)
   WHITELISTED_GEMS = %w(yard)
   WHITELISTED_PROJECTS = %w(lsegal/yard)
 
