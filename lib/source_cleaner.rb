@@ -22,9 +22,9 @@ class SourceCleaner
             options[:files] << YARD::CodeObjects::ExtraFileObject.new(filename, '')
           end
         end
-        def support_rdoc_document_file!
+        def support_rdoc_document_file!(file = '.document')
           return [] unless use_document_file
-          File.read(File.join(basepath, '.document')).
+          File.read(File.join(basepath, file)).
             gsub(/^[ \t]*#.+/m, '').split(/\s+/)
         rescue Errno::ENOENT
           []
