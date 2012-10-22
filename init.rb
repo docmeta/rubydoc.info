@@ -11,7 +11,7 @@ require 'yard-rails'
 require 'yard-kramdown'
 
 YARD::Server::Adapter.setup
-YARD::Templates::Engine.template_paths.push(File.dirname(__FILE__) + '/templates')
+YARD::Templates::Engine.register_template_path(File.dirname(__FILE__) + '/templates')
 
 def __p(*extra)
   file = extra.last == :file
