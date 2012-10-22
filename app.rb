@@ -21,11 +21,6 @@ class NilClass; def blank?; true end end
 class DocServer < Sinatra::Base
   include YARD::Server
 
-  DISALLOWED_GEMS = %w(netsuite_client)
-  DISALLOWED_PROJECTS = %w(kraeftemessen/spider-network)
-  WHITELISTED_GEMS = %w(yard)
-  WHITELISTED_PROJECTS = %w(lsegal/yard)
-
   def self.adapter_options
     caching = %w(staging production).include?(ENV['RACK_ENV'])
     {
@@ -38,6 +33,11 @@ class DocServer < Sinatra::Base
   def self.load_configuration
     set :name, 'RubyDoc.info'
     set :url, 'http://rubydoc.info'
+
+    set :disallowed_projects, []
+    set :disallowed_gems, []
+    set :whitelisted_projects, []
+    set :whitelisted_gems, []
 
     return unless File.file?(CONFIG_FILE)
 
@@ -255,11 +255,11 @@ class DocServer < Sinatra::Base
       url = url.sub(%r{^http://}, 'git://')
       if url =~ %r{github\.com/([^/]+)/([^/]+)}
         username, project = $1, $2
-        if WHITELISTED_PROJECTS.include?("#{username}/#{project}")
+        if settings.whitelisted_projects.include?("#{username}/#{project}")
           puts "Dropping safe mode for #{username}/#{project}"
           YARD::Config.options[:safe_mode] = false
         end
-        if DISALLOWED_PROJECTS.include?("#{username}/#{project}")
+        if settings.disallowed_projects.include?("#{username}/#{project}")
           return status(503) && "Cannot parse this project"
         end
       end
@@ -316,7 +316,7 @@ class DocServer < Sinatra::Base
 
   get %r{^/(?:(?:search|list)/)?github/([^/]+)/([^/]+)} do |username, project|
     @username, @project = username, project
-    if WHITELISTED_PROJECTS.include?("#{username}/#{project}")
+    if settings.whitelisted_projects.include?("#{username}/#{project}")
       puts "Dropping safe mode for #{username}/#{project}"
       YARD::Config.options[:safe_mode] = false
     end
@@ -326,8 +326,8 @@ class DocServer < Sinatra::Base
   end
 
   get %r{^/(?:(?:search|list)/)?gems/([^/]+)} do |gemname|
-    return status(503) && "Cannot parse this gem" if DISALLOWED_GEMS.include?(gemname)
-    if WHITELISTED_GEMS.include?(gemname)
+    return status(503) && "Cannot parse this gem" if settings.disallowed_gems.include?(gemname)
+    if settings.whitelisted_gems.include?(gemname)
       puts "Dropping safe mode for #{gemname}"
       YARD::Config.options[:safe_mode] = false
     end

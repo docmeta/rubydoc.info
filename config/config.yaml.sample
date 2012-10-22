@@ -42,3 +42,17 @@
 #   yard:
 #     0.6.4: /path/to/yard/0.6.4
 #     0.6.0: /path/to/yard/0.6.0
+
+# Projects / gems that are whitelisted for template and non-plugin code execution:
+# whitelisted_projects:
+#   - lsegal/yard
+#
+# whitelisted_gems:
+#   - yard
+
+# Projects / gems that are blacklisted from the site
+# disallowed_projects:
+#   - user/projectname
+#
+# disallowed_gems:
+#   - gemname
