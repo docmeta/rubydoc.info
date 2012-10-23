@@ -1,9 +1,10 @@
+app_dir = File.expand_path(File.dirname(__FILE__))
 worker_processes 1
-working_directory Dir.pwd
-listen 8080, :tcp_nopush => true
-pid "#{Dir.pwd}/tmp/pids/unicorn.pid"
-stderr_path "#{Dir.pwd}/log/unicorn.log"
-stdout_path "#{Dir.pwd}/log/unicorn.log"
+working_directory app_dir
+listen "#{app_dir}/tmp/sock/unicorn.sock", :backlog => 64
+pid "#{app_dir}/tmp/pids/unicorn.pid"
+stderr_path "#{app_dir}/log/unicorn.log"
+stdout_path "#{app_dir}/log/unicorn.log"
 preload_app true
 
 before_fork do |server, worker|
@@ -18,7 +19,7 @@ before_fork do |server, worker|
   #
   # Using this method we get 0 downtime deploys.
 
-  old_pid = "#{Dir.pwd}/tmp/pids/unicorn.pid.oldbin"
+  old_pid = "#{app_dir}/tmp/pids/unicorn.pid.oldbin"
   if File.exists?(old_pid) && server.pid != old_pid
     begin
       Process.kill("QUIT", File.read(old_pid).to_i)
