@@ -31,6 +31,23 @@
     <% end %>
   </ul>
 
+  <% if @search && (exact_match = @libraries.find { |k,v| k == @search }) %>
+    <h3>Exact match</h3>
+    <ul class="libraries">
+      <li class="r1">
+        <% library_versions = exact_match[1].dup %>
+        <% first_lib = library_versions.pop %>
+        <a href="#/<%= @adapter.router.docs_prefix %>/<%= first_lib.name %>/frames"><%= exact_match[0] %></a>
+        <% if first_lib && first_lib.version %>
+          <small>(<%= first_lib.version %><% if library_versions.size > 0 %>,
+            <%= library_versions.reverse[0..3].map {|lib| "<a href=\"#/#{@adapter.router.docs_prefix}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
+        <% end %>
+      </li>
+    </ul>
+
+    <h3>All matches</h3>
+  <% end %>
+
   <ul class="libraries">
     <% @libraries.sort_by {|name, y| name.downcase }.each do |name, library_versions| %>
     <li class="r<%= @row = @row == 1 ? 2 : 1 %>">
