@@ -126,9 +126,11 @@ class GithubCheckout < ScmCheckout
 
   def commit=(value)
     value = nil if value == ''
-    @commit = value || 'master'
-    @commit = @commit[0,6] if @commit.length == 40
-    @commit
+    if @commit = value
+      @commit = @commit[0,6] if @commit.length == 40
+      @commit = @commit[/\A\s*([a-z0-9.\/-]+)/i, 1]
+    end
+    @commit ||= 'master'
   end
 
   def repository_path
