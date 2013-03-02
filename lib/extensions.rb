@@ -107,9 +107,32 @@ module YARD
       def expand_gem(io)
         log.debug "Expanding remote gem #{to_s(false)} to #{source_path}..."
         FileUtils.mkdir_p(source_path)
-        Gem::Package.open(io) do |pkg|
-          pkg.each do |entry|
-            pkg.extract_entry(source_path, entry)
+
+        if Gem::VERSION >= '2.0.0'
+          require 'rubygems/package/tar_reader'
+          reader = Gem::Package::TarReader.new(io)
+          reader.each do |pkg|
+            if pkg.full_name == 'data.tar.gz'
+              Zlib::GzipReader.wrap(pkg) do |gzio|
+                tar = Gem::Package::TarReader.new(gzio)
+                tar.each do |entry|
+                  mode = entry.header.mode
+                  file = File.join(source_path, entry.full_name)
+                  FileUtils.mkdir_p(File.dirname(file))
+                  File.open(file, 'wb') do |out|
+                    out.write(entry.read)
+                    out.fsync rescue nil
+                  end
+                end
+              end
+              break
+            end
+          end
+        else
+          Gem::Package.open(io) do |pkg|
+            pkg.each do |entry|
+              pkg.extract_entry(source_path, entry)
+            end
           end
         end
       end
