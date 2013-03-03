@@ -210,6 +210,7 @@ class DocServer < Sinatra::Base
 
     def cache(output)
       return output if settings.caching != true
+      return '' if output.nil? || output.empty?
       path = request.path.gsub(%r{^/|/$}, '')
       path = 'index' if path == ''
       path = File.join(settings.public_folder, path + '.html')
