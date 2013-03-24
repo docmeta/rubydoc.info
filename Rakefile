@@ -49,6 +49,18 @@ namespace :cache do
     puts '>> Removing index cache pages'
     load('scripts/clean_index_cache.rb')
   end
+
+  desc 'Clean HTML cache (github, gems, featured)'
+  task :clean_disk_html do
+    puts '>> Removing HTML cache pages'
+    system 'find public/github public/gems public/featured public/docs -atime +7 -exec rm -vrf {} \;'
+  end
+
+  desc 'Clean repository cache (github, gems)'
+  task :clean_disk_repos do
+    puts '>> Removing gem repositories'
+    system 'rm -rf repos/gems/*'
+  end
 end
 
 namespace :stdlib do
