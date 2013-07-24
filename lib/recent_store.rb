@@ -37,6 +37,6 @@ class RecentStore
   end
 
   def each(&block)
-    LibraryStore.select.order(:created_at.desc).limit(@maxsize).all.each(&block)
+    LibraryStore.select.order(Sequel.desc(:created_at)).limit(@maxsize).all.each(&block)
   end
 end
