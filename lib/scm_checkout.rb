@@ -16,7 +16,7 @@ class ScmCheckout
   end
 
   def name=(name)
-    @name = name.gsub(/[^a-z0-9\-\/]/i, '_')
+    @name = name.gsub(/[^a-z0-9\-\/\.]/i, '_')
   end
 
   def register_project
