@@ -105,7 +105,7 @@ module YARD
 
       def generate_yardoc
         `cd #{source_path} &&
-          #{YARD::ROOT}/../bin/yardoc -n -q --safe &&
+          #{YARD::ROOT}/../bin/yardoc -n -q #{YARD::Config.options[:safe_mode] ? '--safe' : ''} &&
           touch .yardoc/complete`
       end
 
