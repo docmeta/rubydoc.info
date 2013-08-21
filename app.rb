@@ -358,10 +358,15 @@ class DocServer < Sinatra::Base
 
   # Featured libraries
 
-  get %r{^/(?:(?:search|list)/)?docs/([^/]+)} do |libname|
+  get %r{^/(?:(?:search|list)/)?docs/([^/]+)(/?.*)} do |libname, extra|
     YARD::Config.options[:safe_mode] = false
     @libname = libname
-    pass unless settings.featured_adapter.libraries[libname]
+    lib = settings.featured_adapter.libraries[libname]
+    pass if lib.nil? || lib.empty?
+    if lib.first.source == :remote_gem
+      return redirect("/gems/#{libname}#{extra}", 302)
+    end
+
     result = settings.featured_adapter.call(env)
     return status(404) && erb(:featured_404) if result.first == 404
     result
