@@ -11,7 +11,7 @@ namespace :server do
   end
 
   desc 'Restart the server'
-  task :restart do
+  task :restart => 'cache:clean_index' do
     sh "kill -USR2 `cat tmp/pids/unicorn.pid`"
   end
 
