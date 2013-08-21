@@ -4,7 +4,9 @@ task :default => 'gems:update'
 
 namespace :server do
   desc 'Start the server'
-  task :start do
+  task :start => 'cache:clean_index' do
+    mkdir_p 'tmp/pids'
+    mkdir_p 'log'
     sh "unicorn -E production -D -c unicorn.conf.rb"
   end
 
