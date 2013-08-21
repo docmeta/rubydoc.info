@@ -3,7 +3,6 @@ doc
 .*.swp
 .yardoc
 .rvmrc
-Gemfile.lock
 config/config.yaml
 tmp
 repos
