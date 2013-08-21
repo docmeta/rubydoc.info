@@ -5,12 +5,12 @@ class SourceCleaner
     self.basepath = basepath
   end
 
-  def clean
-    if !YARD::Config.options[:safe_mode]
-      puts "#{Time.now}: Not cleaning #{basepath}, safemode=false"
-      return
-    else
+  def clean(safe_mode = YARD::Config.options[:safe_mode])
+    if safe_mode
       puts "#{Time.now}: Cleaning #{basepath} (safemode=true)..."
+    else
+      puts "#{Time.now}: Not cleaning #{basepath} (safemode=false)"
+      return
     end
 
     yardopts = File.join(basepath, '.yardopts')

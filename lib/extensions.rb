@@ -69,12 +69,14 @@ module YARD
 
         FileUtils.mkdir_p(source_path)
 
+        safe_mode = YARD::Config.options[:safe_mode]
+
         Thread.new do
           begin
             open(url) do |io|
               expand_gem(io)
-              generate_yardoc
-              clean_source
+              generate_yardoc(safe_mode)
+              clean_source(safe_mode)
             end
             self.yardoc_file = yfile
           rescue OpenURI::HTTPError
@@ -103,9 +105,9 @@ module YARD
 
       private
 
-      def generate_yardoc
+      def generate_yardoc(safe_mode)
         `cd #{source_path} &&
-          #{YARD::ROOT}/../bin/yardoc -n -q #{YARD::Config.options[:safe_mode] ? '--safe' : ''} &&
+          #{YARD::ROOT}/../bin/yardoc -n -q #{safe_mode ? '--safe' : ''} &&
           touch .yardoc/complete`
       end
 
@@ -141,8 +143,8 @@ module YARD
         end
       end
 
-      def clean_source
-        SourceCleaner.new(source_path).clean
+      def clean_source(safe_mode)
+        SourceCleaner.new(source_path).clean(safe_mode)
       end
     end
   end
