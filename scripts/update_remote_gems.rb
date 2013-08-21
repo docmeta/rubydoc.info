@@ -25,8 +25,14 @@ def pick_best_versions(versions)
 end
 
 libs = {}
-Gem::SpecFetcher.fetcher.list(true).values.flatten(1).each do |info|
-  (libs[info[0]] ||= []) << GemVersion.new(*info)
+if Gem::VERSION < '2.0'
+  Gem::SpecFetcher.fetcher.list(true).values.flatten(1).each do |info|
+    (libs[info[0]] ||= []) << GemVersion.new(*info)
+  end
+else # RubyGems 2.x API
+  Gem::SpecFetcher.fetcher.available_specs(:released).first.values.flatten(1).each do |tuple|
+    (libs[tuple.name] ||= []) << GemVersion.new(tuple.name, tuple.version, tuple.platform)
+  end
 end
 
 # Keep track of updates gems
