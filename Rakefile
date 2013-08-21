@@ -68,6 +68,8 @@ end
 namespace :stdlib do
   desc 'Installs a standard library SOURCE=pathtolib VERSION=targetversion'
   task :install do
+    raise 'Missing SOURCE path (SOURCE=pathtolib)' unless ENV['SOURCE']
+    raise 'Missing Ruby version (VERSION=targetversion)' unless ENV['VERSION']
     require 'stdlib_installer'
     StdlibInstaller.new(ENV['SOURCE'], ENV['VERSION']).install
   end
