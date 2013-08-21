@@ -65,7 +65,7 @@ module YARD
         # Remote gemfile from rubygems.org
         suffix = platform ? "-#{platform}" : ""
         url = "http://rubygems.org/downloads/#{to_s(false)}#{suffix}.gem"
-        puts "Downloading remote gem file #{url}"
+        puts "#{Time.now}: Downloading remote gem file #{url}"
 
         FileUtils.mkdir_p(source_path)
 

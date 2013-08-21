@@ -7,10 +7,10 @@ class SourceCleaner
 
   def clean
     if !YARD::Config.options[:safe_mode]
-      puts "Not cleaning #{basepath}, safemode=true"
+      puts "#{Time.now}: Not cleaning #{basepath}, safemode=false"
       return
     else
-      puts "Cleaning #{basepath}..."
+      puts "#{Time.now}: Cleaning #{basepath} (safemode=true)..."
     end
 
     yardopts = File.join(basepath, '.yardopts')
