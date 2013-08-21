@@ -17,12 +17,13 @@ enhancements are welcome.
 
 Running the doc server locally is easy:
 
-* git clone git://github.com/lsegal/rubydoc.info
-* git clone git://github.com/lsegal/yard yard (must be one level above the Gemfile)
-* cd rubydoc.info
-* bundle install
-* rake gems:update
-* rackup config.ru
+```
+$ git clone git://github.com/lsegal/rubydoc.info
+$ cd rubydoc.info
+$ bundle install
+$ rake gems:update
+$ rackup config.ru
+```
 
 Contributors
 ------------
