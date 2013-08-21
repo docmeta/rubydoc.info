@@ -110,8 +110,7 @@ module YARD
       end
 
       def expand_gem(io)
-        log.debug "Expanding remote gem #{to_s(false)} to #{source_path}..."
-        FileUtils.mkdir_p(source_path)
+        puts "Expanding remote gem #{to_s(false)} to #{source_path}..."
 
         if Gem::VERSION >= '2.0.0'
           require 'rubygems/package/tar_reader'
