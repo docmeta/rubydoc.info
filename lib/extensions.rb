@@ -53,7 +53,7 @@ module YARD
 
       def load_yardoc_from_remote_gem
         yfile = File.join(source_path, '.yardoc')
-        if File.directory?(yfile)
+        if File.directory?(source_path)
           if File.exist?(File.join(yfile, 'complete'))
             self.yardoc_file = yfile
             return
@@ -65,7 +65,10 @@ module YARD
         # Remote gemfile from rubygems.org
         suffix = platform ? "-#{platform}" : ""
         url = "http://rubygems.org/downloads/#{to_s(false)}#{suffix}.gem"
-        log.debug "Searching for remote gem file #{url}"
+        puts "Downloading remote gem file #{url}"
+
+        FileUtils.mkdir_p(source_path)
+
         Thread.new do
           begin
             open(url) do |io|
@@ -75,7 +78,9 @@ module YARD
             end
             self.yardoc_file = yfile
           rescue OpenURI::HTTPError
+            FileUtils.rmdir(source_path)
           rescue IOError
+            FileUtils.rm_rf(source_path)
             self.yardoc_file = yfile
           end
         end
