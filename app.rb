@@ -78,7 +78,7 @@ class DocServer < Sinatra::Base
       end
     end
     opts[:options][:router] = GemsRouter
-    set :gems_adapter, RackAdapter.new(*opts.values)
+    set :gems_adapter, $gems_adapter = RackAdapter.new(*opts.values)
   rescue Errno::ENOENT
     log.error "No remote_gems file to load remote gems from, not serving gems."
   end
@@ -105,7 +105,11 @@ class DocServer < Sinatra::Base
     the_options[:featured].each do |key, value|
       opts[:libraries][key] = case value
       when String
-        [LibraryVersion.new(key, nil, find_featured_yardoc(key, value))]
+        if value == "gem"
+          $gems_adapter && $gems_adapter.libraries[key] ? $gems_adapter.libraries[key] : []
+        else
+          [LibraryVersion.new(key, nil, find_featured_yardoc(key, value))]
+        end
       when Array, Hash
         value = value.first if Array === value
         value.map do |version, libdir|

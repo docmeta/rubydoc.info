@@ -38,10 +38,10 @@
     <li class="r<%= @row = @row == 1 ? 2 : 1 %>">
       <% library_versions = library_versions.dup %>
       <% first_lib = library_versions.pop %>
-      <a href="/docs/<%= first_lib %>/frames"><%= name %></a>
+      <a href="/<%= first_lib.source == :remote_gem ? 'gems' : 'docs' %>/<%= first_lib %>/frames"><%= name %></a>
       <% if first_lib && first_lib.version %>
         <small>(<%= first_lib.version %><% if library_versions.size > 0 %>,
-          <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/docs/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
+          <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/#{lib.source == :remote_gem ? 'gems' : 'docs'}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
       <% end %>
     </li>
     <% end %>
