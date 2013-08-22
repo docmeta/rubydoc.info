@@ -40,7 +40,7 @@ class DocServer < Sinatra::Base
     set :caching, false
 
     if $CONFIG.varnish_host
-      set :protection, :origin_whitelist => ["https://#{$CONFIG.varnish_host}"]
+      set :protection, :origin_whitelist => ["http://#{$CONFIG.varnish_host}"]
     end
 
     puts ">> Loading #{CONFIG_FILE}"
