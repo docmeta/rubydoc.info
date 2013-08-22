@@ -24,8 +24,11 @@ module Cache
     files = []
     paths.each do |f|
       f = '/index' if f == '/'
-      f += '.html' unless f[-1,1] == '/'
-      files << File.join(STATIC_PATH, f)
+      if f[-1,1] == '/'
+        files << File.join(STATIC_PATH, f)
+        f = f[0...-1]
+      end
+      files << File.join(STATIC_PATH, f + '.html')
     end
 
     rm_cmd = "rm -rf #{files.join(' ')}"
