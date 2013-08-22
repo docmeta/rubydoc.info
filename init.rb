@@ -5,6 +5,7 @@ $:.unshift(File.expand_path(File.dirname(__FILE__) + '/../yard/lib'))
 
 require 'rubygems'
 require 'bundler/setup'
+require 'yaml'
 require 'yard'
 require 'yard-sd'
 require 'yard-rails'
@@ -33,3 +34,9 @@ TEMPLATES_PATH   = __p('templates')
 CONFIG_FILE      = __p('config', 'config.yaml', :file)
 REMOTE_GEMS_FILE = __p('data', 'remote_gems', :file)
 RECENT_SQL_FILE  = __p('data', 'recent.sqlite', :file)
+
+require_relative 'lib/helpers'
+require_relative 'lib/cache'
+require_relative 'lib/configuration'
+
+$CONFIG = Configuration.load

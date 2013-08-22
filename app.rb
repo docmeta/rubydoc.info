@@ -3,7 +3,6 @@ require File.join(File.dirname(__FILE__), 'init')
 require 'yard'
 require 'sinatra'
 require 'json'
-require 'yaml'
 require 'fileutils'
 require 'airbrake'
 
@@ -40,15 +39,9 @@ class DocServer < Sinatra::Base
     set :whitelisted_gems, []
     set :caching, false
 
-    return unless File.file?(CONFIG_FILE)
-
     puts ">> Loading #{CONFIG_FILE}"
-    YAML.load_file(CONFIG_FILE).each do |key, value|
+    $CONFIG.each do |key, value|
       set key, value
-      the_options[key.to_sym] = value
-      $DISQUS = value if key == 'disqus' # HACK for DISQUS setting
-      $CLICKY = value if key == 'clicky' # Hack for Clicky setting
-      $GOOGLE_ANALYTICS = value if key == 'google_analytics' # Hack for GA settings
     end
   end
 
@@ -100,10 +93,10 @@ class DocServer < Sinatra::Base
   end
 
   def self.load_featured_adapter
-    raise(Errno::ENOENT) unless the_options.has_key?(:featured)
+    raise(Errno::ENOENT) unless $CONFIG.has_key?(:featured)
     opts = adapter_options
     opts[:options][:router] = FeaturedRouter
-    the_options[:featured].each do |key, value|
+    $CONFIG[:featured].each do |key, value|
       opts[:libraries][key] = case value
       when String
         if value == "gem"
@@ -152,9 +145,6 @@ class DocServer < Sinatra::Base
   def self.post_all(*args, &block)
     args.each {|arg| post(arg, &block) }
   end
-
-  class << self; attr_accessor :the_options end
-  @the_options = {}
 
   use Rack::Deflater
   use Rack::ConditionalGet
