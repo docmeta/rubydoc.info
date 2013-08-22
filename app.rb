@@ -24,7 +24,7 @@ class NoCacheEmptyBody
   def call(env)
     status, headers, body = *@app.call(env)
     if headers.has_key?('Content-Length') && headers['Content-Length'].to_i == 0
-      headers['Cache-Control'] = 'max-age=0, must-revalidate'
+      headers['Cache-Control'] = 'max-age=0'
     end
     [status, headers, body]
   end
@@ -248,6 +248,7 @@ class DocServer < Sinatra::Base
 
   # Always reset safe mode
   before { YARD::Config.options[:safe_mode] = true }
+  before { last_modified Time.now }
 
   # Checkout and post commit hooks
 
