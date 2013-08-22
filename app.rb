@@ -17,6 +17,15 @@ require 'recent_store'
 class Hash; alias blank? empty? end
 class NilClass; def blank?; true end end
 
+class NoCacheEmptyBody
+  def initialize(app) @app = app end
+  def call(env)
+    status, headers, body = *@app.call(env)
+    headers['Cache-Control'] = 'max-age=0' if body.length == 0
+    [status, headers, body]
+  end
+end
+
 class DocServer < Sinatra::Base
   include YARD::Server
 
@@ -152,9 +161,9 @@ class DocServer < Sinatra::Base
     args.each {|arg| post(arg, &block) }
   end
 
-  use Rack::Deflater
   use Rack::ConditionalGet
   use Rack::Head
+  use NoCacheEmptyBody
 
   enable :static
   enable :dump_errors
