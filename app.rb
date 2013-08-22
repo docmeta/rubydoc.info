@@ -97,10 +97,15 @@ class DocServer < Sinatra::Base
   end
 
   def self.load_featured_adapter
-    raise(Errno::ENOENT) unless $CONFIG.has_key?(:featured)
+    if !$CONFIG.featured
+      log.error "No featured section in config.yaml, not serving featured docs."
+      set :featured_adapter, nil
+      return
+    end
+
     opts = adapter_options
     opts[:options][:router] = FeaturedRouter
-    $CONFIG[:featured].each do |key, value|
+    $CONFIG.featured.each do |key, value|
       opts[:libraries][key] = case value
       when String
         if value == "gem"
@@ -116,9 +121,6 @@ class DocServer < Sinatra::Base
       end
     end
     set :featured_adapter, RackAdapter.new(*opts.values)
-  rescue Errno::ENOENT
-    log.error "No featured section in config.yaml, not serving featured docs."
-    set :featured_adapter, nil
   end
 
 
