@@ -21,7 +21,7 @@ class DocServer < Sinatra::Base
   include YARD::Server
 
   def self.adapter_options
-    caching = %w(staging production).include?(ENV['RACK_ENV'])
+    caching = %w(staging production).include?(ENV['RACK_ENV']) ? $CONFIG.caching : false
     {
       :libraries => {},
       :options => {caching: caching, single_library: false},
