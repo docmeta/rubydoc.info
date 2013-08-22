@@ -1,7 +1,6 @@
 #!/usr/bin/env ruby
 # Removes index pages (gems, github, home)
 require_relative '../init'
+require_relative '../lib/cache'
 
-['gems/*.html', 'github/*.html', 'featured.html', 'github.html', 'gems.html', 'index.html', 'stdlib.html', '.html'].each do |file|
-  system "rm #{File.join(STATIC_PATH, file)}"
-end
+Cache.invalidate *%w(/gems/* /github/* /featured /github /gems /stdlib /)

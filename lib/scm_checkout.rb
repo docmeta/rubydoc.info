@@ -1,11 +1,14 @@
 require 'open-uri'
-require 'open3'
 require 'json'
 require_relative 'source_cleaner'
+require_relative 'helpers'
+require_relative 'cache'
 
 class InvalidSchemeError < RuntimeError; end
 
 class ScmCheckout
+  include Helpers
+
   attr_accessor :name, :url, :settings, :app, :commit
 
   def initialize(app, url, commit = nil)
@@ -48,11 +51,8 @@ class ScmCheckout
   end
 
   def flush_cache
-    files = ["github.html", "github/#{project[0,1]}.html",
-      "github/#{name}.html", "github/#{name}", "list/github/#{name}",
-      "index.html", ".html"]
-    rm_cmd = "rm -rf #{files.map {|f| File.join(settings.public_folder, f) }.join(' ')}"
-    sh(rm_cmd, "Flushing cache for #{name}", false)
+    Cache.invalidate("/github", "/github/#{project[0,1]}",
+                     "/github/#{name}/", "/list/github/#{name}/", "/")
   end
 
   def checkout
@@ -83,25 +83,6 @@ class ScmCheckout
 
   def unlink_error_file
     File.unlink(error_file) if File.file?(error_file)
-  end
-
-  def sh(command, title = "", write_error = true)
-    puts(log = "#{Time.now}: #{title}: #{command}")
-    if write_error
-      result, out_data, err_data = 0, "", ""
-      Open3.popen3(command) do |_, out, err, thr|
-         out_data, err_data, result = out.read, err.read, thr.value
-      end
-    else
-      `#{command}`
-      result = $?
-    end
-    puts(log = "#{Time.now}: #{title}, result=#{result.to_i}")
-    if write_error && result != 0
-      data = "#{log}\n\nSTDOUT:\n#{out_data}\n\nSTDERR:\n#{err_data}\n\n"
-      write_error_file(data)
-    end
-    result
   end
 
   def clear_source_files
