@@ -23,7 +23,9 @@ class NoCacheEmptyBody
   def initialize(app) @app = app end
   def call(env)
     status, headers, body = *@app.call(env)
-    headers['Cache-Control'] = 'max-age=0' if headers['Content-Length'].length == 0
+    if headers.has_key?('Content-Length') && headers['Content-Length'].to_i == 0
+      headers['Cache-Control'] = 'max-age=0, must-revalidate'
+    end
     [status, headers, body]
   end
 end
@@ -165,8 +167,7 @@ class DocServer < Sinatra::Base
 
   use Rack::ConditionalGet
   use Rack::Head
-  use Rack::ETag
-  #use NoCacheEmptyBody
+  use NoCacheEmptyBody
 
   enable :static
   enable :dump_errors
