@@ -14,6 +14,8 @@ require 'featured_router'
 require 'stdlib_router'
 require 'recent_store'
 
+require 'rack/etag'
+
 class Hash; alias blank? empty? end
 class NilClass; def blank?; true end end
 
@@ -163,7 +165,8 @@ class DocServer < Sinatra::Base
 
   use Rack::ConditionalGet
   use Rack::Head
-  use NoCacheEmptyBody
+  use Rack::ETag
+  #use NoCacheEmptyBody
 
   enable :static
   enable :dump_errors
