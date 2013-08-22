@@ -37,7 +37,9 @@ module Cache
     http = Net::HTTP::Persistent.new
     puts "Flushing cache on #{uri}: #{paths}"
     paths.each do |path|
-      if path[-1,1] == '/'
+      if path == '/'
+        path = Regexp.quote(path) + '$'
+      elsif path[-1,1] == '/'
         path = Regexp.quote(path[0...-1]) + '(/?$|/.*$)'
       else
         if path[-1,1] == '*'
