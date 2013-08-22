@@ -38,6 +38,7 @@ GEM
       syntax (>= 1.0.0)
     minitest (4.7.5)
     multi_json (1.7.9)
+    net-http-persistent (2.9)
     rack (1.5.2)
     rack-protection (1.5.0)
       rack
@@ -87,6 +88,7 @@ DEPENDENCIES
   json
   kramdown
   maruku
+  net-http-persistent (~> 2.0)
   rake
   rdiscount!
   rdoc (= 3.9.4)
