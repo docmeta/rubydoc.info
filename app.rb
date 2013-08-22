@@ -248,7 +248,9 @@ class DocServer < Sinatra::Base
 
   # Always reset safe mode
   before { YARD::Config.options[:safe_mode] = true }
-  before { last_modified Time.now }
+
+  # Set Last-Modified on all requests
+  after { last_modified Time.now }
 
   # Checkout and post commit hooks
 
