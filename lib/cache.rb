@@ -38,16 +38,18 @@ module Cache
     puts "Flushing cache on #{uri}: #{paths}"
     paths.each do |path|
       if path[-1,1] == '/'
-        path = path[0...-1] + '(/?$|/.*$)'
+        path = Regexp.quote(path[0...-1]) + '(/?$|/.*$)'
       else
         if path[-1,1] == '*'
-          path = path[0...-1] + '[^/]*'
+          path = Regexp.quote(path[0...-1]) + '[^/]*'
+        else
+          path = Regexp.quote(path)
         end
         path += '$'
       end
 
       begin
-        http.request(uri, PurgeRequest.new(path))
+        http.request(uri, PurgeRequest.new('/', 'x-path' => path))
       rescue
         puts "#{Time.now}: Could not invalidate cache on #{uri}#{path}"
       end
