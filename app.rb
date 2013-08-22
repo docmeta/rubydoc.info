@@ -39,6 +39,10 @@ class DocServer < Sinatra::Base
     set :whitelisted_gems, []
     set :caching, false
 
+    if $CONFIG.varnish_host
+      set :protection, :origin_whitelist => ["https://#{$CONFIG.varnish_host}"]
+    end
+
     puts ">> Loading #{CONFIG_FILE}"
     $CONFIG.each do |key, value|
       set key, value
