@@ -38,6 +38,7 @@ class DocServer < Sinatra::Base
     set :disallowed_gems, []
     set :whitelisted_projects, []
     set :whitelisted_gems, []
+    set :caching, false
 
     return unless File.file?(CONFIG_FILE)
 
@@ -162,7 +163,6 @@ class DocServer < Sinatra::Base
   enable :static
   enable :dump_errors
   enable :lock
-  disable :caching
   disable :raise_errors
 
   set :views, TEMPLATES_PATH
@@ -171,7 +171,6 @@ class DocServer < Sinatra::Base
   set :tmp, TMP_PATH
 
   configure(:production) do
-    enable :caching
     enable :logging
     # log to file
     file = File.open("log/sinatra.log", "a")
