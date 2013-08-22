@@ -52,11 +52,9 @@ end
 
 # Clear cache for gem frames page with new gems
 # TODO: improve this cache invalidation to be version specific
-changed_gems.keys.each do |gem|
-  paths = [File.join(STATIC_PATH, 'gems', gem), File.join(STATIC_PATH, 'list', 'gems', gem)]
-  paths.each do |path|
-    system "rm -rf #{path}" if File.directory?(path)
-  end
+changed_gems.keys.each do |gem_name|
+  Cache.invalidate "/gems/#{gem_name[0,1]}", "/gems/#{gem_name}/",
+                   "/list/gems/#{gem_name}/"
 end
 
 if changed_gems.size > 0
