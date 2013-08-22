@@ -23,6 +23,7 @@ gem 'yard-rails'
 gem 'yard-kramdown'
 gem 'yard-sd'
 gem 'i18n'
+gem 'net-http-persistent', '~> 2.0'
 
 group :test do
   gem 'rspec', :require => 'spec'
