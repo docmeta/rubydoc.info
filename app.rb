@@ -21,7 +21,7 @@ class NoCacheEmptyBody
   def initialize(app) @app = app end
   def call(env)
     status, headers, body = *@app.call(env)
-    headers['Cache-Control'] = 'max-age=0' if body.length == 0
+    headers['Cache-Control'] = 'max-age=0' if headers['Content-Length'].length == 0
     [status, headers, body]
   end
 end
