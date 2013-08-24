@@ -12,12 +12,6 @@ class Configuration < Hash
     config
   end
 
-  def caching_type
-    if caching; :disk
-    elsif varnish_host; :varnish
-    end
-  end
-
   def method_missing(name, *args, &block)
     self[name]
   end

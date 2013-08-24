@@ -12,12 +12,8 @@ module Cache
   module_function
 
   def invalidate(*paths)
-    case $CONFIG.caching_type
-    when :disk
-      invalidate_on_disk(*paths)
-    when :varnish
-      invalidate_with_varnish(*paths)
-    end
+    invalidate_on_disk(*paths) if $CONFIG.caching
+    invalidate_with_varnish(*paths) if $CONFIG.varnish_host
   end
 
   def invalidate_on_disk(*paths)
