@@ -79,10 +79,10 @@ module YARD
               clean_source(safe_mode)
             end
             self.yardoc_file = yfile
-          rescue OpenURI::HTTPError
+          rescue OpenURI::HTTPError => e
+            puts "#{Time.now}: ERROR DOWNLOADING GEM #{url}! (#{e.message})"
             FileUtils.rmdir(source_path)
-          rescue IOError
-            FileUtils.rm_rf(source_path)
+          rescue IOError => e
             self.yardoc_file = yfile
           end
         end
