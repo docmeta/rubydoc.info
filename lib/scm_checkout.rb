@@ -134,8 +134,8 @@ class GithubCheckout < ScmCheckout
   def fork?
     return @is_fork unless @is_fork.nil?
     if !File.directory?(File.join(settings.repos, name))
-      json = JSON.parse(open("http://github.com/api/v1/json/#{username}").read)
-      proj_json = json["user"]["repositories"].find {|s| s["name"] == project }
+      json = JSON.parse(open("https://api.github.com/users/#{username}/repos").read)
+      proj_json = json.find {|s| s["name"] == project }
       @is_fork = proj_json["fork"] if proj_json
     else
       @is_fork = true
