@@ -69,6 +69,8 @@ GEM
       kgio (~> 2.6)
       rack
       raindrops (~> 0.7)
+    yard-activerecord (0.0.11)
+      yard (>= 0.8.3)
     yard-kramdown (0.0.1)
     yard-rails (0.3.0)
       yard
@@ -102,6 +104,7 @@ DEPENDENCIES
   syntax
   unicorn
   yard!
+  yard-activerecord
   yard-kramdown
   yard-rails
   yard-redcarpet-ext (~> 0.0.3)
