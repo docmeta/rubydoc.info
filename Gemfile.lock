@@ -1,15 +1,8 @@
 GIT
-  remote: git://github.com/lsegal/rdiscount
-  revision: 8db19397587838c315bebf788091355ac09f1fb4
-  branch: gfm-fenced-code
-  specs:
-    rdiscount (2.1.6)
-
-GIT
   remote: git://github.com/lsegal/yard
-  revision: d2e4a38a52b6cd4e10bb88b20127955dd22bab21
+  revision: b78dea29adafd937f1ca5e813a5269b62ffceba3
   specs:
-    yard (0.8.7.1)
+    yard (0.8.7.3)
 
 GEM
   remote: https://rubygems.org/
@@ -44,6 +37,7 @@ GEM
       rack
     raindrops (0.11.0)
     rake (10.1.0)
+    rdiscount (2.1.7)
     rdoc (3.9.4)
     redcarpet (1.17.2)
     rspec (2.14.1)
@@ -92,7 +86,7 @@ DEPENDENCIES
   maruku
   net-http-persistent (~> 2.0)
   rake
-  rdiscount!
+  rdiscount
   rdoc (= 3.9.4)
   redcarpet (= 1.17.2)
   rspec
