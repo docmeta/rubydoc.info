@@ -1,7 +1,7 @@
 require 'sequel'
 require 'base64'
 
-DB = Sequel.sqlite('recent.sqlite')
+DB = Sequel.sqlite(RECENT_SQL_FILE)
 unless DB.table_exists?(:library_stores)
   DB.create_table(:library_stores) do
     primary_key :id
