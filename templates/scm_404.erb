@@ -8,7 +8,7 @@
     <p>We haven't generated any docs for <strong><%= @username %>/<%= @project %></strong>. You can add the project yourself by entering the Github project information below.
       You can also see a list of available projects <a href="/github">here</a>.</p>
     <script type="text/javascript" charset="utf-8">
-      $(function() { $('#url').val('git://github.com/<%= @username %>/<%= @project %>'); });
+      $(function() { $('#url').val('<%= clone_url(@username, @project) %>'); });
     </script>
 
     <%= erb :checkout, :layout => false %>

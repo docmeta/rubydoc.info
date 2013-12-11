@@ -97,7 +97,8 @@ class GithubCheckout < ScmCheckout
     case url
     when Array
       self.username, self.project = *url
-    when %r{^(?:https?|git)://(?:www\.?)?github\.com/([^/]+)/([^/]+?)(?:\.git)?/?$}
+    when %r{^(?:https?|git)://(?:www\.?)?github\.com/([^/]+)/([^/]+?)(?:\.git)?/?$},
+      %r{^git@github\.com:([^/]+)/([^/]+?)(?:\.git)?/?$}
       self.username, self.project = $1, $2
     else
       raise InvalidSchemeError

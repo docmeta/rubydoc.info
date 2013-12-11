@@ -242,6 +242,11 @@ class DocServer < Sinatra::Base
     def shorten_commit_link(commit)
       commit.slice(0..5)
     end
+
+    def clone_url(username, project)
+      prefix = $CONFIG.use_ssh_clones ? "git@github.com:" : "git://github.com/"
+      "#{prefix}#{username}/#{project}"
+    end
   end
 
   # Filters
@@ -267,7 +272,7 @@ class DocServer < Sinatra::Base
       end
 
       url = url.sub(%r{^http://}, 'git://')
-      if url =~ %r{github\.com/([^/]+)/([^/]+)}
+      if url =~ %r{github\.com[/:]([^/]+)/([^/]+)}
         username, project = $1, $2
         if settings.whitelisted_projects.include?("#{username}/#{project}")
           puts "Dropping safe mode for #{username}/#{project}"
