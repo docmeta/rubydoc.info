@@ -185,10 +185,12 @@ class DocServer < Sinatra::Base
 
   configure(:production) do
     enable :logging
-    # log to file
-    file = File.open(File.join(LOG_PATH, "sinatra.log"), "a")
-    STDOUT.reopen(file)
-    STDERR.reopen(file)
+    unless $CONFIG.log_to_stdout
+      # log to file
+      file = File.open(File.join(LOG_PATH, "sinatra.log"), "a")
+      STDOUT.reopen(file)
+      STDERR.reopen(file)
+    end
   end
 
   configure do
