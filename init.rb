@@ -37,6 +37,7 @@ CONFIG_FILE      = File.join(File.dirname(__FILE__), 'config/config.yaml')
 $CONFIG = Configuration.load(CONFIG_FILE)
 
 PUBLIC_PATH      = File.join(File.dirname(__FILE__), 'public')
+LOG_PATH         = __p('log')
 STATIC_PATH      = __p('public')
 REPOS_PATH       = __p('repos', 'github')
 REMOTE_GEMS_PATH = __p('repos', 'gems')
