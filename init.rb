@@ -18,26 +18,36 @@ YARD::Templates::Engine.register_template_path(File.dirname(__FILE__) + '/templa
 def __p(*extra)
   file = extra.last == :file
   extra.pop if file
-  path = File.join(File.dirname(__FILE__), *extra)
+
+  conf = $CONFIG.paths
+  while !extra.empty? && conf.is_a?(Hash) && conf.key?(extra.first)
+    conf = conf[extra.shift]
+  end
+
+  root = conf.is_a?(String) ? conf : File.dirname(__FILE__)
+  path = File.join(root, *extra)
   FileUtils.mkdir_p(path) unless File.exists?(path) || file
   path
 end
 
-CONFIG_PATH      = __p('config')
+require_relative 'lib/configuration'
+
+CONFIG_FILE      = File.join(File.dirname(__FILE__), 'config/config.yaml')
+
+$CONFIG = Configuration.load(CONFIG_FILE)
+
+PUBLIC_PATH      = File.join(File.dirname(__FILE__), 'public')
 STATIC_PATH      = __p('public')
-REPOS_PATH       = __p('repos/github')
-REMOTE_GEMS_PATH = __p('repos/gems')
-STDLIB_PATH      = __p('repos/stdlib')
-FEATURED_PATH    = __p('repos/featured')
+REPOS_PATH       = __p('repos', 'github')
+REMOTE_GEMS_PATH = __p('repos', 'gems')
+STDLIB_PATH      = __p('repos', 'stdlib')
+FEATURED_PATH    = __p('repos', 'featured')
 TMP_PATH         = __p('tmp')
 DATA_PATH        = __p('data')
 TEMPLATES_PATH   = __p('templates')
-CONFIG_FILE      = __p('config', 'config.yaml', :file)
 REMOTE_GEMS_FILE = __p('data', 'remote_gems', :file)
 RECENT_SQL_FILE  = __p('data', 'recent.sqlite', :file)
 
 require_relative 'lib/helpers'
 require_relative 'lib/cache'
-require_relative 'lib/configuration'
 
-$CONFIG = Configuration.load

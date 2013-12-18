@@ -1,9 +1,9 @@
 class Configuration < Hash
-  def self.load
+  def self.load(path=CONFIG_FILE)
     config = Configuration.new
 
-    if File.file?(CONFIG_FILE)
-      YAML.load_file(CONFIG_FILE).each do |key, value|
+    if File.file?(path)
+      YAML.load_file(path).each do |key, value|
         config[key] = value
         define_method(key) { self[key] }
       end

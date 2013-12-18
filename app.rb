@@ -64,10 +64,14 @@ class DocServer < Sinatra::Base
 
   def self.copy_static_files
     # Copy template files
-    puts ">> Copying static system files..."
+    puts ">> Copying static files..."
+    unless File.realpath(PUBLIC_PATH) == File.realpath(STATIC_PATH)
+      FileUtils.cp_r(PUBLIC_PATH + "/.", STATIC_PATH)
+    end
+
     YARD::Templates::Engine.template(:default, :fulldoc, :html).full_paths.each do |path|
       %w(css js images).each do |ext|
-        srcdir, dstdir = File.join(path, ext), File.join('public', ext)
+        srcdir, dstdir = File.join(path, ext), File.join(STATIC_PATH, ext)
         next unless File.directory?(srcdir)
         system "mkdir -p #{dstdir} && cp #{srcdir}/* #{dstdir}/"
       end
