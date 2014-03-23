@@ -15,5 +15,6 @@ public/js/autocomplete.js
 public/js/live.js
 public/js/full_list.js
 public/js/jquery.js
+public/js/rubydoc_custom.js
 public/images/processing.gif
 vendor
