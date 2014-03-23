@@ -35,10 +35,10 @@ else # RubyGems 2.x API
   end
 end
 
-# Keep track of updates gems
+# Keep track of updated gems
 changed_gems = {}
 File.readlines(REMOTE_GEMS_FILE).each do |line|
-  name, rest = line.split(/\s+/, 2)
+  name, rest = *line.split(/\s+/, 2)
   changed_gems[name] = rest
 end if File.exist?(REMOTE_GEMS_FILE)
 
