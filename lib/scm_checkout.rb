@@ -160,7 +160,7 @@ class GithubCheckout < ScmCheckout
       end
       ["mkdir -p #{settings.repos}/#{project}/#{username}",
         "cd #{settings.repos}/#{project}/#{username}",
-        "git clone #{url} #{commit}", "cd #{commit}",
+        "git clone --depth 1 #{url} #{commit}", "cd #{commit}",
         checkout, fork_cmd].compact.join(" && ")
     end
   end
