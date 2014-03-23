@@ -27,7 +27,7 @@ class StdlibInstaller
       FileUtils.cp(Dir.glob(File.join(path, file)), dstpath)
     end
     File.open(File.join(dstpath, '.yardopts'), 'w') do |file|
-      file.puts '*.c *.y - README.EXT LEGAL'
+      file.puts '--protected --private *.c *.y - README.EXT LEGAL'
     end
   end
 
