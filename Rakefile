@@ -7,17 +7,17 @@ namespace :server do
   task :start => 'cache:clean_index' do
     mkdir_p 'tmp/pids'
     mkdir_p 'log'
-    sh "unicorn -E production -D -c unicorn.conf.rb"
+    sh "bundle exec puma -C config/puma.rb"
   end
 
   desc 'Restart the server'
   task :restart => 'cache:clean_index' do
-    sh "kill -USR2 `cat tmp/pids/unicorn.pid`"
+    sh "kill -USR1 `cat tmp/pids/server.pid`"
   end
 
   desc 'Shut down the server'
   task :stop do
-    sh "kill -QUIT `cat tmp/pids/unicorn.pid`"
+    sh "kill -HUP `cat tmp/pids/server.pid`"
   end
 end
 
