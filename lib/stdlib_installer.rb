@@ -48,7 +48,7 @@ class StdlibInstaller
 
   def install_libs
     libs = Dir[File.join(path, 'lib', '*')]
-    installed = {}
+    installed = {'ubygems' => true}
     libs.each do |lib|
       libname = clean_glob(lib)
       next if installed[libname]
