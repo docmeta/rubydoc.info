@@ -13,7 +13,7 @@ function createGithubLinks() {
                     file +
                     "#L" + line;
 
-          $(this).before(' [<a target="_new" href="' + url + '">View on Github</a>]');
+          $(this).before(' [<a target="_new" href="' + url + '">View on GitHub</a>]');
         }
     });
   }

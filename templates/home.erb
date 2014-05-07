@@ -23,13 +23,15 @@
 </script>
 
 <div id="content">
-  <ul id="nav">
+  <nav>
+  <ul id="navigation">
     <li><a href="/featured">Featured</a></li>
     <li><a href="/stdlib">Stdlib</a></li>
     <li><a href="/gems">RubyGems</a></li>
-    <li class="selected">Github</li>
-    <li class="search"><form action="/find/github" method="GET"><input type="text" id="docSearch" name="q" value="<%= h @search || 'Search Github Projects' %>"/></form></li>
+    <li class="selected">GitHub</li>
+    <li class="search"><form action="/find/github" method="GET"><input type="text" id="docSearch" name="q" value="<%= h @search || 'Search GitHub Projects' %>"/></form></li>
   </ul>
+  </nav>
 
   <% if @featured && @featured.size > 0 %>
   <h2>Featured Libraries <small>(<a class="framelink" href="#">links without frames</a>)</small></h2>
@@ -48,7 +50,7 @@
   </ul>
   <% end %>
 
-  <h2>Recently Updated Github Projects <small>(<a class="framelink" href="#">links without frames</a>)</small></h2>
+  <h2>Recently Updated GitHub Projects <small>(<a class="framelink" href="#">links without frames</a>)</small></h2>
   <ul class="alpha_index">
     <% (?a..?z).each do |letter| %>
       <li><a href="/github/<%= letter %>"><%= letter.upcase %></a></li>
@@ -66,7 +68,7 @@
       <li>
         <a href="/<%= @adapter.router.docs_prefix %>/<%= latest_version %>/frames"><strong><%= lib.name %></strong></a>
         <a href="#" class="project_reload" title="Reload this project"><img class="icon reload" src="/images/reload.png" /></a>
-        <a href="http://github.com/<%= lib.name %>" title="View this project on Github"><img class="icon github" src="/images/git.png" /></a>
+        <a href="http://github.com/<%= lib.name %>" title="View this project on GitHub"><img class="icon github" src="/images/git.png" /></a>
         <small>(<%= latest_version.version %>)</small>
       </li>
     <% end %>

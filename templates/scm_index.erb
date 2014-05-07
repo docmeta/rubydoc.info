@@ -3,14 +3,16 @@
 </script>
 
 <div id="content">
-  <ul id="nav">
+  <nav>
+  <ul id="navigation">
     <li><a href="/featured">Featured</a></li>
     <li><a href="/stdlib">Stdlib</a></li>
     <li><a href="/gems">RubyGems</a></li>
-    <li class="selected">Github</li>
-    <li class="search"><form action="/find/github" method="GET"><input type="text" id="docSearch" name="q" value="<%= h @search || 'Search Github Projects' %>"/></form></li>
+    <li class="selected">GitHub</li>
+    <li class="search"><form action="/find/github" method="GET"><input type="text" id="docSearch" name="q" value="<%= h @search || 'Search GitHub Projects' %>"/></form></li>
   </ul>
-  <h2>Github Projects  <%= h @search ? 'Search Results' : 'Listing' %> <small>(<a class="framelink" href="#">links without frames</a>)</small></h2>
+  </nav>
+  <h2>GitHub Projects  <%= h @search ? 'Search Results' : 'Listing' %> <small>(<a class="framelink" href="#">links without frames</a>)</small></h2>
   <ul class="alpha_index">
     <% (?a..?z).each do |letter| %>
       <% if letter == @letter %>
@@ -40,7 +42,7 @@
               <%= library_versions.reverse[0..2].map {|lib| "<a href=\"/#{@adapter.router.docs_prefix}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
           <% end %>
           <a href="#" class="project_reload" title="Reload this project"><img class="icon reload" src="/images/reload.png" /></a>
-          <a href="http://github.com/<%= first_lib.name %>" title="View this project on Github"><img class="icon github" src="/images/git.png" /></a>
+          <a href="http://github.com/<%= first_lib.name %>" title="View this project on GitHub"><img class="icon github" src="/images/git.png" /></a>
           <% repos.shift %>
         <% else %>
           <strong><%= project %></strong> <small>(No master fork)</small>
@@ -60,7 +62,7 @@
                 <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/#{@adapter.router.docs_prefix}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
             <% end %>
             <a href="#" class="project_reload" title="Reload this project"><img class="icon reload" src="/images/reload.png" /></a>
-            <a href="http://github.com/<%= first_lib.name %>" title="View this project on Github"><img class="icon github" src="/images/git.png" /></a>
+            <a href="http://github.com/<%= first_lib.name %>" title="View this project on GitHub"><img class="icon github" src="/images/git.png" /></a>
           </li>
         <% end %>
       </ul>

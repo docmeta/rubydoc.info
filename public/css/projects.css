@@ -95,23 +95,23 @@ a { outline: none; }
   background: #eee;
 }
 
-#nav { display: block; padding-left: 0; font-size: 1.2em; }
-#nav li {
+#navigation { display: block; padding-left: 0; font-size: 1.2em; }
+#navigation li {
   display: inline;
   margin-right: 4px;
 }
-#nav li.selected {
+#navigation li.selected {
   padding: 6px;
   background: #dedede;
 }
-#nav li a {
+#navigation li a {
   padding: 6px;
   background: #eee;
 }
-#nav li form {
+#navigation li form {
   display: inline;
 }
-#nav li input {
+#navigation li input {
   height: 25px;
   border: 1px solid #dedede;
   font-size: 14px;
