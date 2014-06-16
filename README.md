@@ -36,3 +36,6 @@ Additional help was provided by:
 * Lee Jarvis
 * Sebastian Staudt
 * Nicos Gollan
+* Joel Melegrito - for identifying an XSS vulnerability fixed by [2aafffc16d][]
+
+[2aafffc16d]: https://github.com/lsegal/rubydoc.info/commit/2aafffc16ddb21a9b4c4386f72916c029aa85347
