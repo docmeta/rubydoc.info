@@ -18,10 +18,10 @@
     <li class="r<%= @row = @row == 1 ? 2 : 1 %> <% if name == "core" %>core<% end%>">
       <% library_versions = library_versions.dup %>
       <% first_lib = library_versions.pop %>
-      <a href="/stdlib/<%= first_lib.name %>/frames"><%= name %></a>
+      <a href="/stdlib/<%= h first_lib.name %>/frames"><%= h name %></a>
       <% if first_lib && first_lib.version %>
-        <small>(<%= first_lib.version %><% if library_versions.size > 0 %>,
-          <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/stdlib/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
+        <small>(<%= h first_lib.version %><% if library_versions.size > 0 %>,
+          <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/stdlib/#{lib}/frames\">#{h lib.version}</a>" }.join(', ') %><% end %>)</small>
       <% end %>
     </li>
     <% end %>

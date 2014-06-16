@@ -3,7 +3,7 @@
 <html>
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title><%= settings.name %>: Documenting RubyGems, Stdlib, and GitHub Projects</title>
+    <title><%= h settings.name %>: Documenting RubyGems, Stdlib, and GitHub Projects</title>
     <link rel="stylesheet" href="/css/style.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/css/custom.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/css/projects.css" type="text/css" media="screen" charset="utf-8" />
@@ -108,7 +108,7 @@
         as much as possible, but sometimes it needs to be used. We apologize for any inconvenience and hope you understand.</div>
     </noscript>
     <div id="logo">
-      <h1><a href="/"><%= settings.name %></a> <small>YARD Documentation Server</small></h1>
+      <h1><a href="/"><%= h settings.name %></a> <small>YARD Documentation Server</small></h1>
     </div>
     <ul id="top_nav">
       <li><a id="new_checkout" href="#">Add Project</a></li>
@@ -120,7 +120,7 @@
 
     <div id="info">
       <p>
-        <strong><%= settings.name %></strong> is your source for open source Ruby library documentation,
+        <strong><%= h settings.name %></strong> is your source for open source Ruby library documentation,
         generating fresh docs for Gems and popular Git repositories.
       </p>
       <p>
@@ -136,11 +136,11 @@
       <p>
         Looking for a <a href="http://github.com">GitHub</a>
         <a href="http://help.github.com/post-receive-hooks/">post-receive hook</a>?
-        Use <tt><%= settings.url %>/checkout</tt>.
+        Use <tt><%= h settings.url %>/checkout</tt>.
       </p>
       <p>
         <small>
-          <%= settings.name %> was made possible by <strong>Loren Segal</strong> and <strong>Nick Plante</strong>, with help from a <a href="http://groups.google.com/group/yardoc">community</a> of <a href="http://github.com/lsegal/rubydoc.info">friendly contributors</a>.
+          <%= h settings.name %> was made possible by <strong>Loren Segal</strong> and <strong>Nick Plante</strong>, with help from a <a href="http://groups.google.com/group/yardoc">community</a> of <a href="http://github.com/lsegal/rubydoc.info">friendly contributors</a>.
         </small>
       </p>
     </div>
@@ -149,12 +149,12 @@
     <%= yield %>
 
     <div id="footer">
-      <a href="http://github.com/lsegal/rubydoc.info"><%= settings.name %></a> is powered by <a href="http://yardoc.org/">yard</a> <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>)
+      <a href="http://github.com/lsegal/rubydoc.info"><%= h settings.name %></a> is powered by <a href="http://yardoc.org/">yard</a> <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>)
       <% if defined? settings.sponsor %>
         <div class="sponsor">
           <p>Sponsored by</p>
           <% [settings.sponsor].flatten.each do |sponsor| %>
-            <a href="http://<%= sponsor %>"><img src="/images/sponsor/<%= sponsor %>.png" alt="Sponsored by <%= sponsor %>"/></a>
+            <a href="http://<%= sponsor %>"><img src="/images/sponsor/<%= sponsor %>.png" alt="Sponsored by <%= h sponsor %>"/></a>
           <% end %>
         </div>
       <% end %>

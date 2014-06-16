@@ -2,13 +2,13 @@
   <h1>Oops,</h1>
   <% if settings.scm_adapter.libraries.has_key?(@username + '/' + @project) %>
     <h2 class="nomargin">We Couldn't Find That Page</h2>
-    <p>Sorry, but we couldn't find the page <strong><%= request.path %></strong> in the <strong><%= @username %>/<%= @project %></strong> GitHub repository. Are you sure that class, method, or file exists?</p>
+    <p>Sorry, but we couldn't find the page <strong><%= h request.path %></strong> in the <strong><%= h @username %>/<%= h @project %></strong> GitHub repository. Are you sure that class, method, or file exists?</p>
   <% else %>
     <h2 class="nomargin">We Couldn't Find That GitHub Project</h2>
-    <p>We haven't generated any docs for <strong><%= @username %>/<%= @project %></strong>. You can add the project yourself by entering the GitHub project information below.
+    <p>We haven't generated any docs for <strong><%= h @username %>/<%= h @project %></strong>. You can add the project yourself by entering the GitHub project information below.
       You can also see a list of available projects <a href="/github">here</a>.</p>
     <script type="text/javascript" charset="utf-8">
-      $(function() { $('#url').val('git://github.com/<%= @username %>/<%= @project %>'); });
+      $(function() { $('#url').val('git://github.com/<%= h @username %>/<%= h @project %>'); });
     </script>
 
     <%= erb :checkout, :layout => false %>
