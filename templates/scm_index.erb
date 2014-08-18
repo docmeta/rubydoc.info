@@ -45,7 +45,7 @@
           <a href="http://github.com/<%= h first_lib.name %>" title="View this project on GitHub"><img class="icon github" src="/images/git.png" /></a>
           <% repos.shift %>
         <% else %>
-          <strong><%=  hproject %></strong> <small>(No master fork)</small>
+          <strong><%= h project %></strong> <small>(No master fork)</small>
         <% end %>
       </li>
       <% next if repos.empty? %>
