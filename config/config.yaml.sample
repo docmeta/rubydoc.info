@@ -3,8 +3,8 @@
 # Display name. Defaults to RubyDoc.info
 # name: RubyDoc.info
 
-# Base URL. Defaults to http://rubydoc.info
-# url: http://rubydoc.info
+# Base URL. Defaults to http://www.rubydoc.info
+# url: http://www.rubydoc.info
 
 # Whether or not disk caching is enabled. Defaults to false
 # caching: false

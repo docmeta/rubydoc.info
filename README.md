@@ -7,7 +7,7 @@ RubyDoc.info is the next generation Ruby doc server, replacing
 This doc server uses YARD to generate project documentation on the fly, for
 both published RubyGems as well as GitHub projects.
 
-The public doc server is hosted at [http://rubydoc.info](http://rubydoc.info)
+The public doc server is hosted at [http://www.rubydoc.info](http://www.rubydoc.info)
 
 Getting Started
 ---------------
