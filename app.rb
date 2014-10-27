@@ -256,17 +256,22 @@ class DocServer < Sinatra::Base
 
   post_all '/checkout', '/projects/update' do
     begin
-      if params[:payload]
+      if params[:payload] # backwards compatibility
         payload = JSON.parse(params[:payload])
-        url = payload["repository"]["url"]
-        commit = nil
+        url = payload['repository']['url']
+      elsif request.media_type.match(/json/)
+        payload = JSON.parse(request.body.read || '{}')
+        payload = payload['payload'] if payload.keys.include?('payload')
+        url = payload['repository']['url']
       else
         url = params[:url]
         commit = params[:commit]
         commit = nil if commit == ''
       end
 
-      url = url.sub(%r{^http://}, 'git://')
+      url = (url || '').sub(%r{^http://}, 'git://')
+      commit ||= nil
+
       if url =~ %r{github\.com/([^/]+)/([^/]+)}
         username, project = $1, $2
         if settings.whitelisted_projects.include?("#{username}/#{project}")
