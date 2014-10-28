@@ -405,7 +405,7 @@ class DocServer < Sinatra::Base
 
   get %r{^/find/gems} do
     self.class.load_gems_adapter unless defined? settings.gems_adapter
-    @search = params[:q]
+    @search = params[:q] || ''
     @adapter = settings.gems_adapter
     @libraries = @adapter.libraries.find_all {|k,v| k.match(/#{Regexp.quote @search}/) }
     erb(:gems_index)
