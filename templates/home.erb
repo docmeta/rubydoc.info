@@ -34,23 +34,23 @@
   </nav>
 
   <% if @featured && @featured.size > 0 %>
-  <h2>Featured Libraries <small>(<a class="framelink" href="#">links without frames</a>)</small></h2>
+  <h2>Featured Libraries</h2>
   <ul class="libraries">
     <% @featured.each do |name, library_versions| %>
     <li class="r<%= @row = @row == 1 ? 2 : 1 %>">
       <% library_versions = library_versions.dup %>
       <% first_lib = library_versions.pop %>
-      <a href="/<%= first_lib.source == :remote_gem ? 'gems' : 'docs' %>/<%= h first_lib %>/frames"><%= h name %></a>
+      <a href="/<%= first_lib.source == :remote_gem ? 'gems' : 'docs' %>/<%= h first_lib %>"><%= h name %></a>
       <% if first_lib && first_lib.version %>
         <small>(<%= h first_lib.version %><% if library_versions.size > 0 %>,
-          <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/#{lib.source == :remote_gem ? 'gems' : 'docs'}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
+          <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/#{lib.source == :remote_gem ? 'gems' : 'docs'}/#{lib}\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
       <% end %>
     </li>
     <% end %>
   </ul>
   <% end %>
 
-  <h2>Recently Updated GitHub Projects <small>(<a class="framelink" href="#">links without frames</a>)</small></h2>
+  <h2>Recently Updated GitHub Projects</h2>
   <ul class="alpha_index">
     <% (?a..?z).each do |letter| %>
       <li><a href="/github/<%= h letter %>"><%= h letter.upcase %></a></li>
@@ -66,7 +66,7 @@
     <% @libraries.each do |lib| %>
       <% latest_version = lib.versions.first %>
       <li>
-        <a href="/<%= @adapter.router.docs_prefix %>/<%= h latest_version %>/frames"><strong><%= h lib.name %></strong></a>
+        <a href="/<%= @adapter.router.docs_prefix %>/<%= h latest_version %>"><strong><%= h lib.name %></strong></a>
         <a href="#" class="project_reload" title="Reload this project"><img class="icon reload" src="/images/reload.png" /></a>
         <a href="http://github.com/<%= h lib.name %>" title="View this project on GitHub"><img class="icon github" src="/images/git.png" /></a>
         <small>(<%= h latest_version.version %>)</small>

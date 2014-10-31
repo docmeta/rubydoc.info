@@ -312,7 +312,7 @@ class DocServer < Sinatra::Base
 
   # Main URL handlers
 
-  get %r{^/github(?:/([a-z])?)?$} do |letter|
+  get %r{^/github(?:/~([a-z])?|/)?$} do |letter|
     if letter.nil?
       @adapter = settings.scm_adapter
       @libraries = recent_store
@@ -326,7 +326,7 @@ class DocServer < Sinatra::Base
     end
   end
 
-  get %r{^/gems(?:/([a-z])?)?$} do |letter|
+  get %r{^/gems(?:/~([a-z])?|/)?$} do |letter|
     @letter = letter || 'a'
     @adapter = settings.gems_adapter
     @libraries = @adapter.libraries.find_all {|k, v| k[0].downcase == @letter }

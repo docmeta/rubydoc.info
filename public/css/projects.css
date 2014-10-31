@@ -1,9 +1,9 @@
 body {
+  overflow: auto;
+  margin: 12px;
   display: block;
   width: auto;
   height: auto;
-  overflow: auto;
-  margin: 8px;
 }
 
 h2 { font-size: 1.6em; }

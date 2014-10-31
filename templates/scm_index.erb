@@ -12,13 +12,13 @@
     <li class="search"><form action="/find/github" method="GET"><input type="text" id="docSearch" name="q" value="<%= h @search || 'Search GitHub Projects' %>"/></form></li>
   </ul>
   </nav>
-  <h2>GitHub Projects  <%= h @search ? 'Search Results' : 'Listing' %> <small>(<a class="framelink" href="#">links without frames</a>)</small></h2>
+  <h2>GitHub Projects  <%= h @search ? 'Search Results' : 'Listing' %></small></h2>
   <ul class="alpha_index">
     <% (?a..?z).each do |letter| %>
       <% if letter == @letter %>
         <li class="selected"><%= letter.upcase %></li>
       <% else %>
-        <li><a href="/github/<%= letter %>"><%= letter.upcase %></a></li>
+        <li><a href="/github/~<%= letter %>"><%= letter.upcase %></a></li>
       <% end %>
     <% end %>
     <li><a href="/github">Latest</a></li>
@@ -36,10 +36,10 @@
         <% username, library_versions = *repos.first %>
         <% if first_lib = library_versions.find {|l| l.name == master } %>
           <% library_versions -= [first_lib] %>
-          <a href="/<%= @adapter.router.docs_prefix %>/<%= h first_lib.name %>/frames"><strong><%= h username %>/<%= h project %></strong></a>
+          <a href="/<%= @adapter.router.docs_prefix %>/<%= h first_lib.name %>"><strong><%= h username %>/<%= h project %></strong></a>
           <% if first_lib.version %>
             <small>(<%= first_lib.version %><% if library_versions.size > 0 %>,
-              <%= library_versions.reverse[0..2].map {|lib| "<a href=\"/#{@adapter.router.docs_prefix}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
+              <%= library_versions.reverse[0..2].map {|lib| "<a href=\"/#{@adapter.router.docs_prefix}/#{lib}\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
           <% end %>
           <a href="#" class="project_reload" title="Reload this project"><img class="icon reload" src="/images/reload.png" /></a>
           <a href="http://github.com/<%= h first_lib.name %>" title="View this project on GitHub"><img class="icon github" src="/images/git.png" /></a>
@@ -56,10 +56,10 @@
           <li class="alternate_fork">
             <% library_versions = library_versions.dup %>
             <% first_lib = library_versions.pop %>
-            <a href="/<%= @adapter.router.docs_prefix %>/<%= h first_lib.name %>/frames"><%= h username %>/<%= h project %></a>
+            <a href="/<%= @adapter.router.docs_prefix %>/<%= h first_lib.name %>"><%= h username %>/<%= h project %></a>
             <% if first_lib.version %>
               <small>(<%= h first_lib.version %><% if library_versions.size > 0 %>,
-                <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/#{@adapter.router.docs_prefix}/#{lib}/frames\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
+                <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/#{@adapter.router.docs_prefix}/#{lib}\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
             <% end %>
             <a href="#" class="project_reload" title="Reload this project"><img class="icon reload" src="/images/reload.png" /></a>
             <a href="http://github.com/<%= h first_lib.name %>" title="View this project on GitHub"><img class="icon github" src="/images/git.png" /></a>
