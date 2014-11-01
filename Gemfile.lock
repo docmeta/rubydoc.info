@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/lsegal/yard
-  revision: 1020fae8fa5d4eeb1c06498abc3af5bed9f7a9c2
+  revision: 349faedd92ceb461d60d028f070f90bfaacbe1a1
   branch: frameless
   specs:
     yard (0.8.7.6)
