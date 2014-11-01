@@ -128,6 +128,7 @@ a { outline: none; }
   font-size: 14px;
   color: #ababab;
   padding: 2px 5px;
+  width: 200px;
 }
 
 #content h1 { margin: 0; }
