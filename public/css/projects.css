@@ -54,13 +54,16 @@ a { outline: none; }
 #info a { color: #05a; }
 #info a:hover { color: #5af; }
 
+#notice { padding: 12px; background: #333; color: #eee; width: 545px; font-size: 1em; line-height: 1.4em; }
+#notice strong { color: #fff; }
+#notice { border-left: 8px solid #58b; }
+#notice a { color: #8cf; text-decoration: none; }
+#notice a:hover { text-decoration: underline; }
+
 #learn_yard { position: absolute; top: 0; right: 0; z-index: 9500; opacity: 0.9; }
 #learn_yard:hover { opacity: 1; }
 #learn_yard img { border: 0; }
 .framelink { z-index: 9999; position: relative; }
-
-#notice { position: relative; padding: 12px; background: #333; color: #fff; width: 500px; font-size: 1em; line-height: 1.4em; }
-#notice a { color: #fff; }
 
 #checkout form { display: inline; }
 #checkout h2 { margin: 0; padding: 0; border: 0; font-weight: normal; font-size: 1.1em; }

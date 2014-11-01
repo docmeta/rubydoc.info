@@ -84,7 +84,6 @@
       <style type="text/css" media="screen">
         body { margin: 0; padding: 0;}
         #logo, #content { padding: 0 20px; }
-        #notice { margin-left: 20px; }
         #noscript { background: #111; color: #fff; padding: 10px 20px; }
         #top_nav { top: 48px; }
       </style>
@@ -95,6 +94,16 @@
     <div id="logo">
       <h1><a href="/"><%= h settings.name %></a> <small>YARD Documentation Server</small></h1>
     </div>
+
+    <% if defined? settings.tender %>
+      <p id="notice">
+        <strong>We need your help!</strong>
+        We just rolled out our new frameless templates for library docs.
+        If something doesn't look right on your desktop or mobile device, please
+        <a href="#" onclick="$('#help_tender').click(); return false;">let us know</a>.
+      </div>
+    <% end %>
+
     <ul id="top_nav">
       <li><a id="new_checkout" href="#">Add Project</a></li>
       <li><a id="about" href="#">About</a></li>
@@ -129,7 +138,6 @@
         </small>
       </p>
     </div>
-
 
     <%= yield %>
 
