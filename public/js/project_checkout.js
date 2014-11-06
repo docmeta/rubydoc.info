@@ -2,7 +2,7 @@ function pollCheckout(project) {
   $.ajax({url: '/checkout/' + project, dataType: 'text'}).
     success(function(data) {
       if (data == "YES") {
-        window.location = '/github/' + project + '/frames';
+        window.location = '/github/' + project;
       }
       else if (data == "ERROR") {
         checkoutError();
