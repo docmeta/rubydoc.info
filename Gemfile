@@ -22,6 +22,7 @@ gem 'yard-rails'
 gem 'yard-kramdown'
 gem 'yard-sd'
 gem 'yard-redcarpet-ext', '~> 0.0.3'
+gem 'yard-ruby-hooks', '~>1.0'
 gem 'i18n'
 gem 'net-http-persistent', '~> 2.0'
 

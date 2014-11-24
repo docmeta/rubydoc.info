@@ -65,6 +65,7 @@ GEM
       yard
     yard-redcarpet-ext (0.0.3)
       yard (~> 0.8.0)
+    yard-ruby-hooks (1.0.1)
     yard-sd (0.0.4)
 
 PLATFORMS
@@ -96,4 +97,5 @@ DEPENDENCIES
   yard-kramdown
   yard-rails
   yard-redcarpet-ext (~> 0.0.3)
+  yard-ruby-hooks (~> 1.0)
   yard-sd
