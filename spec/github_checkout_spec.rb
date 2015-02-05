@@ -21,6 +21,13 @@ describe GithubCheckout do
       end
     end
 
+    it "should accept ssh style github urls" do
+      git("git@github.com:reevoo/stratocumulus.git")
+      @git.username.should == "reevoo"
+      @git.project.should == "stratocumulus"
+      @git.name.should == "reevoo/stratocumulus"
+    end
+
     it "should accept github URLs with ending in .git" do
       git("git://github.com/lsegal/yard.git")
       @git.username.should == "lsegal"
