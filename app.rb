@@ -436,6 +436,14 @@ class DocServer < Sinatra::Base
     erb(:gems_index)
   end
 
+  # ESI includes
+
+  [:header, :footer].each do |f|
+    get "/inc/#{f}" do
+      erb(f, layout: false)
+    end
+  end
+
   # Redirect /docs/ruby-core
   get(%r{^/docs/ruby-core/?(.*)}) do |all|
     redirect("/stdlib/core/#{all}", 301)

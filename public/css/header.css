@@ -1,0 +1,61 @@
+#rubydoc_logo h1 { margin: 0; border: 0; color: #58b; }
+#rubydoc_logo small { color: #369; font-size: 0.6em; font-weight: normal; opacity: 0.6; }
+#rubydoc_logo a { text-decoration: none; color: #58b; }
+#rubydoc_logo a:hover { color: #8cf; border-bottom: 8px solid #8cf; }
+
+#rubydoc_top_nav { padding: 0; list-style: none; position: absolute; right: 140px; top: 0; margin-top: 9px; z-index: 9999; }
+#rubydoc_top_nav li { float: left; margin-right: 10px; }
+#rubydoc_top_nav a { display: block; padding: 5px 8px; background: #58a; text-decoration: none;
+  color: #eee;
+  opacity: 0.7;
+  -webkit-border-radius: 5px; -moz-border-radius: 5px;
+  -webkit-transition: all 0.1s ease-in;
+}
+#rubydoc_top_nav a:hover { opacity: 1; color: #fff; }
+
+#rubydoc_info {
+  font-size: 1.1em;
+  line-height: 1.4em;
+  display: none; position: absolute; width: 350px; padding: 10px 20px; top: 55px;
+  right: 120px; background: #fff; z-index: 10000; border: 1px solid #aaa;
+  -webkit-box-shadow: 0px 2px 15px #aaa; -moz-box-shadow: 0px 2px 15px #aaa;
+}
+#rubydoc_info a { color: #05a; }
+#rubydoc_info a:hover { color: #5af; }
+
+#rubydoc_notice { padding: 12px; background: #333; color: #eee; width: 545px; font-size: 1em; line-height: 1.4em; }
+#rubydoc_notice strong { color: #fff; }
+#rubydoc_notice { border-left: 8px solid #58b; }
+#rubydoc_notice a { color: #8cf; text-decoration: none; }
+#rubydoc_notice a:hover { text-decoration: underline; }
+
+#learn_yard { position: absolute; top: 0; right: 0; z-index: 9500; opacity: 0.9; }
+#learn_yard:hover { opacity: 1; }
+#learn_yard img { border: 0; }
+.framelink { z-index: 9999; position: relative; }
+
+#rubydoc_checkout form { display: inline; }
+#rubydoc_checkout h2 { margin: 0; padding: 0; border: 0; font-weight: normal; font-size: 1.1em; }
+#rubydoc_checkout .example { color: #999; }
+#rubydoc_checkout input { font-size: 1em; }
+#rubydoc_checkout .loadicon { display: none; float: right; position: relative; left: -20px; top: 6px; width: 16px; height: 16px; background: url(/images/loading.gif); }
+#rubydoc_checkout.error #url { background: #fdd; }
+#rubydoc_checkout #commit { width: 131px; }
+#rubydoc_checkout.error:after { content: "Invalid git repository or URL"; color: #e00; display: block; }
+#rubydoc_checkout.loading .loadicon { display: block; }
+#rubydoc_checkout .url { width: 225px; margin-bottom: 3px; }
+#rubydoc_checkout {
+  display: none;
+  position: absolute;
+  top: 42px;
+  right: 175px;
+  height: 120px;
+  padding: 8px 18px;
+  margin: 12px;
+  background: #ddd; color: #666; border: 1px solid #ccc;
+  -webkit-box-shadow: 0px 2px 15px #aaa; -moz-box-shadow: 0px 2px 15px #aaa;
+  *font-size: 0.9em;
+  width: 280px;
+}
+#rubydoc_top_nav #rubydoc_new_checkout { display: none; }
+

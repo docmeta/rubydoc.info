@@ -1,7 +1,7 @@
 body {
+  display: block;
   overflow: auto;
   margin: 12px;
-  display: block;
   width: auto;
   height: auto;
 }
@@ -28,67 +28,8 @@ a { outline: none; }
 .libraries li.alternate_fork img { position: relative; top: -3px; }
 .libraries li a:hover { background: transparent; color: #3ae; }
 .libraries li.core > a:first-child { font-weight: bold; }
-
-#logo h1 { margin: 0; border: 0; color: #58b; }
-#logo small { color: #369; font-size: 0.6em; font-weight: normal; opacity: 0.6; }
-#logo a { text-decoration: none; color: #58b; }
-#logo a:hover { color: #8cf; border-bottom: 8px solid #8cf; }
-
-#top_nav { padding: 0; list-style: none; position: absolute; right: 140px; top: 3px; z-index: 9999; }
-#top_nav li { float: left; margin-right: 10px; }
-#top_nav a { display: block; padding: 5px 8px; background: #58a; text-decoration: none;
-  color: #eee;
-  opacity: 0.7;
-  -webkit-border-radius: 5px; -moz-border-radius: 5px;
-  -webkit-transition: all 0.1s ease-in;
-}
-#top_nav a:hover { opacity: 1; color: #fff; }
-
-#info {
-  font-size: 1.1em;
-  line-height: 1.4em;
-  display: none; position: absolute; width: 350px; padding: 10px 20px; top: 55px;
-  right: 120px; background: #fff; z-index: 10000; border: 1px solid #aaa;
-  -webkit-box-shadow: 0px 2px 15px #aaa; -moz-box-shadow: 0px 2px 15px #aaa;
-}
-#info a { color: #05a; }
-#info a:hover { color: #5af; }
-
-#notice { padding: 12px; background: #333; color: #eee; width: 545px; font-size: 1em; line-height: 1.4em; }
-#notice strong { color: #fff; }
-#notice { border-left: 8px solid #58b; }
-#notice a { color: #8cf; text-decoration: none; }
-#notice a:hover { text-decoration: underline; }
-
-#learn_yard { position: absolute; top: 0; right: 0; z-index: 9500; opacity: 0.9; }
-#learn_yard:hover { opacity: 1; }
-#learn_yard img { border: 0; }
-.framelink { z-index: 9999; position: relative; }
-
-#checkout form { display: inline; }
-#checkout h2 { margin: 0; padding: 0; border: 0; font-weight: normal; font-size: 1.1em; }
-#checkout .example { color: #999; }
-#checkout input { font-size: 1em; }
-#checkout .loadicon { display: none; float: right; position: relative; left: -20px; top: 6px; width: 16px; height: 16px; background: url(/images/loading.gif); }
-#checkout.error #url { background: #fdd; }
-#checkout #commit { width: 131px; }
-#checkout.error:after { content: "Invalid git repository or URL"; color: #e00; display: block; }
-#checkout.loading .loadicon { display: block; }
-#checkout .url { width: 225px; margin-bottom: 3px; }
-#checkout {
-  display: none;
-  position: absolute;
-  top: 42px;
-  right: 175px;
-  height: 120px;
-  padding: 8px 18px;
-  margin: 12px;
-  background: #ddd; color: #666; border: 1px solid #ccc;
-  -webkit-box-shadow: 0px 2px 15px #aaa; -moz-box-shadow: 0px 2px 15px #aaa;
-  *font-size: 0.9em;
-  width: 280px;
-}
-#top_nav #new_checkout { display: none; }
+.libraries .icon { width: 16px; height: 16px; position: relative; float: right; top: 6px; border: 1px solid #ccc; background: #eee; padding: 2px; -webkit-border-radius: 3px; -moz-border-radius: 3px; margin-left: 3px; }
+.libraries a:hover .icon { background: #fff; }
 
 .alpha_index { display: block; padding-left: 0; font-size: 1.2em; }
 .alpha_index li {
@@ -147,7 +88,4 @@ a { outline: none; }
 
 #content.fof h1 { margin-bottom: 0; font-size: 3em; }
 #content.fof h2.nomargin { margin-top: 0; border: 0; font-size: 1.2em; color: #888; margin-bottom: 20px; }
-#content.fof.scm #checkout { display: block; position: relative; top: 0; right: 0; margin: 40px 0; }
-
-.libraries .icon { width: 16px; height: 16px; position: relative; float: right; top: 6px; border: 1px solid #ccc; background: #eee; padding: 2px; -webkit-border-radius: 3px; -moz-border-radius: 3px; margin-left: 3px; }
-.libraries a:hover .icon { background: #fff; }
+#content.fof.scm #rubydoc_checkout { display: block; position: relative; top: 0; right: 0; margin: 40px 0; }

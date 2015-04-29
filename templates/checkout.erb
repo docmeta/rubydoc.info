@@ -1,18 +1,18 @@
 <style type="text/css" media="screen">
-  #top_nav #new_checkout { display: block; }
+  #rubydoc_top_nav #rubydoc_new_checkout { display: block; }
 </style>
-<div id="checkout">
+<div id="rubydoc_checkout">
   <h2>Add your own project</h2>
   <small class="example">(eg. git://github.com/lsegal/yard.git)</small>
-  <form id="checkout_form" action="/checkout" method="post">
+  <form id="rubydoc_checkout_form" action="/checkout" method="post">
     <input class="url" type="text" id="url" name="url" placeholder="git://github.com/username/project" />
     <div class="loadicon"></div>
     <input type="hidden" id="scheme" name="scheme" value="git" />
     <br/>
     <small>Commit (optional): <input type="text" id="commit" name="commit" value="" /></small>
-    <input type="submit" id="submit" value="Go" />
+    <input type="submit" id="rubydoc_submit" value="Go" />
   </form>
   <script type="text/javascript" charset="utf-8">
-    if (jQuery.browser.safari) $('#checkout_form #commit').css('width', '122px');
+    if (jQuery.browser.safari) $('#rubydoc_checkout_form #commit').css('width', '122px');
   </script>
 </div>

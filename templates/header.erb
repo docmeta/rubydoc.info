@@ -1,0 +1,97 @@
+<link rel="stylesheet" href="/css/header.css" type="text/css" charset="utf-8">
+<script type="text/javascript">
+  function aboutLink() {
+    $('#rubydoc_about').click(function() {
+      if ($('#rubydoc_info').is(':hidden')) { $('#rubydoc_checkout').hide(); $('#tender_window').hide(); $('#rubydoc_info').fadeIn('fast'); }
+      else $('#rubydoc_info').fadeOut('fast');
+      return false;
+    });
+  }
+
+  function checkoutLink() {
+    $('#rubydoc_new_checkout').click(function() {
+      if ($('#rubydoc_checkout').is(':hidden')) { $('#rubydoc_info').hide(); $('#tender_window').hide(); $('#rubydoc_checkout').fadeIn('fast'); }
+      else $('#rubydoc_checkout').fadeOut('fast');
+      return false;
+    });
+  }
+
+  function helpLink() {
+    $('#rubydoc_help').click(function() {
+      if ($('#tender_window').is(':visible')) {
+        $('#tender_window').hide();
+      } else {
+        $('#rubydoc_help_tender').click();
+        $('#rubydoc_info').hide();
+        $('#rubydoc_checkout').hide();
+      }
+    });
+  }
+  $(aboutLink);
+  $(checkoutLink);
+  $(helpLink);
+</script>
+
+<div id="rubydoc_header">
+  <img src="/images/logo.gif" width="1" height="1" style="display: none" alt="Rubydoc.info" />
+  <a id="learn_yard" href="http://yardoc.org" title="Learn More About YARD"><img src="/images/learn.png" alt="Learn More About YARD" /></a>
+  <noscript>
+    <style type="text/css" media="screen">
+      body { margin: 0; padding: 0;}
+      #rubydoc_logo, #content { padding: 0 20px; }
+      #noscript { background: #111; color: #fff; padding: 10px 20px; }
+      #rubydoc_top_nav { top: 48px; }
+    </style>
+    <div id="noscript"><strong>It seems you've disabled Javascript.</strong>
+      That's okay, but you might run into some problems. We try to make things work without script support
+      as much as possible, but sometimes it needs to be used. We apologize for any inconvenience and hope you understand.</div>
+  </noscript>
+  <div id="rubydoc_logo">
+    <h1><a href="/"><%= h settings.name %></a> <small>YARD Documentation Server</small></h1>
+  </div>
+
+  <ul id="rubydoc_top_nav">
+    <li><a id="rubydoc_new_checkout" href="#">Add Project</a></li>
+    <li><a id="rubydoc_about" href="#">About</a></li>
+  <% if defined? settings.tender %><li><a id="rubydoc_help" href="#">Help</a></li><% end %>
+  </ul>
+  <a id="rubydoc_help_tender" href="#" style="display:none;"></a>
+  <div class="clear"></div>
+
+  <div id="rubydoc_info">
+    <p>
+      <strong><%= h settings.name %></strong> is your source for open source Ruby library documentation,
+      generating fresh docs for Gems and popular Git repositories.
+    </p>
+    <p>
+      This site uses <a href="http://yardoc.org">YARD</a> to generate docs on the fly.
+      To make your docs look better, you can check out some of YARD's
+      <a href="/gems/yard/file/docs/WhatsNew.md">killer features</a>.
+    </p>
+    <p>
+      <strong>We have DISQUS integration!</strong> Click the <em>permalink</em>
+      (<a href="/gems/yard/YARD/Templates/Engine.render">like this one</a>)
+      on a method to see user comments on a method page.
+    </p>
+    <p>
+      Looking for a <a href="http://github.com">GitHub</a>
+      <a href="http://help.github.com/post-receive-hooks/">post-receive hook</a>?
+      Use <tt><%= h settings.url %>/checkout</tt>.
+    </p>
+    <p>
+      <small>
+        <%= h settings.name %> was made possible by <strong>Loren Segal</strong> and <strong>Nick Plante</strong>, with help from a <a href="http://groups.google.com/group/yardoc">community</a> of <a href="http://github.com/lsegal/rubydoc.info">friendly contributors</a>.
+      </small>
+    </p>
+  </div>
+</div>
+
+<% if defined? settings.tender %>
+  <script type="text/javascript" charset="utf-8">
+    Tender = {
+      hideToggle: true,
+      widgetToggles: [document.getElementById('rubydoc_help_tender')]
+    }
+  </script>
+  <script src="https://<%= settings.tender %>.tenderapp.com/tender_widget.js" type="text/javascript"></script>
+<% end %>

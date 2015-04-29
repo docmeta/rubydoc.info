@@ -1,0 +1,11 @@
+<div id="footer">
+  <a href="http://github.com/lsegal/rubydoc.info"><%= h settings.name %></a> is powered by <a href="http://yardoc.org/">yard</a> <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>)
+  <% if defined? settings.sponsor %>
+    <div class="sponsor">
+      <p>Sponsored by</p>
+      <% [settings.sponsor].flatten.each do |sponsor| %>
+        <a href="http://<%= sponsor %>"><img src="/images/sponsor/<%= sponsor %>.png" alt="Sponsored by <%= h sponsor %>"/></a>
+      <% end %>
+    </div>
+  <% end %>
+</div>
