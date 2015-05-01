@@ -9,6 +9,10 @@
 # Whether or not disk caching is enabled. Defaults to false
 # caching: false
 
+# If you want to enable Rubygems.org gem push notifications, uncomment the
+# following line and add your API key:
+# rubygems: YOUR_API_KEY
+
 # If you have Airbrake, uncomment the following line and add your API key:
 # airbrake: YOUR_API_KEY
 
