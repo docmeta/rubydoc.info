@@ -51,7 +51,7 @@ class ScmCheckout
   end
 
   def flush_cache
-    Cache.invalidate("/github", "/github/#{project[0,1]}",
+    Cache.invalidate("/github", "/github/~#{project[0,1]}",
                      "/github/#{name}/", "/list/github/#{name}/", "/")
   end
 
