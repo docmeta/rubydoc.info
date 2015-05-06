@@ -60,7 +60,7 @@ describe GithubCheckout do
 
     it "should return true for non-master repo" do
       File.should_receive(:directory?).and_return(false)
-      git("git://github.com/lsegal/rails")
+      git("git://github.com/lsegal/redcarpet")
       @git.should be_fork
     end
   end
