@@ -1,5 +1,11 @@
 require_relative 'init'
 
+begin
+  require 'rspec/core/rake_task'
+  RSpec::Core::RakeTask.new(:spec)
+rescue LoadError
+end
+
 task :default => 'gems:update'
 
 namespace :server do
