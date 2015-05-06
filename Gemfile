@@ -17,6 +17,7 @@ gem 'syntax'
 gem 'json'
 gem 'rake'
 gem 'asciidoctor'
+gem 'version_sorter'
 gem 'yard', :git => 'git://github.com/lsegal/yard', :branch => "frameless"
 gem 'yard-rails'
 gem 'yard-kramdown'

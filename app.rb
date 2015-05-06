@@ -9,12 +9,15 @@ require 'airbrake'
 require 'extensions'
 require 'scm_router'
 require 'scm_checkout'
+require 'gem_updater'
 require 'gems_router'
 require 'featured_router'
 require 'stdlib_router'
 require 'recent_store'
 
+require 'digest/sha2'
 require 'rack/etag'
+require 'version_sorter'
 
 class Hash; alias blank? empty? end
 class NilClass; def blank?; true end end
@@ -81,7 +84,7 @@ class DocServer < Sinatra::Base
     opts = adapter_options
     contents.each do |line|
       name, *versions = *line.split(/\s+/)
-      opts[:libraries][name] = versions.map do |v|
+      opts[:libraries][name] = VersionSorter.sort(versions).map do |v|
         ver, platform = *v.split(',')
         lib = LibraryVersion.new(name, ver, nil, :remote_gem)
         lib.platform = platform
@@ -254,22 +257,41 @@ class DocServer < Sinatra::Base
 
   # Checkout and post commit hooks
 
-  post_all '/checkout', '/projects/update' do
-    begin
-      if params[:payload] # backwards compatibility
-        payload = JSON.parse(params[:payload])
-        url = payload['repository']['url']
-      elsif request.media_type.match(/json/)
-        payload = JSON.parse(request.body.read || '{}')
-        payload = payload['payload'] if payload.keys.include?('payload')
-        url = payload['repository']['url']
-      else
-        url = params[:url]
-        commit = params[:commit]
-        commit = nil if commit == ''
-      end
+  post '/checkout/rubygems' do
+    data = JSON.parse(request.body.read || '{}')
 
-      url = (url || '').sub(%r{^http://}, 'git://')
+    authorization = Digest::SHA2.hexdigest(data['name'] + data['version'] + settings.rubygems)
+    if env['HTTP_AUTHORIZATION'] != authorization
+      log.error "rubygems unauthorized: #{env['HTTP_AUTHORIZATION']}"
+      error 401
+    end
+
+    update_rubygems(data)
+  end
+
+  def update_rubygems(data={})
+    gem = GemUpdater.new(self, data['name'], data['version'])
+    gem.flush_cache
+    gem.register
+    "OK"
+  end
+
+  post_all '/checkout', '/checkout/github', '/projects/update' do
+    if request.media_type.match(/json/)
+      data = JSON.parse(request.body.read || '{}')
+      update_github(data)
+    elsif params[:payload] # legacy
+      update_github(params[:payload])
+    else
+      data = { :url => params[:url], :commit => params[:commit] }
+      data[:commit] = nil if data[:commit] == ''
+      update_github(data)
+    end
+  end
+
+  def update_github(data={})
+    begin
+      url = (data[:url] || '').sub(%r{^http://}, 'git://')
       commit ||= nil
 
       if url =~ %r{github\.com/([^/]+)/([^/]+)}
