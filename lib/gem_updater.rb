@@ -85,6 +85,6 @@ class GemUpdater
 
   # TODO: improve this cache invalidation to be version specific
   def flush_cache
-    self.class.flush_cache(name)
+    self.class.flush_cache(gem.name)
   end
 end
