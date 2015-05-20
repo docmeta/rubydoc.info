@@ -270,6 +270,8 @@ class DocServer < Sinatra::Base
   end
 
   def update_rubygems(data={})
+    return "INVALIDSCHEME" unless data.is_a?(Hash)
+
     gem = GemUpdater.new(self, data['name'], data['version'])
     gem.flush_cache
     gem.register
@@ -290,6 +292,8 @@ class DocServer < Sinatra::Base
   end
 
   def update_github(data={})
+    return "INVALIDSCHEME" unless data.is_a?(Hash)
+
     begin
       url = (data[:url] || '').sub(%r{^http://}, 'git://')
       commit ||= nil
