@@ -1,7 +1,6 @@
 GIT
   remote: git://github.com/lsegal/yard
-  revision: 8b2b079671cf05510f4cfbf2459d61cede5523d1
-  branch: frameless
+  revision: 13d9939df94acb7dcbe325ebed040f5d88b02373
   specs:
     yard (0.8.7.6)
 
@@ -99,3 +98,6 @@ DEPENDENCIES
   yard-rails
   yard-redcarpet-ext (~> 0.0.3)
   yard-sd
+
+BUNDLED WITH
+   1.10.2
