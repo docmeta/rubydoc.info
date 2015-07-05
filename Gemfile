@@ -27,7 +27,7 @@ gem 'i18n'
 gem 'net-http-persistent', '~> 2.0'
 
 group :test do
-  gem 'rspec', '~> 2.99.0', :require => 'spec'
+  gem 'rspec', '~> 3.0.0', :require => 'spec'
 end
 
 group :production do
