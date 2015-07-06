@@ -25,17 +25,11 @@ $ rake gems:update
 $ rackup config.ru
 ```
 
-Contributors
-------------
+Thanks
+------
 
-RubyDoc.info was created by Loren Segal (YARD) and Nick Plante (rdoc.info).
-Additional help was provided by:
+RubyDoc.info was created by Loren Segal (YARD) and Nick Plante (rdoc.info) and is a project of DOCMETA, LLC.
+Additional help was provided by [our friendly developer community](https://github.com/lsegal/rubydoc.info/graphs/contributors).
+Pull requests welcome!
 
-* Jeff Rafter (rdoc.info)
-* Brian Turnbull (rdoc.info)
-* Lee Jarvis
-* Sebastian Staudt
-* Nicos Gollan
-* Joel Melegrito - for identifying an XSS vulnerability fixed by [2aafffc16d][]
-
-[2aafffc16d]: https://github.com/lsegal/rubydoc.info/commit/2aafffc16ddb21a9b4c4386f72916c029aa85347
+(c) 2015 DOCMETA LLC. This code is distributed under the MIT license.
