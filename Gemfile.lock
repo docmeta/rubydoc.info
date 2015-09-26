@@ -102,6 +102,3 @@ DEPENDENCIES
   yard-rails
   yard-redcarpet-ext (~> 0.0.3)
   yard-sd
-
-BUNDLED WITH
-   1.10.5

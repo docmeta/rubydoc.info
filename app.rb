@@ -266,13 +266,13 @@ class DocServer < Sinatra::Base
       error 401
     end
 
-    update_rubygems(data)
+    update_rubygems(data['name'], data['version'])
   end
 
-  def update_rubygems(data={})
-    return "INVALIDSCHEME" unless data.is_a?(Hash)
+  def update_rubygems(name, version)
+    return "INVALIDSCHEME" unless name && name != '' && version && version != ''
 
-    gem = GemUpdater.new(self, data['name'], data['version'])
+    gem = GemUpdater.new(self, name, version)
     gem.flush_cache
     gem.register
     "OK"
@@ -281,22 +281,20 @@ class DocServer < Sinatra::Base
   post_all '/checkout', '/checkout/github', '/projects/update' do
     if request.media_type.match(/json/)
       data = JSON.parse(request.body.read || '{}')
-      update_github(data)
-    elsif params[:payload] # legacy
-      update_github(params[:payload])
+      url = (data['repository'] || {})['url']
+      commit = (data['repository'] || {})['commit']
+      update_github(url, commit)
     else
-      data = { :url => params[:url], :commit => params[:commit] }
-      data[:commit] = nil if data[:commit] == ''
-      update_github(data)
+      update_github(params[:url], params[:commit])
     end
   end
 
-  def update_github(data={})
-    return "INVALIDSCHEME" unless data.is_a?(Hash)
+  def update_github(url, commit)
+    return "INVALIDSCHEME" unless url && url != ''
 
     begin
-      url = (data[:url] || '').sub(%r{^http://}, 'git://')
-      commit ||= nil
+      url = (url || '').sub(%r{^http://}, 'git://')
+      commit = nil if commit == ''
 
       if url =~ %r{github\.com/([^/]+)/([^/]+)}
         username, project = $1, $2
