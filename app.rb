@@ -281,8 +281,9 @@ class DocServer < Sinatra::Base
   post_all '/checkout', '/checkout/github', '/projects/update' do
     if request.media_type.match(/json/)
       data = JSON.parse(request.body.read || '{}')
-      url = (data['repository'] || {})['url']
-      commit = (data['repository'] || {})['commit']
+      payload = data.has_key?('payload') ? data['payload'] : data
+      url = (payload['repository'] || {})['url']
+      commit = (payload['repository'] || {})['commit']
       update_github(url, commit)
     else
       update_github(params[:url], params[:commit])
