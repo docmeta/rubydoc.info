@@ -62,6 +62,7 @@ GEM
     thread_safe (0.1.2)
       atomic
     tilt (1.4.1)
+    tomparse (0.4.2)
     tzinfo (0.3.37)
     version_sorter (2.0.0)
     yard-kramdown (0.0.1)
@@ -70,6 +71,9 @@ GEM
     yard-redcarpet-ext (0.0.3)
       yard (~> 0.8.0)
     yard-sd (0.0.4)
+    yard-tomdoc (0.7.1)
+      tomparse (>= 0.4.0)
+      yard
 
 PLATFORMS
   ruby
@@ -102,3 +106,4 @@ DEPENDENCIES
   yard-rails
   yard-redcarpet-ext (~> 0.0.3)
   yard-sd
+  yard-tomdoc
