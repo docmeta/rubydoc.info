@@ -10,6 +10,7 @@ require 'yard'
 require 'yard-sd'
 require 'yard-rails'
 require 'yard-kramdown'
+require 'yard-tomdoc'
 require 'yard-redcarpet-ext'
 
 YARD::Server::Adapter.setup
