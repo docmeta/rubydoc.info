@@ -11,4 +11,3 @@ pidfile root + 'tmp/pids/server.pid'
 stdout_redirect root + 'log/puma.log', root + 'log/puma.err.log', true
 threads 8, 32
 workers 3
-prune_bundler
