@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/lsegal/yard
-  revision: 639712fc98acca424072951e29e6d257b653bb9e
+  revision: 0809decb066a48f5564d454e0de90b061cbe4e76
   specs:
-    yard (0.8.7.6)
+    yard (0.9.0)
 
 GEM
   remote: https://rubygems.org/
@@ -66,8 +66,6 @@ GEM
     yard-kramdown (0.0.1)
     yard-rails (0.3.0)
       yard
-    yard-redcarpet-ext (0.0.3)
-      yard (~> 0.8.0)
     yard-sd (0.0.4)
 
 PLATFORMS
@@ -99,5 +97,4 @@ DEPENDENCIES
   yard!
   yard-kramdown
   yard-rails
-  yard-redcarpet-ext (~> 0.0.3)
   yard-sd
