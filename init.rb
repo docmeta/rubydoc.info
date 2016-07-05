@@ -10,7 +10,6 @@ require 'yard'
 require 'yard-sd'
 require 'yard-rails'
 require 'yard-kramdown'
-require 'yard-redcarpet-ext'
 
 YARD::Server::Adapter.setup
 YARD::Templates::Engine.register_template_path(File.dirname(__FILE__) + '/templates')

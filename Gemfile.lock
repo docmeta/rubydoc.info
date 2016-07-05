@@ -38,7 +38,7 @@ GEM
     rake (11.2.2)
     rdiscount (2.1.7)
     rdoc (3.9.4)
-    redcarpet (1.17.2)
+    redcarpet (2.3.0)
     rspec (3.0.0)
       rspec-core (~> 3.0.0)
       rspec-expectations (~> 3.0.0)
@@ -87,7 +87,7 @@ DEPENDENCIES
   rake
   rdiscount
   rdoc (= 3.9.4)
-  redcarpet (= 1.17.2)
+  redcarpet (= 2.3.0)
   rspec (~> 3.0.0)
   sequel
   sinatra (>= 1.3)
