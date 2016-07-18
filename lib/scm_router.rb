@@ -2,6 +2,7 @@ class ScmRouter < YARD::Server::Router
   def docs_prefix; 'github' end
   def list_prefix; 'list/github' end
   def search_prefix; 'search/github' end
+  def static_prefix; 'static/github' end
 
   def parse_library_from_path(paths)
     library, paths = nil, paths.dup

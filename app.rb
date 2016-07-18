@@ -358,7 +358,7 @@ class DocServer < Sinatra::Base
     cache erb(:gems_index)
   end
 
-  get %r{^/(?:(?:search|list)/)?github/([^/]+)/([^/]+)} do |username, project|
+  get %r{^/(?:(?:search|list|static)/)?github/([^/]+)/([^/]+)} do |username, project|
     @username, @project = username, project
     if settings.whitelisted_projects.include?("#{username}/#{project}")
       puts "Dropping safe mode for #{username}/#{project}"
@@ -369,7 +369,7 @@ class DocServer < Sinatra::Base
     result
   end
 
-  get %r{^/(?:(?:search|list)/)?gems/([^/]+)} do |gemname|
+  get %r{^/(?:(?:search|list|static)/)?gems/([^/]+)} do |gemname|
     return status(503) && "Cannot parse this gem" if settings.disallowed_gems.include?(gemname)
     if settings.whitelisted_gems.include?(gemname)
       puts "Dropping safe mode for #{gemname}"
@@ -383,7 +383,7 @@ class DocServer < Sinatra::Base
 
   # Stdlib
 
-  get %r{^/(?:(?:search|list)/)?stdlib/([^/]+)} do |libname|
+  get %r{^/(?:(?:search|list|static)/)?stdlib/([^/]+)} do |libname|
     YARD::Config.options[:safe_mode] = false
     @libname = libname
     pass unless settings.stdlib_adapter.libraries[libname]
@@ -399,7 +399,7 @@ class DocServer < Sinatra::Base
 
   # Featured libraries
 
-  get %r{^/(?:(?:search|list)/)?docs/([^/]+)(/?.*)} do |libname, extra|
+  get %r{^/(?:(?:search|list|static)/)?docs/([^/]+)(/?.*)} do |libname, extra|
     YARD::Config.options[:safe_mode] = false
     @libname = libname
     lib = settings.featured_adapter.libraries[libname]
