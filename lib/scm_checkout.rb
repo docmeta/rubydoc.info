@@ -24,26 +24,12 @@ class ScmCheckout
 
   def register_project
     puts "#{Time.now}: Registering project #{name}"
-    ready_project
+    unlink_error_file
     app.recent_store.push(settings.scm_adapter.libraries[name])
     puts "#{Time.now}: Adding #{name} to recent projects list"
   end
 
   def remove_project
-  end
-
-  def ready_project
-    cmd = "touch #{repository_path}/.yardoc/complete"
-    sh(cmd, "Readying project #{name}", false)
-    unlink_error_file
-  end
-
-  def unready_project
-    path = "#{repository_path}/.yardoc/complete"
-    if File.exists?(path)
-      cmd = "rm #{path}"
-      sh(cmd, "Unreadying project #{name}", false)
-    end
   end
 
   def repository_path
@@ -57,7 +43,6 @@ class ScmCheckout
 
   def checkout
     unlink_error_file
-    unready_project
     success = sh(checkout_command, "Checking out #{name}") == 0
     if success
       clear_source_files

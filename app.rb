@@ -321,8 +321,7 @@ class DocServer < Sinatra::Base
     git = GithubCheckout.new(self, [params[:username], params[:project]], params[:commit])
     if libs = settings.scm_adapter.libraries[git.name]
       if lib = libs.find {|l| l.version == git.commit }
-        return "NO" unless File.exist?(File.join(lib.source_path, '.yardoc', 'complete'))
-        return "YES"
+        return lib.ready? ? "YES" : "NO"
       end
     end
 

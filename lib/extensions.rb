@@ -33,33 +33,22 @@ module YARD
       protected
 
       def load_yardoc_from_disk_on_demand
-        yfile = File.join(source_path, '.yardoc')
-        if File.directory?(yfile)
-          if File.exist?(File.join(yfile, 'complete'))
-            self.yardoc_file = yfile
-            return
-          else
-            raise LibraryNotPreparedError
-          end
+        self.yardoc_file = File.join(source_path, Registry::DEFAULT_YARDOC_FILE)
+        if File.directory?(source_path)
+          return if ready?
+          raise LibraryNotPreparedError
         end
 
         # Generate
-        Thread.new do
-          generate_yardoc
-          self.yardoc_file = yfile
-        end
+        Thread.new { generate_yardoc }
         raise LibraryNotPreparedError
       end
 
       def load_yardoc_from_remote_gem
-        yfile = File.join(source_path, '.yardoc')
+        self.yardoc_file = File.join(source_path, Registry::DEFAULT_YARDOC_FILE)
         if File.directory?(source_path)
-          if File.exist?(File.join(yfile, 'complete'))
-            self.yardoc_file = yfile
-            return
-          else
-            raise LibraryNotPreparedError
-          end
+          return if ready?
+          raise LibraryNotPreparedError
         end
 
         # Remote gemfile from rubygems.org
@@ -78,12 +67,9 @@ module YARD
               generate_yardoc(safe_mode)
               clean_source(safe_mode)
             end
-            self.yardoc_file = yfile
           rescue OpenURI::HTTPError => e
             puts "#{Time.now}: ERROR DOWNLOADING GEM #{url}! (#{e.message})"
             FileUtils.rmdir(source_path)
-          rescue IOError => e
-            self.yardoc_file = yfile
           end
         end
         raise LibraryNotPreparedError
