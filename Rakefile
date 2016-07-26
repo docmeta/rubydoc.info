@@ -13,7 +13,8 @@ namespace :server do
   task :start => 'cache:clean_index' do
     mkdir_p 'tmp/pids'
     mkdir_p 'log'
-    sh "bundle exec puma -C config/puma.rb"
+    bundle = "bundle exec " unless ENV['DOCKERIZED']
+    sh "#{bundle}puma -C config/puma.rb"
   end
 
   desc 'Restart the server'
@@ -79,4 +80,57 @@ namespace :stdlib do
     require 'stdlib_installer'
     StdlibInstaller.new(ENV['SOURCE'], ENV['VERSION']).install
   end
+end
+
+DOCKER_IMAGE = "docmeta/rubydoc.info:latest"
+
+namespace :docker do
+  desc 'Build docker image'
+  task :build do
+    sh "docker build -t #{DOCKER_IMAGE} ."
+  end
+
+  desc 'Push docker image'
+  task :push do
+    sh "docker push #{DOCKER_IMAGE}"
+  end
+
+  desc 'Start docker image'
+  task :start do
+    mkdir_p 'tmp/pids'
+    mkdir_p 'log'
+    paths = []
+    File.readlines('.dockerignore').each do |line|
+      line = line.strip
+      next if line.empty?
+      paths << "-v #{Dir.pwd}/#{line}:/app/#{line}"
+    end
+    sh "docker run -d -p 8080:8080 #{paths.join(" ")} #{DOCKER_IMAGE}"
+  end
+
+  task :shell do
+    pid = `docker ps -q`.strip.split(/\r?\n/).first
+    sh "docker exec -it #{pid} /bin/bash"
+  end
+
+  task :git_pull do
+    sh "git pull origin master"
+  end
+
+  desc 'Pull latest image'
+  task :pull do
+    sh "docker pull #{DOCKER_IMAGE}"
+  end
+
+  desc 'Stops docker image'
+  task :stop do
+    pids = `docker ps -f label=docmeta.rubydoc -q`.strip
+    sh "docker rm -f #{pids}"
+  end
+
+  desc 'Restart docker image'
+  task :restart => [:stop, :start]
+
+  desc "Pull and update"
+  task :upgrade => [:git_pull, :pull, :restart]
 end
