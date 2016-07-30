@@ -167,6 +167,7 @@ class DocServer < Sinatra::Base
   enable :static
   enable :dump_errors
   enable :lock
+  enable :logging
   disable :raise_errors
 
   set :views, TEMPLATES_PATH
@@ -175,7 +176,6 @@ class DocServer < Sinatra::Base
   set :tmp, TMP_PATH
 
   configure(:production) do
-    enable :logging
     # log to file
     file = File.open("log/sinatra.log", "a")
     STDOUT.reopen(file)
