@@ -3,7 +3,7 @@ class Configuration < Hash
     config = Configuration.new
 
     if File.file?(CONFIG_FILE)
-      YAML.load_file(CONFIG_FILE).each do |key, value|
+      (YAML.load_file(CONFIG_FILE) || {}).each do |key, value|
         config[key] = value
         define_method(key) { self[key] }
       end
