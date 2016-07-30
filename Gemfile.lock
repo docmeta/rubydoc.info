@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/lsegal/yard
-  revision: 1f4b9ddcecdd1831168c1f4669506e4d499e81b5
+  revision: 08c3a83092964dc7f6e4963994c5245df1933ba0
   specs:
     yard (0.9.5)
 
@@ -98,3 +98,6 @@ DEPENDENCIES
   yard-kramdown
   yard-rails
   yard-sd
+
+BUNDLED WITH
+   1.11.2

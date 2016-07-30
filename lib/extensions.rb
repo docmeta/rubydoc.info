@@ -28,12 +28,12 @@ module YARD
     end
 
     class LibraryVersion
+      include Helpers
       attr_accessor :platform
 
       protected
 
       def load_yardoc_from_disk_on_demand
-        self.yardoc_file = File.join(source_path, Registry::DEFAULT_YARDOC_FILE)
         if File.directory?(source_path)
           return if ready?
           raise LibraryNotPreparedError
@@ -45,7 +45,6 @@ module YARD
       end
 
       def load_yardoc_from_remote_gem
-        self.yardoc_file = File.join(source_path, Registry::DEFAULT_YARDOC_FILE)
         if File.directory?(source_path)
           return if ready?
           raise LibraryNotPreparedError
@@ -89,12 +88,20 @@ module YARD
         File.join(::REPOS_PATH, name.split('/', 2).reverse.join('/'), version)
       end
 
+      def source_yardoc_file
+        File.join(source_path, Registry::DEFAULT_YARDOC_FILE)
+      end
+
+      alias yardoc_file_for_remote_gem source_yardoc_file
+      alias yardoc_file_for_disk_on_demand source_yardoc_file
+      alias yardoc_file_for_github source_yardoc_file
+
       private
 
       def generate_yardoc(safe_mode)
-        `cd #{source_path} &&
-          #{YARD::ROOT}/../bin/yardoc -n -q #{safe_mode ? '--safe' : ''} &&
-          touch .yardoc/complete`
+        sh "cd #{source_path} &&
+          #{YARD::ROOT}/../bin/yardoc -n -q #{safe_mode ? '--safe' : ''}",
+          "Generating gem #{to_s}", false
       end
 
       def expand_gem(io)
