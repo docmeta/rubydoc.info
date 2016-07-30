@@ -1,4 +1,5 @@
 require_relative 'cache'
+require_relative 'gem_store'
 require 'rubygems'
 require 'yard'
 
@@ -37,17 +38,20 @@ class GemUpdater
 
     def update_remote_gems
       libs = fetch_remote_gems
+      store = GemStore.new
       changed_gems = {}
-      File.readlines(REMOTE_GEMS_FILE).each do |line|
-        name, rest = *line.split(/\s+/, 2)
-        changed_gems[name] = rest
-      end if File.exist?(REMOTE_GEMS_FILE)
+      RemoteGem.all.each do |row|
+        changed_gems[row.name] = row.versions
+      end
 
-      File.open(REMOTE_GEMS_FILE, 'w') do |file|
+      RemoteGem.db.transaction do
         libs.each do |name, versions|
           line = pick_best_versions(versions).join(' ')
-          changed_gems.delete(name) if changed_gems[name] && changed_gems[name].strip == line.strip
-          file.puts("#{name} #{line}")
+          if changed_gems[name] && changed_gems[name].strip == line.strip
+            changed_gems.delete(name)
+          else
+            store[name] = line
+          end
         end
       end
 

@@ -11,6 +11,7 @@ require 'scm_router'
 require 'scm_checkout'
 require 'gem_updater'
 require 'gems_router'
+require 'gem_store'
 require 'featured_router'
 require 'stdlib_router'
 require 'recent_store'
@@ -80,19 +81,8 @@ class DocServer < Sinatra::Base
   end
 
   def self.load_gems_adapter
-    remote_file = REMOTE_GEMS_FILE
-    contents = File.readlines(remote_file)
-    puts ">> Loading remote gems list..."
     opts = adapter_options
-    contents.each do |line|
-      name, *versions = *line.split(/\s+/)
-      opts[:libraries][name] = VersionSorter.sort(versions).map do |v|
-        ver, platform = *v.split(',')
-        lib = LibraryVersion.new(name, ver, nil, :remote_gem)
-        lib.platform = platform
-        lib
-      end
-    end
+    opts[:libraries] = GemStore.new
     opts[:options][:router] = GemsRouter
     set :gems_adapter, $gems_adapter = RackAdapter.new(*opts.values)
   rescue Errno::ENOENT
@@ -355,7 +345,7 @@ class DocServer < Sinatra::Base
   get %r{^/gems(?:/~([a-z])?|/)?$} do |letter|
     @letter = letter || 'a'
     @adapter = settings.gems_adapter
-    @libraries = @adapter.libraries.find_all {|k, v| k[0].downcase == @letter }
+    @libraries = @adapter.libraries.each_of_letter(@letter)
     cache erb(:gems_index)
   end
 
@@ -433,7 +423,7 @@ class DocServer < Sinatra::Base
     self.class.load_gems_adapter unless defined? settings.gems_adapter
     @search = params[:q] || ''
     @adapter = settings.gems_adapter
-    @libraries = @adapter.libraries.find_all {|k,v| k.match(/#{Regexp.quote @search}/) }
+    @libraries = @adapter.libraries.find_by(@search)
     erb(:gems_index)
   end
 

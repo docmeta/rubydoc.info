@@ -1,9 +1,9 @@
 require 'sequel'
 require 'base64'
 
-DB = Sequel.sqlite('recent.sqlite')
-unless DB.table_exists?(:library_stores)
-  DB.create_table(:library_stores) do
+RECENT_STORE_DB = Sequel.sqlite(RECENT_SQL_FILE)
+unless RECENT_STORE_DB.table_exists?(:library_stores)
+  RECENT_STORE_DB.create_table(:library_stores) do
     primary_key :id
     string :name
     string :source
@@ -12,7 +12,7 @@ unless DB.table_exists?(:library_stores)
   end
 end
 
-class LibraryStore < Sequel::Model
+class LibraryStore < Sequel::Model(RECENT_STORE_DB)
   plugin :serialization, :marshal, :versions
 end
 

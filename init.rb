@@ -32,7 +32,7 @@ TMP_PATH         = __p('tmp')
 DATA_PATH        = __p('data')
 TEMPLATES_PATH   = __p('templates')
 CONFIG_FILE      = __p('config', 'config.yaml', :file)
-REMOTE_GEMS_FILE = __p('data', 'remote_gems', :file)
+REMOTE_GEMS_FILE = __p('data', 'remote_gems.sqlite', :file)
 RECENT_SQL_FILE  = __p('data', 'recent.sqlite', :file)
 
 require_relative 'lib/helpers'

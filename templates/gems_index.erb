@@ -19,7 +19,7 @@
     <% end %>
   </ul>
 
-  <% if @search && (exact_match = @libraries.find { |k,v| k == @search }) %>
+  <% if @search && (exact_match = @libraries.find { |k,_| k == @search }) %>
     <h3>Exact match</h3>
     <ul class="libraries">
       <li class="r1">
@@ -37,7 +37,7 @@
   <% end %>
 
   <ul class="libraries">
-    <% @libraries.sort_by {|name, y| name.downcase }.each do |name, library_versions| %>
+    <% @libraries.sort_by {|name, _| name.downcase }.each do |name, library_versions| %>
     <li class="r<%= @row = @row == 1 ? 2 : 1 %>">
       <% library_versions = library_versions.dup %>
       <% first_lib = library_versions.pop %>
