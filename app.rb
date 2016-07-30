@@ -190,7 +190,7 @@ class DocServer < Sinatra::Base
     file = File.open("log/sinatra.log", "a")
     STDOUT.reopen(file)
     STDERR.reopen(file)
-  end
+  end unless ENV['DOCKERIZED']
 
   configure do
     load_configuration
