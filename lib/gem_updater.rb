@@ -40,17 +40,18 @@ class GemUpdater
       libs = fetch_remote_gems
       store = GemStore.new
       changed_gems = {}
+      removed_gems = []
       RemoteGem.all.each do |row|
-        changed_gems[row.name] = row.versions
+        changed_gems[row.name] = row.versions.split(' ')
       end
 
       RemoteGem.db.transaction do
         libs.each do |name, versions|
-          line = pick_best_versions(versions).join(' ')
-          if changed_gems[name] && changed_gems[name].strip == line.strip
+          versions = pick_best_versions(versions)
+          if changed_gems[name] && (versions|changed_gems[name]).size == versions.size
             changed_gems.delete(name)
           else
-            store[name] = line
+            store[name] = versions
           end
         end
       end
@@ -59,7 +60,15 @@ class GemUpdater
         flush_cache(gem_name)
       end
 
-      changed_gems
+      # deal with deleted gems
+      changed_gems.keys.each do |gem_name|
+        next if libs[gem_name]
+        removed_gems << gem_name
+        changed_gems.delete(gem_name)
+        store.delete(gem_name)
+      end
+
+      [changed_gems, removed_gems]
     end
 
     def pick_best_versions(versions)
@@ -69,7 +78,7 @@ class GemUpdater
         uniqversions |= [ver.version]
         (seen[ver.version] ||= []).send(ver.platform == "ruby" ? :unshift : :push, ver)
       end
-      uniqversions.map {|v| seen[v].first }
+      uniqversions.map {|v| seen[v].first.to_s }
     end
 
     def flush_cache(gem_name)

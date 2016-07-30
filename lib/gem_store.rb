@@ -1,5 +1,6 @@
 require 'sequel'
 require 'base64'
+require 'version_sorter'
 require_relative 'extensions'
 
 GEM_STORE_DB = Sequel.sqlite(REMOTE_GEMS_FILE)
@@ -18,8 +19,13 @@ class GemStore
 
   def [](name) to_versions(RemoteGem.first(name: name)) end
   def []=(name, versions)
-    versions = versions.split(" ").sort_by {|v| v.split('.').map(&:to_i) }
+    versions = versions.split(' ') if versions.is_a?(String)
+    versions = VersionSorter.sort(versions)
     RemoteGem.create(name: name, versions: versions.join(" "))
+  end
+
+  def delete(name)
+    RemoteGem.where(name: name).delete
   end
 
   def has_key?(name) !!RemoteGem.first(name: name) end
