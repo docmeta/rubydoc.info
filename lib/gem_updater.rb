@@ -93,6 +93,7 @@ class GemUpdater
   end
 
   def register
+    puts "Registering gem #{gem.name}-#{gem.version}"
     store = GemStore.new
     libs = (store[gem.name] || []).map {|v| v.version }
     store[gem.name] = libs | [gem.version]
