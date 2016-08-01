@@ -56,7 +56,7 @@ class DocServer < Sinatra::Base
     set :whitelisted_gems, []
     set :caching, false
     set :airbrake, nil
-    set :rubygems, nil
+    set :rubygems, ""
 
     if $CONFIG.varnish_host
       set :protection, :origin_whitelist => ["http://#{$CONFIG.varnish_host}"]

@@ -20,8 +20,13 @@ class GemStore
   def [](name) to_versions(RemoteGem.first(name: name)) end
   def []=(name, versions)
     versions = versions.split(' ') if versions.is_a?(String)
+    versions = versions.map {|v| v.is_a?(YARD::Server::LibraryVersion) ? v.version : v }
     versions = VersionSorter.sort(versions)
-    RemoteGem.create(name: name, versions: versions.join(" "))
+    if RemoteGem.where(name: name).count > 0
+      RemoteGem.first(name: name).update(versions: versions.join(" "))
+    else
+      RemoteGem.create(name: name, versions: versions.join(" "))
+    end
   end
 
   def delete(name)

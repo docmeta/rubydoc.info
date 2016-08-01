@@ -93,7 +93,9 @@ class GemUpdater
   end
 
   def register
-    settings.gems_adapter.add_library(LibraryVersion.new(gem.name, gem.version, nil, :remote_gem))
+    store = GemStore.new
+    libs = (store[gem.name] || []).map {|v| v.version }
+    store[gem.name] = libs | [gem.version]
   end
 
   # TODO: improve this cache invalidation to be version specific
