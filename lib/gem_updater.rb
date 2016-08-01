@@ -1,5 +1,6 @@
 require_relative 'cache'
 require_relative 'gem_store'
+require 'version_sorter'
 require 'rubygems'
 require 'yard'
 
@@ -50,8 +51,11 @@ class GemUpdater
           versions = pick_best_versions(versions)
           if changed_gems[name] && (versions|changed_gems[name]).size == versions.size
             changed_gems.delete(name)
-          else
+          elsif changed_gems[name]
             store[name] = versions
+          else
+            RemoteGem.create(name: name,
+              versions: VersionSorter.sort(versions).join(" "))
           end
         end
       end
