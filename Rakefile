@@ -29,7 +29,7 @@ namespace :server do
 end
 
 namespace :gems do
-  desc 'Update gem list from Rubygems.org'
+  desc 'Update gem list from remote'
   task :update do
     puts ">> Updating Remote Gems file (local cache)"
     load('scripts/update_remote_gems.rb')

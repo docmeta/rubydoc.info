@@ -23,13 +23,19 @@ class GemUpdater
 
   class << self
     def fetch_remote_gems
+      spec_fetcher = if $CONFIG.gem_source
+        Gem::SpecFetcher.new(Gem::SourceList.from([Gem::Source.new($CONFIG.gem_source)]))
+      else
+        Gem::SpecFetcher.fetcher
+      end
+
       libs = {}
       if Gem::VERSION < '2.0'
-        Gem::SpecFetcher.fetcher.list(true).values.flatten(1).each do |info|
+        spec_fetcher.list(true).values.flatten(1).each do |info|
           (libs[info[0]] ||= []) << GemVersion.new(*info)
         end
       else # RubyGems 2.x API
-        Gem::SpecFetcher.fetcher.available_specs(:released).first.values.flatten(1).each do |tuple|
+        spec_fetcher.available_specs(:released).first.values.flatten(1).each do |tuple|
           (libs[tuple.name] ||= []) << GemVersion.new(tuple.name, tuple.version, tuple.platform)
         end
       end

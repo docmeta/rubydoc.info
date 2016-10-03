@@ -63,3 +63,6 @@
 #
 # disallowed_gems:
 #   - gemname
+
+# Custom gem server
+# gem_source: https://rubygems.org/
