@@ -1,8 +1,8 @@
 GIT
   remote: git://github.com/lsegal/yard
-  revision: 08c3a83092964dc7f6e4963994c5245df1933ba0
+  revision: f67ed862153afeca39dcb29325cf429d0ba6f230
   specs:
-    yard (0.9.5)
+    yard (0.9.6)
 
 GEM
   remote: https://rubygems.org/
@@ -100,4 +100,4 @@ DEPENDENCIES
   yard-sd
 
 BUNDLED WITH
-   1.11.2
+   1.13.6
