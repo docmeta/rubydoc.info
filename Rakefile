@@ -24,7 +24,7 @@ namespace :server do
 
   desc 'Shut down the server'
   task :stop do
-    sh "kill -HUP `cat tmp/pids/server.pid`"
+    sh "kill -9 `cat tmp/pids/server.pid`"
   end
 end
 
