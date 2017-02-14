@@ -94,7 +94,7 @@ class GithubCheckout < ScmCheckout
     value = nil if value == ''
     if @commit = value
       @commit = @commit[0,6] if @commit.length == 40
-      @commit = @commit[/\A\s*([a-z0-9.\/-]+)/i, 1]
+      @commit = @commit[/\A\s*([a-z0-9.\/-_]+)/i, 1]
     end
     @commit ||= 'master'
   end
