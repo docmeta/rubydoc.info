@@ -178,11 +178,11 @@ class GitlabCheckout < ScmCheckout
   end
 
   def repository_path
-    File.join(settings.repos, project, username, commit)
+    File.join(settings.repos, "gitlab", project, username, commit)
   end
 
   def remove_project
-    cmd = "rm -rf #{settings.repos}/#{project}/#{username} #{settings.repos}/#{project}"
+    cmd = "rm -rf #{settings.repos}/gitlab/#{project}/#{username} #{settings.repos}/gitlab/#{project}"
     sh(cmd, "Removing #{name}", false)
   end
 
@@ -196,7 +196,7 @@ class GitlabCheckout < ScmCheckout
 
   def fork?
     return @is_fork unless @is_fork.nil?
-    if !File.directory?(File.join(settings.repos, name))
+    if !File.directory?(File.join(settings.repos, "gitlab", name))
       json = JSON.parse(open("https://gitlab.com/api/v4/projects/#{username}%2F#{project}").read)
       @is_fork = json.key?("forked_from_project") if json
     else
@@ -220,8 +220,8 @@ class GitlabCheckout < ScmCheckout
       else
         nil
       end
-      ["mkdir -p #{settings.repos}/#{project}/#{username}",
-        "cd #{settings.repos}/#{project}/#{username}",
+      ["mkdir -p #{settings.repos}/gitlab/#{project}/#{username}",
+        "cd #{settings.repos}/gitlab/#{project}/#{username}",
         "git clone #{url} #{commit}", "cd #{commit}",
         checkout, fork_cmd].compact.join(" && ")
     end
