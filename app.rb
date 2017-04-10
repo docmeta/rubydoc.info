@@ -289,7 +289,7 @@ class DocServer < Sinatra::Base
       url = (url || '').sub(%r{^http://}, 'git://')
       commit = nil if commit == ''
 
-      if url =~ %r{github\.com/([^/]+)/([^/]+)}
+      if url =~ %r{github\.com[/:]([^/]+)/([^/]+)}
         username, project = $1, $2
         if settings.whitelisted_projects.include?("#{username}/#{project}")
           puts "Dropping safe mode for #{username}/#{project}"
