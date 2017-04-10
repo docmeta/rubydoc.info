@@ -38,7 +38,9 @@ class ScmCheckout
 
   def flush_cache
     Cache.invalidate("/github", "/github/~#{project[0,1]}",
-                     "/github/#{name}/", "/list/github/#{name}/", "/")
+                     "/github/#{name}/", "/list/github/#{name}/",
+                     "/gitlab", "/gitlab/~#{project[0,1]}",
+                     "/gitlab/#{name}/", "/list/gitlab/#{name}/", "/")
   end
 
   def checkout
@@ -121,6 +123,82 @@ class GithubCheckout < ScmCheckout
     if !File.directory?(File.join(settings.repos, name))
       json = JSON.parse(open("https://api.github.com/repos/#{username}/#{project}").read)
       @is_fork = json["fork"] if json
+    else
+      @is_fork = true
+    end
+    @is_fork
+  rescue IOError, OpenURI::HTTPError, Timeout::Error
+    @is_fork = false
+  ensure
+  end
+
+  private
+
+  def git_checkout_command
+    if File.directory?(repository_path)
+      "cd #{repository_path} && git reset --hard && git pull --force"
+    else
+      fork_cmd = fork? ? nil : "echo #{name} > ../../.master_fork"
+      checkout = if commit
+        "git fetch && trap \"git pull origin #{commit}\" TERM && git checkout #{commit}"
+      else
+        nil
+      end
+      ["mkdir -p #{settings.repos}/#{project}/#{username}",
+        "cd #{settings.repos}/#{project}/#{username}",
+        "git clone #{url} #{commit}", "cd #{commit}",
+        checkout, fork_cmd].compact.join(" && ")
+    end
+  end
+end
+
+class GitlabCheckout < ScmCheckout
+  attr_accessor :username, :project
+
+  def initialize(app, url, commit = nil)
+    super
+    case url
+    when Array
+      self.username, self.project = *url
+    when %r{^(?:https?|git)://(?:www\.?)?gitlab\.com/([^/]+)/([^/]+?)(?:\.git)?/?$}
+      self.username, self.project = $1, $2
+    else
+      raise InvalidSchemeError
+    end
+    self.name = "#{username}/#{project}"
+  end
+
+  def commit=(value)
+    value = nil if value == ''
+    if @commit = value
+      @commit = @commit[0,6] if @commit.length == 40
+      @commit = @commit[/\A\s*([a-z0-9.\/-_]+)/i, 1]
+    end
+    @commit ||= 'master'
+  end
+
+  def repository_path
+    File.join(settings.repos, project, username, commit)
+  end
+
+  def remove_project
+    cmd = "rm -rf #{settings.repos}/#{project}/#{username} #{settings.repos}/#{project}"
+    sh(cmd, "Removing #{name}", false)
+  end
+
+  def checkout_command
+    "#{git_checkout_command} && #{YARD::ROOT}/../bin/yardoc -n -q #{YARD::Config.options[:safe_mode] ? '--safe' : ''}"
+  end
+
+  def clear_source_files
+    SourceCleaner.new(repository_path).clean
+  end
+
+  def fork?
+    return @is_fork unless @is_fork.nil?
+    if !File.directory?(File.join(settings.repos, name))
+      json = JSON.parse(open("https://gitlab.com/api/v4/projects/#{username}%2F#{project}").read)
+      @is_fork = json.key?("forked_from_project") if json
     else
       @is_fork = true
     end

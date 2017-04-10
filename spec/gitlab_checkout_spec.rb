@@ -60,7 +60,7 @@ describe GitlabCheckout do
 
     it "should return true for non-master repo" do
       expect(File).to receive(:directory?).and_return(false)
-      git("git://gitlab.com/marin/gitlab-test")
+      git("git://gitlab.com/stanhu/gitlab-test")
       expect(@git).to be_fork
     end
   end
