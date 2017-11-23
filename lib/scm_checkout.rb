@@ -1,5 +1,6 @@
 require 'open-uri'
 require 'json'
+require 'shellwords'
 require_relative 'source_cleaner'
 require_relative 'helpers'
 require_relative 'cache'
@@ -144,7 +145,7 @@ class GithubCheckout < ScmCheckout
       end
       ["mkdir -p #{settings.repos}/#{project}/#{username}",
         "cd #{settings.repos}/#{project}/#{username}",
-        "git clone #{url} #{commit}", "cd #{commit}",
+        Shellwords.join(["git", "clone", url, commit]), "cd #{commit}",
         checkout, fork_cmd].compact.join(" && ")
     end
   end
