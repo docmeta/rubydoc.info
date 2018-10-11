@@ -60,7 +60,7 @@ describe GithubCheckout do
 
     it "should return true for non-master repo" do
       expect(File).to receive(:directory?).and_return(false)
-      git("git://github.com/lsegal/redcarpet")
+      git("git://github.com/rails/web-console")
       expect(@git).to be_fork
     end
   end
