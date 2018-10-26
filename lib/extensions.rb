@@ -52,7 +52,8 @@ module YARD
 
         # Remote gemfile from rubygems.org
         suffix = platform ? "-#{platform}" : ""
-        url = "http://rubygems.org/downloads/#{to_s(false)}#{suffix}.gem"
+        base_url = ($CONFIG.gem_source || 'http://rubygems.org').gsub(%r(/$), '')
+        url = "#{base_url}/gems/#{to_s(false)}#{suffix}.gem"
         puts "#{Time.now}: Downloading remote gem file #{url}"
 
         FileUtils.mkdir_p(source_path)
