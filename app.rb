@@ -19,6 +19,7 @@ require 'recent_store'
 require 'digest/sha2'
 require 'rack/etag'
 require 'version_sorter'
+require 'shellwords'
 
 class Hash; alias blank? empty? end
 class NilClass; def blank?; true end end
@@ -73,9 +74,10 @@ class DocServer < Sinatra::Base
     puts ">> Copying static system files..."
     YARD::Templates::Engine.template(:default, :fulldoc, :html).full_paths.each do |path|
       %w(css js images).each do |ext|
-        srcdir, dstdir = File.join(path, ext), File.join('public', ext)
-        next unless File.directory?(srcdir)
-        system "mkdir -p #{dstdir} && cp #{srcdir}/* #{dstdir}/"
+        source_dir = Shellwords.shellescape(File.join(path, ext))
+        dest_dir = Shellwords.shellescape(File.join('public', ext).shellescape)
+        next unless File.directory?(source_dir)
+        system "mkdir -p #{dest_dir} && cp #{source_dir}/* #{dest_dir}/"
       end
     end
   end

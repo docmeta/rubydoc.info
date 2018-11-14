@@ -1,6 +1,8 @@
 #!/usr/bin/env puma
 
-root = File.dirname(__FILE__) + '/../'
+require "shellwords"
+
+root = File.expand_path("..", Dir.pwd)
 
 directory root
 rackup root + 'config.ru'
@@ -9,7 +11,9 @@ bind 'tcp://0.0.0.0:8080'
 daemonize unless ENV['DOCKERIZED']
 pidfile root + 'tmp/pids/server.pid'
 unless ENV['DOCKERIZED']
-  stdout_redirect root + 'log/puma.log', root + 'log/puma.err.log', true
+  log = Shellwords.shellescape(File.join(root, 'log/puma.log'))
+  error_log = Shellwords.shellescape(File.join(root, 'log/puma.err.log'))
+  stdout_redirect log, error_log, true
 end
 threads 8, 32
 workers 3
