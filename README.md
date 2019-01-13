@@ -32,4 +32,4 @@ RubyDoc.info was created by Loren Segal (YARD) and Nick Plante (rdoc.info) and i
 Additional help was provided by [our friendly developer community](https://github.com/lsegal/rubydoc.info/graphs/contributors).
 Pull requests welcome!
 
-(c) 2018 DOCMETA LLC. This code is distributed under the MIT license.
+(c) 2019 DOCMETA LLC. This code is distributed under the MIT license.
