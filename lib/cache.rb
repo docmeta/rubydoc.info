@@ -32,7 +32,7 @@ module Cache
   end
 
   def invalidate_with_varnish(*paths)
-    uri = URI("http://#{$CONFIG.varnish_host}")
+    uri = URI("https://#{$CONFIG.varnish_host}")
     http = Net::HTTP::Persistent.new
     puts "Flushing cache on #{uri}: #{paths}"
     paths.each do |path|
