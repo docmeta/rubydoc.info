@@ -55,7 +55,7 @@ class GemUpdater
       RemoteGem.db.transaction do
         libs.each do |name, versions|
           versions = pick_best_versions(versions)
-          if changed_gems[name] && (versions|changed_gems[name]).size == versions.size
+          if changed_gems[name] && changed_gems[name].size == versions.size
             changed_gems.delete(name)
           elsif changed_gems[name]
             store[name] = versions
