@@ -85,6 +85,12 @@ end
 DOCKER_IMAGE = "docmeta/rubydoc.info:latest"
 
 namespace :docker do
+  desc 'Builds documentation for SOURCE at VERSION given a TYPE'
+  task :doc do
+    sh "docker run -v #{ENV['SOURCE'].inspect}:/build lsegal/yard-build:latest"
+  end
+
+
   desc 'Build docker image'
   task :build do
     sh "docker build -t #{DOCKER_IMAGE} ."

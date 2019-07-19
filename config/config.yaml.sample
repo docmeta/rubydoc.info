@@ -13,9 +13,6 @@
 # following line and add your API key:
 # rubygems: YOUR_API_KEY
 
-# If you have Airbrake, uncomment the following line and add your API key:
-# airbrake: YOUR_API_KEY
-
 # If you use DISQUS for comments, uncomment the following line:
 # disqus: YOUR_DISQUS_USERNAME
 

@@ -2,7 +2,6 @@ source 'https://rubygems.org'
 
 gem 'sinatra', '>= 1.3'
 gem 'activesupport'
-gem 'airbrake'
 gem 'rdoc'
 gem 'maruku'
 gem 'kramdown'
@@ -18,7 +17,7 @@ gem 'json'
 gem 'rake'
 gem 'asciidoctor'
 gem 'version_sorter'
-gem 'yard', :git => 'https://github.com/lsegal/yard'
+gem 'yard', git: 'https://github.com/lsegal/yard'
 gem 'yard-rails'
 gem 'yard-kramdown'
 gem 'yard-sd'
@@ -26,7 +25,7 @@ gem 'i18n'
 gem 'net-http-persistent', '~> 2.0'
 
 group :test do
-  gem 'rspec', '~> 3.0.0', :require => 'spec'
+  gem 'rspec', require: 'spec'
 end
 
 group :production do

@@ -4,7 +4,6 @@ require 'yard'
 require 'sinatra'
 require 'json'
 require 'fileutils'
-require 'airbrake'
 
 require 'extensions'
 require 'scm_router'
@@ -55,7 +54,6 @@ class DocServer < Sinatra::Base
     set :whitelisted_projects, []
     set :whitelisted_gems, []
     set :caching, false
-    set :airbrake, nil
     set :rubygems, ""
 
     if $CONFIG.varnish_host
@@ -199,19 +197,6 @@ class DocServer < Sinatra::Base
     end
 
     def notify_error
-      if settings.airbrake && %w(staging production).include?(ENV['RACK_ENV'])
-        Airbrake.configure do |config|
-          config.api_key = settings.airbrake
-        end unless @airbrake_configured
-        @airbrake_configured = true
-        exc = request.env['sinatra.error']
-        Airbrake.notify exc,
-          error_message: exc.message,
-          request: request,
-          environment: request.env,
-          session: request.session,
-          backtrace: caller
-      end
       erb(:error)
     end
 
@@ -328,7 +313,7 @@ class DocServer < Sinatra::Base
 
   # Main URL handlers
 
-  get %r{^/github(?:/~([a-z])?|/)?$} do |letter|
+  get %r{/github(?:/~([a-z])?|/)?} do |letter|
     if letter.nil?
       @adapter = settings.scm_adapter
       @libraries = recent_store
@@ -342,14 +327,14 @@ class DocServer < Sinatra::Base
     end
   end
 
-  get %r{^/gems(?:/~([a-z])?|/)?$} do |letter|
+  get %r{/gems(?:/~([a-z])?|/)?} do |letter|
     @letter = letter || 'a'
     @adapter = settings.gems_adapter
     @libraries = @adapter.libraries.each_of_letter(@letter)
     cache erb(:gems_index)
   end
 
-  get %r{^/(?:(?:search|list|static)/)?github/([^/]+)/([^/]+)} do |username, project|
+  get %r{/(?:(?:search|list|static)/)?github/([^/]+)/([^/]+)} do |username, project|
     @username, @project = username, project
     if settings.whitelisted_projects.include?("#{username}/#{project}")
       puts "Dropping safe mode for #{username}/#{project}"
@@ -360,7 +345,7 @@ class DocServer < Sinatra::Base
     result
   end
 
-  get %r{^/(?:(?:search|list|static)/)?gems/([^/]+)} do |gemname|
+  get %r{/(?:(?:search|list|static)/)?gems/([^/]+)} do |gemname|
     return status(503) && "Cannot parse this gem" if settings.disallowed_gems.include?(gemname)
     if settings.whitelisted_gems.include?(gemname)
       puts "Dropping safe mode for #{gemname}"
@@ -374,7 +359,7 @@ class DocServer < Sinatra::Base
 
   # Stdlib
 
-  get %r{^/(?:(?:search|list|static)/)?stdlib/([^/]+)} do |libname|
+  get %r{/(?:(?:search|list|static)/)?stdlib/([^/]+)} do |libname|
     YARD::Config.options[:safe_mode] = false
     @libname = libname
     pass unless settings.stdlib_adapter.libraries[libname]
@@ -383,14 +368,14 @@ class DocServer < Sinatra::Base
     result
   end
 
-  get %r{^/stdlib/?$} do
+  get %r{/stdlib/?} do
     @stdlib = settings.stdlib_adapter.libraries
     cache erb(:stdlib_index)
   end
 
   # Featured libraries
 
-  get %r{^/(?:(?:search|list|static)/)?docs/([^/]+)(/?.*)} do |libname, extra|
+  get %r{/(?:(?:search|list|static)/)?docs/([^/]+)(/?.*)} do |libname, extra|
     YARD::Config.options[:safe_mode] = false
     @libname = libname
     lib = settings.featured_adapter.libraries[libname]
@@ -404,14 +389,14 @@ class DocServer < Sinatra::Base
     result
   end
 
-  get %r{^/(featured|docs/?$)} do
+  get %r{/(featured|docs/?)} do
     @featured = settings.featured_adapter.libraries
     cache erb(:featured_index)
   end
 
   # Simple search interfaces
 
-  get %r{^/find/github} do
+  get %r{/find/github} do
     @search = params[:q]
     @adapter = settings.scm_adapter
     @libraries = @adapter.libraries
@@ -419,7 +404,7 @@ class DocServer < Sinatra::Base
     erb(:scm_index)
   end
 
-  get %r{^/find/gems} do
+  get %r{/find/gems} do
     self.class.load_gems_adapter unless defined? settings.gems_adapter
     @search = params[:q] || ''
     @adapter = settings.gems_adapter
@@ -428,22 +413,22 @@ class DocServer < Sinatra::Base
   end
 
   # Redirect /docs/ruby-core
-  get(%r{^/docs/ruby-core/?(.*)}) do |all|
+  get(%r{/docs/ruby-core/?(.*)}) do |all|
     redirect("/stdlib/core/#{all}", 301)
   end
 
   # Redirect /docs/ruby-stdlib
-  get(%r{^/docs/ruby-stdlib/?(.*)}) do |all|
+  get(%r{/docs/ruby-stdlib/?(.*)}) do |all|
     redirect("/stdlib")
   end
 
   # Old URL structure redirection for yardoc.org
 
-  get(%r{^/docs/([^/]+)-([^/]+)(/?.*)}) do |user, proj, extra|
+  get(%r{/docs/([^/]+)-([^/]+)(/?.*)}) do |user, proj, extra|
     redirect("/github/#{user}/#{proj}#{translate_file_links extra}", 301)
   end
 
-  get(%r{^/docs/([^/]+)(/?.*)}) do |lib, extra|
+  get(%r{/docs/([^/]+)(/?.*)}) do |lib, extra|
     redirect("/gems/#{lib}#{translate_file_links extra}", 301)
   end
 
@@ -451,7 +436,7 @@ class DocServer < Sinatra::Base
 
   # Old URL structure redirection for rdoc.info
 
-  get(%r{^/(?:projects|rdoc)/([^/]+)/([^/]+)(/?.*)}) do |user, proj, extra|
+  get(%r{/(?:projects|rdoc)/([^/]+)/([^/]+)(/?.*)}) do |user, proj, extra|
     redirect("/github/#{user}/#{proj}", 301)
   end
 
@@ -467,8 +452,7 @@ class DocServer < Sinatra::Base
   error do
     @page_title = "Unknown Error!"
     @error = "Something quite unexpected just happened.
-      Thanks to <a href='http://airbrake.io'>Airbrake</a> we know about the
-      issue, but feel free to email <a href='mailto:support@rdoc.info'>someone</a>
+      If you think something is wrong, please <a href='mailto:support@rdoc.info'>email us</a>
       about it."
     notify_error
   end
