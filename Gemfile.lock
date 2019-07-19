@@ -28,7 +28,7 @@ GEM
     mustermann (1.0.3)
     net-http-persistent (2.9)
     puma (3.12.0)
-    rack (2.0.6)
+    rack (2.0.7)
     rack-protection (2.0.5)
       rack
     rake (12.3.2)
@@ -97,4 +97,4 @@ DEPENDENCIES
   yard-sd
 
 BUNDLED WITH
-   1.17.2
+   2.0.1

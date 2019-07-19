@@ -313,7 +313,7 @@ class DocServer < Sinatra::Base
 
   # Main URL handlers
 
-  get %r{/github(?:/~([a-z])?|/)?} do |letter|
+  get %r{/github(?:/~([a-z]))?} do |letter|
     if letter.nil?
       @adapter = settings.scm_adapter
       @libraries = recent_store
@@ -327,14 +327,14 @@ class DocServer < Sinatra::Base
     end
   end
 
-  get %r{/gems(?:/~([a-z])?|/)?} do |letter|
+  get %r{/gems(?:/~([a-z]))?} do |letter|
     @letter = letter || 'a'
     @adapter = settings.gems_adapter
     @libraries = @adapter.libraries.each_of_letter(@letter)
     cache erb(:gems_index)
   end
 
-  get %r{/(?:(?:search|list|static)/)?github/([^/]+)/([^/]+)} do |username, project|
+  get %r{/(?:(?:search|list|static)/)?github/([^/]+)/([^/]+).*} do |username, project|
     @username, @project = username, project
     if settings.whitelisted_projects.include?("#{username}/#{project}")
       puts "Dropping safe mode for #{username}/#{project}"
@@ -345,7 +345,7 @@ class DocServer < Sinatra::Base
     result
   end
 
-  get %r{/(?:(?:search|list|static)/)?gems/([^/]+)} do |gemname|
+  get %r{/(?:(?:search|list|static)/)?gems/([^/]+).*} do |gemname|
     return status(503) && "Cannot parse this gem" if settings.disallowed_gems.include?(gemname)
     if settings.whitelisted_gems.include?(gemname)
       puts "Dropping safe mode for #{gemname}"
@@ -359,7 +359,7 @@ class DocServer < Sinatra::Base
 
   # Stdlib
 
-  get %r{/(?:(?:search|list|static)/)?stdlib/([^/]+)} do |libname|
+  get %r{/(?:(?:search|list|static)/)?stdlib/([^/]+).*} do |libname|
     YARD::Config.options[:safe_mode] = false
     @libname = libname
     pass unless settings.stdlib_adapter.libraries[libname]
@@ -368,7 +368,7 @@ class DocServer < Sinatra::Base
     result
   end
 
-  get %r{/stdlib/?} do
+  get %r{/stdlib} do
     @stdlib = settings.stdlib_adapter.libraries
     cache erb(:stdlib_index)
   end
