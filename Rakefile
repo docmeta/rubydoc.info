@@ -13,8 +13,7 @@ namespace :server do
   task :start => 'cache:clean_index' do
     mkdir_p 'tmp/pids'
     mkdir_p 'log'
-    bundle = "bundle exec " unless ENV['DOCKERIZED']
-    sh "#{bundle}puma -C config/puma.rb"
+    sh "bundle exec puma -C scripts/puma.rb"
   end
 
   desc 'Restart the server'
@@ -82,12 +81,12 @@ namespace :stdlib do
   end
 end
 
-DOCKER_IMAGE = "docmeta/rubydoc.info:latest"
+DOCKER_IMAGE = "docmeta/rubydoc.info:app"
 
 namespace :docker do
   desc 'Builds documentation for SOURCE at VERSION given a TYPE'
   task :doc do
-    sh "docker run -v #{ENV['SOURCE'].inspect}:/build lsegal/yard-build:latest"
+    sh "docker run -v #{ENV['SOURCE'].inspect}:/build docmeta/rubydoc.info:docparse"
   end
 
 

@@ -1,0 +1,5 @@
+PATH=/usr/local/bin:/usr/bin:/bin
+APP=/app
+RAKE="bundle exec rake"
+# m h  dom mon dow   command
+15 * * * * cd $APP && $RAKE gems:update cache:clean_index server:restart

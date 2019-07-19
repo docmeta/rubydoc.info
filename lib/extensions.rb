@@ -100,9 +100,10 @@ module YARD
       private
 
       def generate_yardoc(safe_mode)
-        sh "cd #{source_path} &&
-          #{YARD::ROOT}/../bin/yardoc -n -q #{safe_mode ? '--safe' : ''}",
-          "Generating gem #{to_s}", false
+        Dir.chdir(File.dirname(__FILE__) + "/..") do
+          sh "bundle exec rake docker:doc SOURCE=#{source_path.inspect}",
+            "Generating gem #{to_s}", false
+        end
       end
 
       def expand_gem(io)

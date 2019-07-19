@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  app:
+    privileged: true
+    image: docmeta/rubydoc.info:app
+    expose:
+      - "8080"
+    volumes:
+      - ./config:/app/config
+      - ./repos:/app/repos
+      - ./data:/app/data
+      - ./log:/app/log
+  cache:
+    image: docmeta/rubydoc.info:cache
+    expose:
+      - "80"
+    depends_on:
+      - app
+  https:
+    image: docmeta/rubydoc.info:https
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - cache
+      - app
