@@ -23,8 +23,7 @@ RUN bundle --without test --path vendor/bundle
 
 LABEL docmeta.rubydoc=true
 ENV DOCKERIZED=1
-ARG DOCKER_DEV
-ENV DOCKER_DEV=${DOCKER_DEV}
+ENV DOCKER_HOST=tcp://dind:2375
 
 # Rest of app
 ADD --chown=app:app . /app

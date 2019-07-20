@@ -1,8 +1,9 @@
 version: '3.7'
 services:
   app:
-    privileged: true
-    image: docmeta/rubydoc.info:app
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
     expose:
       - "8080"
     volumes:
@@ -10,14 +11,27 @@ services:
       - ./repos:/app/repos
       - ./data:/app/data
       - ./log:/app/log
+    depends_on:
+      - dind
   cache:
-    image: docmeta/rubydoc.info:cache
+    build:
+      context: .
+      dockerfile: ./docker/cache/Dockerfile
     expose:
       - "80"
+    ports:
+      - "3000:80"
     depends_on:
       - app
+  dind:
+    privileged: true
+    image: docker:dind
+    expose:
+      - "2375"
   https:
-    image: docmeta/rubydoc.info:https
+    build:
+      context: .
+      dockerfile: ./docker/https/Dockerfile
     ports:
       - "80:80"
       - "443:443"

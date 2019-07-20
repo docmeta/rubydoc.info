@@ -87,7 +87,8 @@ DOCKER_IMAGE_TAGS = %w(app cache https docparse)
 namespace :docker do
   desc 'Builds documentation for SOURCE at VERSION given a TYPE'
   task :doc do
-    sh "docker run -v #{ENV['SOURCE'].inspect}:/build docmeta/rubydoc.info:docparse"
+    sh "docker build -q -t docparse docker/docparse >/dev/null"
+    sh "docker run -v #{ENV['SOURCE'].inspect}:/build docparse"
   end
 
 
