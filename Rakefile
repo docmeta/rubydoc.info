@@ -81,7 +81,8 @@ namespace :stdlib do
   end
 end
 
-DOCKER_IMAGE = "docmeta/rubydoc.info:app"
+DOCKER_IMAGE_PREFIX = "docmeta/rubydoc.info"
+DOCKER_IMAGE_TAGS = %w(app cache https docparse)
 
 namespace :docker do
   desc 'Builds documentation for SOURCE at VERSION given a TYPE'
@@ -90,14 +91,19 @@ namespace :docker do
   end
 
 
-  desc 'Build docker image'
+  desc 'Build docker images'
   task :build do
-    sh "docker build -t #{DOCKER_IMAGE} ."
+    (DOCKER_IMAGE_TAGS - %w(docparse)).each do |tag|
+      path = tag == "docparse" ? "docparse" : "docker/#{tag}"
+      sh "docker build -t #{DOCKER_IMAGE_PREFIX}:#{tag} #{path}"
+    end
   end
 
-  desc 'Push docker image'
+  desc 'Push docker images'
   task :push do
-    sh "docker push #{DOCKER_IMAGE}"
+    DOCKER_IMAGE_TAGS.each do |tag|
+      sh "docker push #{DOCKER_IMAGE_PREFIX}:#{tag}"
+    end
   end
 
   desc 'Start docker image'
