@@ -93,9 +93,10 @@ namespace :docker do
 
   desc 'Build docker images'
   task :build do
-    (DOCKER_IMAGE_TAGS - %w(docparse)).each do |tag|
-      path = tag == "docparse" ? "docparse" : "docker/#{tag}"
-      sh "docker build -t #{DOCKER_IMAGE_PREFIX}:#{tag} #{path}"
+    DOCKER_IMAGE_TAGS.each do |tag|
+      path = "docker/#{tag}"
+      context = tag == "docparse" ? path : "."
+      sh "docker build -t #{DOCKER_IMAGE_PREFIX}:#{tag} -f #{path}/Dockerfile #{context}"
     end
   end
 
