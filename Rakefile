@@ -85,10 +85,13 @@ DOCKER_IMAGE_PREFIX = "docmeta/rubydoc.info"
 DOCKER_IMAGE_TAGS = %w(app cache https docparse)
 
 namespace :docker do
-  desc 'Builds documentation for SOURCE at VERSION given a TYPE'
+  desc 'Builds documentation for SOURCE in an isolated Docker container'
   task :doc do
-    sh "docker build -q -t docparse docker/docparse >/dev/null"
-    sh "docker run -v #{ENV['SOURCE'].inspect}:/build docparse"
+    dir = File.join(__dir__, "docker", "docparse")
+    if `docker images -q docparse:latest 2> /dev/null`.strip == ""
+      sh "docker build -q -t docparse docker/docparse >/dev/null"
+    end
+    sh "docker run -v #{dir.inspect}:/rb:ro -v #{ENV['SOURCE'].inspect}:/build docparse /rb/generate.rb"
   end
 
 
@@ -96,7 +99,7 @@ namespace :docker do
   task :build do
     DOCKER_IMAGE_TAGS.each do |tag|
       path = "docker/#{tag}"
-      context = tag == "docparse" ? path : "."
+      context = tag == "app" ? "." : path
       sh "docker build -t #{DOCKER_IMAGE_PREFIX}:#{tag} -f #{path}/Dockerfile #{context}"
     end
   end

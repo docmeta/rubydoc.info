@@ -1,6 +1,7 @@
 version: '3.7'
 services:
   app:
+    privileged: true
     build:
       context: .
       dockerfile: ./docker/app/Dockerfile
@@ -11,8 +12,6 @@ services:
       - ./repos:/app/repos
       - ./data:/app/data
       - ./log:/app/log
-    depends_on:
-      - dind
   cache:
     build:
       context: .
@@ -23,11 +22,6 @@ services:
       - "3000:80"
     depends_on:
       - app
-  dind:
-    privileged: true
-    image: docker:dind
-    expose:
-      - "2375"
   https:
     build:
       context: .

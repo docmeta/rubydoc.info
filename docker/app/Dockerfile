@@ -1,13 +1,11 @@
-FROM ruby:2.6
+FROM ruby:2.6-alpine
 LABEL Maintainer="Loren Segal <lsegal@soen.ca>"
 
-RUN apt-get update && apt-get install -y cron
-RUN curl -fsSL https://get.docker.com | sh
-RUN echo 'gem: "--no-document"' > /root/.gemrc
-RUN gem update --system
+RUN apk add --no-cache -U dcron docker git sqlite-dev build-base
+RUN gem update --no-document --system
 
-RUN useradd -ms /bin/bash app
-RUN usermod -a -G docker app
+RUN adduser -D app
+RUN sed -E -i 's/^(docker:.+)/\1app/' /etc/group
 USER app
 
 # Create GEM_HOME
@@ -23,14 +21,13 @@ RUN bundle --without test --path vendor/bundle
 
 LABEL docmeta.rubydoc=true
 ENV DOCKERIZED=1
-ENV DOCKER_HOST=tcp://dind:2375
 
 # Rest of app
 ADD --chown=app:app . /app
 
-# Install cron scripts
-RUN crontab ./docker/app/crontab
+# Install cron scripts (as root)
+USER root
+RUN crontab -u app ./docker/app/crontab
 
 # Command as root but don't worry, we switch back to app!
-USER root
 ENTRYPOINT [ "sh", "/app/docker/app/entrypoint.sh" ]

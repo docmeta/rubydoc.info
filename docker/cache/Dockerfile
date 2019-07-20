@@ -1,5 +1,5 @@
 FROM alpine:3.10
-RUN apk add -U varnish
+RUN apk add --no-cache -U varnish
 COPY ./docker/cache/default.vcl /etc/varnish/default.vcl
 ENTRYPOINT []
 CMD sh -c 'varnishd -F -a ":80,HTTP" -f "/etc/varnish/default.vcl"'
