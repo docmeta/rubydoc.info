@@ -81,9 +81,6 @@ namespace :stdlib do
   end
 end
 
-DOCKER_IMAGE_PREFIX = "docmeta/rubydoc.info"
-DOCKER_IMAGE_TAGS = %w(app cache https docparse)
-
 namespace :docker do
   desc 'Builds documentation for SOURCE in an isolated Docker container'
   task :doc do
@@ -93,60 +90,4 @@ namespace :docker do
     end
     sh "docker run -v #{dir.inspect}:/rb:ro -v #{ENV['SOURCE'].inspect}:/build docparse /rb/generate.rb"
   end
-
-
-  desc 'Build docker images'
-  task :build do
-    DOCKER_IMAGE_TAGS.each do |tag|
-      path = "docker/#{tag}"
-      context = tag == "app" ? "." : path
-      sh "docker build -t #{DOCKER_IMAGE_PREFIX}:#{tag} -f #{path}/Dockerfile #{context}"
-    end
-  end
-
-  desc 'Push docker images'
-  task :push do
-    DOCKER_IMAGE_TAGS.each do |tag|
-      sh "docker push #{DOCKER_IMAGE_PREFIX}:#{tag}"
-    end
-  end
-
-  desc 'Start docker image'
-  task :start do
-    mkdir_p 'tmp/pids'
-    mkdir_p 'log'
-    paths = []
-    File.readlines('.dockerignore').each do |line|
-      line = line.strip
-      next if line.empty?
-      paths << "-v #{Dir.pwd}/#{line}:/app/#{line}"
-    end
-    sh "docker run -d -p 8080:8080 #{paths.join(" ")} #{DOCKER_IMAGE}"
-  end
-
-  task :shell do
-    pid = `docker ps -q`.strip.split(/\r?\n/).first
-    sh "docker exec -it #{pid} /bin/bash"
-  end
-
-  task :git_pull do
-    sh "git pull origin master"
-  end
-
-  desc 'Pull latest image'
-  task :pull do
-    sh "docker pull #{DOCKER_IMAGE}"
-  end
-
-  desc 'Stops docker image'
-  task :stop do
-    pids = `docker ps -f label=docmeta.rubydoc -q`.strip
-    sh "docker rm -f #{pids}"
-  end
-
-  desc 'Restart docker image'
-  task :restart => [:stop, :start]
-
-  desc "Pull and update"
-  task :upgrade => [:git_pull, :pull, :restart]
 end
