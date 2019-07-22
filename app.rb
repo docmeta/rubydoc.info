@@ -60,6 +60,12 @@ class DocServer < Sinatra::Base
       set :protection, :origin_whitelist => ["http://#{$CONFIG.varnish_host}"]
     end
 
+    if $CONFIG.skylight_token
+      ENV['SKYLIGHT_AUTHENTICATION'] = $CONFIG.skylight_token
+      ENV['SKYLIGHT_LOG_FILE'] = 'log/skylight.log'
+      ENV['SKYLIGHT_DAEMON_SOCKDIR_PATH'] = 'tmp/skylight.pid'
+    end
+
     puts ">> Loading #{CONFIG_FILE}"
     $CONFIG.each do |key, value|
       set key, value
@@ -182,6 +188,11 @@ class DocServer < Sinatra::Base
 
   configure do
     load_configuration
+
+    require 'skylight/sinatra'
+    Skylight.start!
+    %w(sinatra tilt sequel).each {|t| Skylight.probe(t) }
+
     load_gems_adapter
     load_scm_adapter
     load_featured_adapter

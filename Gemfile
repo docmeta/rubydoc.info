@@ -23,6 +23,7 @@ gem 'yard-kramdown'
 gem 'yard-sd'
 gem 'i18n'
 gem 'net-http-persistent', '~> 2.0'
+gem 'skylight', require: false
 
 group :test do
   gem 'rspec', require: 'spec'

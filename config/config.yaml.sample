@@ -23,6 +23,10 @@
 # your Site ID:
 # google_analytics: YOUR_SITE_ID
 
+# If you want to use Skylight performance monitoring, uncomment the following
+# line and add your authentication token:
+skylight_token: YOUR_AUTH_TOKEN
+
 # If you want to add a Tender help desk support link, uncomment the following
 # line and add your Site ID:
 # tender: YOUR_SITE_ID
