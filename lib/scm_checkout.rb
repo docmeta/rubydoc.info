@@ -110,7 +110,8 @@ class GithubCheckout < ScmCheckout
   end
 
   def checkout_command
-    "#{git_checkout_command} && #{YARD::ROOT}/../bin/yardoc -n -q #{YARD::Config.options[:safe_mode] ? '--safe' : ''}"
+    root_path = File.expand_path(File.join(settings.repos, '..', '..'))
+    "#{git_checkout_command} && cd #{root_path.inspect} && bundle exec rake docker:doc SOURCE=#{repository_path.inspect}"
   end
 
   def clear_source_files
