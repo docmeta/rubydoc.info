@@ -9,6 +9,7 @@ unless GEM_STORE_DB.table_exists?(:remote_gems)
     primary_key :id
     string :name
     text :versions
+    index :name
   end
 end
 
