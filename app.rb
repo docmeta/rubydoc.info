@@ -61,9 +61,11 @@ class DocServer < Sinatra::Base
     end
 
     if $CONFIG.skylight_token
+      require 'skylight/sinatra'
       ENV['SKYLIGHT_AUTHENTICATION'] = $CONFIG.skylight_token
       ENV['SKYLIGHT_LOG_FILE'] = 'log/skylight.log'
       ENV['SKYLIGHT_DAEMON_SOCKDIR_PATH'] = 'tmp/skylight.pid'
+      Skylight.start!
     end
 
     puts ">> Loading #{CONFIG_FILE}"
@@ -188,11 +190,6 @@ class DocServer < Sinatra::Base
 
   configure do
     load_configuration
-
-    require 'skylight/sinatra'
-    Skylight.start!
-    %w(sinatra tilt sequel).each {|t| Skylight.probe(t) }
-
     load_gems_adapter
     load_scm_adapter
     load_featured_adapter
