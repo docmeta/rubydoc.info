@@ -1,6 +1,6 @@
 #!/bin/sh
 
-rm /var/run/docker.pid
+rm -f /var/run/docker.pid
 dockerd &>/var/log/docker.log &
 
 tries=0
@@ -17,5 +17,5 @@ do
 done
 
 crond
-su app sh -c 'docker build -t docparse docker/docparse' &
+su app sh -c 'docker build -q -t docparse docker/docparse' &
 su app sh -c 'bundle exec rake gems:update server:start'
