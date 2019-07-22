@@ -19,16 +19,6 @@ services:
     expose:
       - "80"
     ports:
-      - "3000:80"
-    depends_on:
-      - app
-  https:
-    build:
-      context: .
-      dockerfile: ./docker/https/Dockerfile
-    ports:
       - "80:80"
-      - "443:443"
     depends_on:
-      - cache
       - app
