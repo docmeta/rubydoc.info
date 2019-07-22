@@ -1,5 +1,4 @@
-RubyDoc.info: YARD Doc Server
-===============================
+# RubyDoc.info: YARD Doc Server
 
 RubyDoc.info is the next generation Ruby doc server, replacing
 [http://rdoc.info](http://rdoc.info) and
@@ -9,24 +8,39 @@ both published RubyGems as well as GitHub projects.
 
 The public doc server is hosted at [http://www.rubydoc.info](http://www.rubydoc.info)
 
-Getting Started
----------------
+## Getting Started
 
 This site is a public service and is community-supported. Patches and
 enhancements are welcome.
 
 Running the doc server locally is easy:
 
-```
-$ git clone git://github.com/lsegal/rubydoc.info
-$ cd rubydoc.info
-$ bundle install
-$ rake gems:update
-$ rackup config.ru
+```sh
+git clone git://github.com/lsegal/rubydoc.info
+cd rubydoc.info
+bundle install
+bundle exec rake gems:update
+bundle exec rake server:start
 ```
 
-Thanks
-------
+This will start a daemonized process, you can stop the server with:
+
+```sh
+bundle exec rake server:stop
+```
+
+### Running With Docker
+
+If you have Docker installed, you can get started using `docker-compose`:
+
+```sh
+docker-compose up
+```
+
+Add `-d` to daemonize the process. To stop the server in daemonized mode,
+run `docker-compose down`.
+
+## Thanks
 
 RubyDoc.info was created by Loren Segal (YARD) and Nick Plante (rdoc.info) and is a project of DOCMETA, LLC.
 Additional help was provided by [our friendly developer community](https://github.com/lsegal/rubydoc.info/graphs/contributors).
