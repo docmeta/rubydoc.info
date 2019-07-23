@@ -16,6 +16,6 @@ do
 	sleep 1
 done
 
-crond -b -d -L /var/log/crond.log
+crond -d
 su app sh -c 'docker build -q -t docparse docker/docparse' &
 su app sh -c 'bundle exec rake gems:update server:start'
