@@ -27,8 +27,8 @@ ADD --chown=app:app . /app
 
 # Install cron script
 USER root
-COPY ./docker/app/15min-restart.sh /etc/periodic/15min/
-RUN chmod a+x /etc/periodic/15min/15min-restart.sh
+COPY ./docker/app/update-gems /etc/periodic/15min/
+RUN chmod a+x /etc/periodic/15min/update-gems
 
 # Command as root but don't worry, we switch back to app!
 ENTRYPOINT [ "sh", "/app/docker/app/entrypoint.sh" ]
