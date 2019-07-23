@@ -1,4 +1,4 @@
-version: '3.7'
+version: '2.4'
 services:
   app:
     privileged: true
@@ -15,6 +15,7 @@ services:
       options:
         max-size: "512k"
         max-file: "3"
+    cpu_percent: 80
   cache:
     build:
       context: .
