@@ -25,9 +25,10 @@ ENV DOCKERIZED=1
 # Rest of app
 ADD --chown=app:app . /app
 
-# Install cron scripts (as root)
+# Install cron script
 USER root
-RUN crontab -u app ./docker/app/crontab
+COPY ./docker/app/15min-restart.sh /etc/periodic/15min/
+RUN chmod a+x /etc/periodic/15min/15min-restart.sh
 
 # Command as root but don't worry, we switch back to app!
 ENTRYPOINT [ "sh", "/app/docker/app/entrypoint.sh" ]
