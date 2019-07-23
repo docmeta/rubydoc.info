@@ -5,19 +5,20 @@ services:
     build:
       context: .
       dockerfile: ./docker/app/Dockerfile
-    expose:
-      - "8080"
     volumes:
       - ./config:/app/config
       - ./repos:/app/repos
       - ./data:/app/data
       - ./log:/app/log
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "512k"
+        max-file: "3"
   cache:
     build:
       context: .
       dockerfile: ./docker/cache/Dockerfile
-    expose:
-      - "80"
     ports:
       - "80:80"
     depends_on:
