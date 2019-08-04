@@ -56,6 +56,10 @@ class DocServer < Sinatra::Base
     set :caching, false
     set :rubygems, ""
 
+    if ENV['DOCKERIZED'] && !$CONFIG.varnish_host
+      $CONFIG.varnish_host = 'cache'
+    end
+
     if $CONFIG.varnish_host
       set :protection, :origin_whitelist => ["http://#{$CONFIG.varnish_host}"]
     end
