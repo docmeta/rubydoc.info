@@ -46,8 +46,8 @@ class DocServer < Sinatra::Base
   end
 
   def self.load_configuration
-    set :name, 'RubyDoc.info'
-    set :url, 'http://www.rubydoc.info'
+    set :name, $CONFIG.name || 'RubyDoc.info'
+    set :url, $CONFIG.url || 'https://www.rubydoc.info'
 
     set :disallowed_projects, []
     set :disallowed_gems, []
