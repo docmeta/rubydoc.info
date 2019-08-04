@@ -1,18 +1,17 @@
 class Configuration < Hash
   def self.load
-    config = Configuration.new
+    Configuration.new(YAML.load_file(CONFIG_FILE) || {})
+  end
 
-    if File.file?(CONFIG_FILE)
-      (YAML.load_file(CONFIG_FILE) || {}).each do |key, value|
-        config[key] = value
-        define_method(key) { self[key] }
-      end
-    end
-
-    config
+  def initialize(hash)
+    update(hash)
   end
 
   def method_missing(name, *args, &block)
-    self[name]
+    if name.to_s[-1,1] == "="
+      self[name.to_s[0...-1]] = args[0]
+    else
+      self[name.to_s]
+    end
   end
 end
