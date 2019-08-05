@@ -40,7 +40,6 @@ skylight_token: YOUR_AUTH_TOKEN
 
 # To invalidate cache on CloudFlare, set the following keys:
 # cloudflare_token: YOUR_CLOUDFLARE_TOKEN
-# cloudflare_email: YOUR_CLOUDFLARE_EMAIL
 # cloudflare_zones: YOUR_CLOUDFLARE_ZONES
 
 # To add a "Featured" section to the site with a set of statically generated

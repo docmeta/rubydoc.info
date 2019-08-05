@@ -67,8 +67,7 @@ module Cache
       uri_path = "/client/v4/zones/#{zone}/purge_cache"
       headers = {
         "Content-Type" => "application/json",
-        "X-Auth-Email" => $CONFIG.cloudflare_email,
-        "X-Auth-Key" => $CONFIG.cloudflare_token
+        "Authorization" => "Bearer #{$CONFIG.cloudflare_token}"
       }
 
       http = Net::HTTP::Persistent.new
