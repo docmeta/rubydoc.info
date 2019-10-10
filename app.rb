@@ -180,6 +180,7 @@ class DocServer < Sinatra::Base
   set :public_folder, STATIC_PATH
   set :repos, REPOS_PATH
   set :tmp, TMP_PATH
+  set :logdir, LOG_PATH
 
   configure(:production) do
     # log to file

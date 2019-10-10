@@ -1,6 +1,7 @@
 require 'open-uri'
 require 'json'
 require 'shellwords'
+require 'fileutils'
 require_relative 'source_cleaner'
 require_relative 'helpers'
 require_relative 'cache'
@@ -59,8 +60,9 @@ class ScmCheckout
   end
 
   def error_file
+    FileUtils.mkdir_p("#{settings.logdir}/errors")
     @error_file ||=
-      "#{settings.tmp}/#{[name.gsub('/', '_'), commit || 'master'].join('_')}.error.txt"
+      "#{settings.logdir}/errors/#{[name.gsub('/', '_'), commit || 'master'].join('_')}.error.txt"
   end
 
   def write_error_file(out)
