@@ -128,8 +128,8 @@ class GithubCheckout < ScmCheckout
     end
     @is_fork
   rescue IOError, OpenURI::HTTPError, Timeout::Error
-    @is_fork = false
-  ensure
+    @is_fork = nil
+    false
   end
 
   private

@@ -66,9 +66,7 @@ class GemUpdater
         end
       end
 
-      changed_gems.keys.each do |gem_name|
-        flush_cache(gem_name)
-      end
+      flush_cache(changed_gems)
 
       # deal with deleted gems
       changed_gems.keys.each do |gem_name|
@@ -91,8 +89,16 @@ class GemUpdater
       uniqversions.map {|v| seen[v].first.to_s }
     end
 
-    def flush_cache(gem_name)
-      Cache.invalidate("/gems", "/gems/~#{gem_name[0, 1]}", "/gems/#{gem_name}")
+    def flush_cache(changed_gems)
+      index_map = {}
+      changed_gems.keys.each do |gem_name|
+        index_map[gem_name[0, 1]] = true
+      end
+      Cache.invalidate("/gems", *index_map.keys.map {|k| "/gems/~#{k}" })
+
+      changed_gems.keys.each_slice(50) do |list|
+        Cache.invalidate(*list.map {|k| "/gems/#{k}" })
+      end
     end
   end
 
