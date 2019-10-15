@@ -34,10 +34,7 @@ module YARD
       protected
 
       def load_yardoc_from_disk_on_demand
-        if File.directory?(source_path)
-          return if ready?
-          raise LibraryNotPreparedError
-        end
+        return if File.directory?(source_path) && ready?
 
         # Generate
         Thread.new { generate_yardoc }
@@ -45,10 +42,7 @@ module YARD
       end
 
       def load_yardoc_from_remote_gem
-        if File.directory?(source_path)
-          return if ready?
-          raise LibraryNotPreparedError
-        end
+        return if File.directory?(source_path) && ready?
 
         # Remote gemfile from rubygems.org
         suffix = platform ? "-#{platform}" : ""
