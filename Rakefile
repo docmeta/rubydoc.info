@@ -89,6 +89,5 @@ namespace :docker do
       sh "docker build -q -t docparse docker/docparse >/dev/null"
     end
     sh "docker run --rm -v #{dir.inspect}:/rb:ro -v #{ENV['SOURCE'].inspect}:/build docparse /rb/generate.rb"
-    sh "chown -R `whoami`:`whoami` #{ENV['SOURCE']}/.yardoc"
   end
 end

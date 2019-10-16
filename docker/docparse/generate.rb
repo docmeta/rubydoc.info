@@ -7,7 +7,9 @@ if File.exist?('.yardopts')
   args.each_with_index do |arg, i|
     next unless arg == '--plugin'
     next unless args[i + 1]
-    system "gem install yard-#{args[i + 1]}"
+    cmd = "gem install --user-install yard-#{args[i + 1].inspect}"
+    puts "[docparse] Installing plugin: #{cmd}"
+    system(cmd)
   end
 end
 
