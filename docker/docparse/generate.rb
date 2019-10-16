@@ -6,8 +6,8 @@ if File.exist?('.yardopts')
   args = Shellwords.split(File.read('.yardopts').gsub(/^[ \t]*#.+/m, ''))
   args.each_with_index do |arg, i|
     next unless arg == '--plugin'
-    next unless arguments[i + 1]
-    system "gem install yard-#{arguments[i + 1]}"
+    next unless args[i + 1]
+    system "gem install yard-#{args[i + 1]}"
   end
 end
 
