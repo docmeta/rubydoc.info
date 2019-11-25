@@ -28,6 +28,8 @@ class GemStore
     else
       RemoteGem.create(name: name, versions: versions.join(" "))
     end
+  rescue Sequel::DatabaseError => e
+    puts "Database error when writing versions (locked?): #{e.message}"
   end
 
   def delete(name)

@@ -16,6 +16,8 @@ services:
         max-size: "512k"
         max-file: "3"
     cpu_percent: 80
+    ports:
+      - "8080"
   cache:
     build:
       context: .

@@ -1,16 +1,26 @@
 vcl 4.0;
 
 import std;
+import directors;
 
-backend default {
-  .host = "app";
+<% @backends.each.with_index do |ip, idx| %>
+backend server<%= idx %> {
+  .host = "<%= ip %>";
   .port = "8080";
-  .first_byte_timeout = 120s;
+  .probe = { .url = "/"; .timeout = 1s; .interval = 5s; .window = 5; .threshold = 3; }
 }
+<% end %>
 
 acl purge {
   "app";
   "localhost";
+}
+
+sub vcl_init {
+  new cluster = directors.round_robin();
+  <% @backends.each.with_index do |be, idx| %>
+  cluster.add_backend(server<%= idx %>);
+  <% end %>
 }
 
 sub vcl_recv {
@@ -29,9 +39,10 @@ sub vcl_recv {
     if (!client.ip ~ purge) {
       return(synth(405, "Not allowed."));
     }
-    ban("req.url ~ " + req.http.x-path);
-    return (synth(200, "Purged."));
+    return (purge);
   }
+
+  set req.backend_hint = cluster.backend();
 }
 
 sub vcl_synth {

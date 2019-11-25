@@ -1,5 +1,7 @@
 FROM alpine:3.10
-RUN apk add --no-cache -U varnish
-COPY ./docker/cache/default.vcl /etc/varnish/default.vcl
+RUN apk add --no-cache -U varnish ruby
+COPY ./docker/cache/* /etc/varnish/
+ARG BACKENDS=app
+ENV VARNISH_BACKENDS=${BACKENDS}
 ENTRYPOINT []
-CMD sh -c 'varnishd -F -a ":80,HTTP" -f "/etc/varnish/default.vcl"'
+CMD sh -c 'ruby /etc/varnish/configure.rb && varnishd -F -a ":80,HTTP" -f "/etc/varnish/default.vcl"'
