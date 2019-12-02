@@ -15,14 +15,13 @@ services:
       options:
         max-size: "512k"
         max-file: "3"
-    cpu_percent: 80
     ports:
-      - "8080"
-  cache:
-    build:
-      context: .
-      dockerfile: ./docker/cache/Dockerfile
-    ports:
-      - "80:80"
-    depends_on:
-      - app
+      - "80:8080"
+  # cache:
+  #   build:
+  #     context: .
+  #     dockerfile: ./docker/cache/Dockerfile
+  #   ports:
+  #     - "80:80"
+  #   depends_on:
+  #     - app
