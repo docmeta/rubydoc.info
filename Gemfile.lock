@@ -27,7 +27,7 @@ GEM
     mustermann (1.0.3)
     net-http-persistent (2.9)
     puma (3.12.0)
-    rack (2.0.7)
+    rack (2.0.8)
     rack-protection (2.0.5)
       rack
     rake (12.3.2)
