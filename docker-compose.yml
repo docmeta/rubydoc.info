@@ -15,6 +15,8 @@ services:
       - "80:8080"
     deploy:
       replicas: 4
+      update_config:
+        parallelism: 2
     depends_on:
       - docparse
   docparse:
