@@ -12,4 +12,4 @@ unless ENV['DOCKERIZED']
   stdout_redirect root + 'log/puma.log', root + 'log/puma.err.log', true
 end
 threads 4, 16
-workers 4
+workers 1

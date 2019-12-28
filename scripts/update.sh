@@ -3,5 +3,4 @@
 set -e
 
 git pull
-docker-compose build
-docker-compose restart app
+$(dirname $0)/start.sh
