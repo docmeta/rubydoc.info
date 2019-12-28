@@ -1,4 +1,0 @@
-#!/bin/sh
-
-cd /app
-su app sh -c "bundle exec rake gems:update cache:clean_index"

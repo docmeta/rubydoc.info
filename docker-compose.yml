@@ -1,22 +1,23 @@
-version: "2.4"
+version: "3.7"
 services:
   app:
-    privileged: true
+    image: 127.0.0.1:5000/rubydoc-app
     build:
       context: .
       dockerfile: ./docker/app/Dockerfile
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config:/app/config
       - ./repos:/app/repos
       - ./data:/app/data
       - ./log:/app/log
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "512k"
-        max-file: "3"
     ports:
       - "80:8080"
+  docparse:
+    image: 127.0.0.1:5000/rubydoc-docparse
+    build:
+      context: ./docker/docparse
+    entrypoint: sh -c "echo Docparse image is built. It is okay for this service to exit."
   # cache:
   #   build:
   #     context: .

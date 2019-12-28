@@ -43,7 +43,7 @@ class GemUpdater
       libs
     end
 
-    def update_remote_gems
+    def update_remote_gems(display: false)
       libs = fetch_remote_gems
       store = GemStore.new
       changed_gems = {}
@@ -76,7 +76,21 @@ class GemUpdater
         store.delete(gem_name)
       end
 
-      [changed_gems, removed_gems]
+      result = [changed_gems, removed_gems]
+
+      if display
+        if changed_gems.size > 0
+          puts ">> Updated #{changed_gems.size} gems:"
+          puts changed_gems.keys.join(', ')
+        end
+
+        if removed_gems.size > 0
+          puts ">> Removed #{removed_gems.size} gems:"
+          puts removed_gems.join(', ')
+        end
+      end
+
+      result
     end
 
     def pick_best_versions(versions)

@@ -11,5 +11,5 @@ pidfile root + 'tmp/pids/server.pid'
 unless ENV['DOCKERIZED']
   stdout_redirect root + 'log/puma.log', root + 'log/puma.err.log', true
 end
-threads 2, 8
-workers 5
+threads 4, 16
+workers 4
