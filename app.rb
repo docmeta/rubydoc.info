@@ -87,12 +87,26 @@ class DocServer < Sinatra::Base
   end
 
   def self.load_gems_adapter
+    return if $CONFIG.disable_gems
     opts = adapter_options
     opts[:libraries] = GemStore.new
     opts[:options][:router] = GemsRouter
     set :gems_adapter, $gems_adapter = RackAdapter.new(*opts.values)
+
+    # Initiate a gem update on boot
+    start_update_gems_timer
   rescue Errno::ENOENT
     log.error "No remote_gems file to load remote gems from, not serving gems."
+  end
+
+  def self.start_update_gems_timer
+    Thread.new do
+      loop do
+        puts ">> Updating remote RubyGems..."
+        GemUpdater.update_remote_gems display: true
+        sleep 600
+      end
+    end
   end
 
   def self.load_scm_adapter

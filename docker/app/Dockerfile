@@ -1,8 +1,11 @@
 FROM ruby:2.6-alpine
 LABEL Maintainer="Loren Segal <lsegal@soen.ca>"
 
-RUN apk add --no-cache -U dcron docker git sqlite-dev build-base
+RUN apk add --no-cache -U docker git sqlite-dev build-base
 RUN gem update --no-document --system
+
+RUN touch /var/run/docker.sock
+RUN chown root:docker /var/run/docker.sock
 
 RUN adduser -D app
 RUN sed -E -i 's/^(docker:.+)/\1app/' /etc/group
@@ -17,7 +20,8 @@ RUN gem install bundler
 ADD --chown=app:app ./Gemfile /app/Gemfile
 ADD --chown=app:app ./Gemfile.lock /app/Gemfile.lock
 WORKDIR /app
-RUN bundle --without test --path vendor/bundle
+RUN bundle config set without 'test'
+RUN bundle install
 
 LABEL docmeta.rubydoc=true
 ENV DOCKERIZED=1
@@ -25,10 +29,4 @@ ENV DOCKERIZED=1
 # Rest of app
 ADD --chown=app:app . /app
 
-# Install cron script
-USER root
-COPY ./docker/app/update-gems /etc/periodic/15min/
-RUN chmod a+x /etc/periodic/15min/update-gems
-
-# Command as root but don't worry, we switch back to app!
 ENTRYPOINT [ "sh", "/app/docker/app/entrypoint.sh" ]

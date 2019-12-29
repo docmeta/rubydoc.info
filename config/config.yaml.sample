@@ -74,3 +74,6 @@ skylight_token: YOUR_AUTH_TOKEN
 
 # Custom gem server
 # gem_source: https://rubygems.org/
+
+# Disable gem hosting
+# disable_gems: true
