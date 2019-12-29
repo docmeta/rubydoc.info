@@ -16,7 +16,7 @@ services:
     deploy:
       replicas: 4
       update_config:
-        parallelism: 2
+        order: start-first
     depends_on:
       - docparse
   docparse:
