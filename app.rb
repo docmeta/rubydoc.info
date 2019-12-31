@@ -74,7 +74,12 @@ class DocServer < Sinatra::Base
     end
   end
 
+  COPY_STATIC_FILES_LOCK = File.join(TMP_PATH, '.copy-static-files')
+
   def self.copy_static_files
+    return if File.exist?(COPY_STATIC_FILES_LOCK)
+    FileUtils.touch(COPY_STATIC_FILES_LOCK)
+
     # Copy template files
     puts ">> Copying static system files..."
     YARD::Templates::Engine.template(:default, :fulldoc, :html).full_paths.each do |path|
@@ -84,6 +89,8 @@ class DocServer < Sinatra::Base
         system "mkdir -p #{dstdir} && cp #{srcdir}/* #{dstdir}/"
       end
     end
+  ensure
+    FileUtils.rm_f(COPY_STATIC_FILES_LOCK)
   end
 
   def self.load_gems_adapter
