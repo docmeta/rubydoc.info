@@ -56,7 +56,7 @@ module YARD
 
         Thread.new do
           begin
-            open(url) do |io|
+            URI.open(url) do |io|
               expand_gem(io)
               generate_yardoc(safe_mode)
               clean_source(safe_mode)

@@ -1,4 +1,4 @@
-FROM ruby:2.6-alpine
+FROM ruby:2.7-alpine
 LABEL Maintainer="Loren Segal <lsegal@soen.ca>"
 
 RUN apk add --no-cache -U docker git sqlite-dev build-base
