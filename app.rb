@@ -102,7 +102,6 @@ class DocServer < Sinatra::Base
   def self.start_update_gems_timer
     Thread.new do
       loop do
-        puts ">> Updating remote RubyGems..."
         GemUpdater.update_remote_gems display: true
         sleep 600
       end
