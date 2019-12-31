@@ -13,3 +13,4 @@ unless ENV['DOCKERIZED']
 end
 threads 4, 16
 workers 4
+preload_app!
