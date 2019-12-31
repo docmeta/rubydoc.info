@@ -1,4 +1,5 @@
 require_relative 'init'
+require 'fileutils'
 
 begin
   require 'rspec/core/rake_task'
@@ -11,9 +12,9 @@ task :default => 'gems:update'
 namespace :server do
   desc 'Start the server'
   task :start => 'cache:clean_index' do
-    mkdir_p 'tmp/pids'
-    mkdir_p 'log'
-    sh "bundle exec puma -C scripts/puma.rb"
+    FileUtils.mkdir_p 'tmp/pids'
+    FileUtils.mkdir_p 'log'
+    exec "puma -C scripts/puma.rb"
   end
 
   desc 'Restart the server'
