@@ -14,3 +14,8 @@ end
 threads 4, 16
 workers 4
 preload_app!
+
+before_fork do
+  require_relative '../lib/preload'
+  AppPreloader.preload!
+end

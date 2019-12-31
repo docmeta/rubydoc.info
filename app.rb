@@ -74,45 +74,14 @@ class DocServer < Sinatra::Base
     end
   end
 
-  COPY_STATIC_FILES_LOCK = File.join(TMP_PATH, '.copy-static-files')
-
-  def self.copy_static_files
-    return if File.exist?(COPY_STATIC_FILES_LOCK)
-    FileUtils.touch(COPY_STATIC_FILES_LOCK)
-
-    # Copy template files
-    puts ">> Copying static system files..."
-    YARD::Templates::Engine.template(:default, :fulldoc, :html).full_paths.each do |path|
-      %w(css js images).each do |ext|
-        srcdir, dstdir = File.join(path, ext), File.join('public', ext)
-        next unless File.directory?(srcdir)
-        system "mkdir -p #{dstdir} && cp #{srcdir}/* #{dstdir}/"
-      end
-    end
-  ensure
-    FileUtils.rm_f(COPY_STATIC_FILES_LOCK)
-  end
-
   def self.load_gems_adapter
     return if $CONFIG.disable_gems
     opts = adapter_options
     opts[:libraries] = GemStore.new
     opts[:options][:router] = GemsRouter
     set :gems_adapter, $gems_adapter = RackAdapter.new(*opts.values)
-
-    # Initiate a gem update on boot
-    start_update_gems_timer
   rescue Errno::ENOENT
     log.error "No remote_gems file to load remote gems from, not serving gems."
-  end
-
-  def self.start_update_gems_timer
-    Thread.new do
-      loop do
-        GemUpdater.update_remote_gems display: true
-        sleep 600
-      end
-    end
   end
 
   def self.load_scm_adapter
@@ -215,7 +184,6 @@ class DocServer < Sinatra::Base
     load_scm_adapter
     load_featured_adapter
     load_stdlib_adapter
-    copy_static_files
   end
 
   helpers do

@@ -3,7 +3,6 @@ require_relative 'gem_store'
 require 'version_sorter'
 require 'rubygems'
 require 'yard'
-require 'fileutils'
 
 class GemVersion
   attr_accessor :name, :version, :platform
@@ -21,9 +20,6 @@ class GemUpdater
   include YARD::Server
 
   attr_accessor :gem, :settings, :app
-
-  # clear the lock on require
-  FileUtils.rm_f(REMOTE_GEMS_LOCK)
 
   class << self
     def fetch_remote_gems
@@ -48,10 +44,7 @@ class GemUpdater
     end
 
     def update_remote_gems(display: false)
-      return if File.exist?(REMOTE_GEMS_LOCK)
-      FileUtils.touch(REMOTE_GEMS_LOCK)
       puts ">> Updating remote RubyGems..." if display
-
       libs = fetch_remote_gems
       store = GemStore.new
       changed_gems = {}
@@ -99,9 +92,6 @@ class GemUpdater
       end
 
       result
-
-    ensure
-      FileUtils.rm_f(REMOTE_GEMS_LOCK)
     end
 
     def pick_best_versions(versions)
