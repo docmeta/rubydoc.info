@@ -252,6 +252,10 @@ class DocServer < Sinatra::Base
     "OK"
   end
 
+  get '/healthcheck' do
+    "OK"
+  end
+
   post_all '/checkout', '/checkout/github', '/projects/update' do
     if request.media_type.match(/json/)
       data = JSON.parse(request.body.read || '{}')
