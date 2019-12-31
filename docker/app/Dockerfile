@@ -30,6 +30,6 @@ ENV DOCKERIZED=1
 ADD --chown=app:app . /app
 
 HEALTHCHECK --interval=5s --timeout=10s --start-period=10s --retries=10 CMD \
-  ruby -rnet/http -e "Net::HTTP.get 'localhost', '/healthcheck', 8080"
+  ruby scripts/healthcheck.rb
 
 ENTRYPOINT bundle exec rake server:start
