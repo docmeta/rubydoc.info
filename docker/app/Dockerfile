@@ -29,4 +29,7 @@ ENV DOCKERIZED=1
 # Rest of app
 ADD --chown=app:app . /app
 
+HEALTHCHECK --interval=5s --timeout=10s --start-period=5s --retries=5 CMD \
+  ruby -rnet/http -e "Net::HTTP.get 'localhost', '/', 8080"
+
 ENTRYPOINT [ "sh", "/app/docker/app/entrypoint.sh" ]
