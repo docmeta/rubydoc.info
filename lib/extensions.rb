@@ -93,7 +93,7 @@ module YARD
 
       private
 
-      def generate_yardoc(safe_mode)
+      def generate_yardoc(safe_mode = false)
         # This cannot be a block because YARD's LibraryCommand already wraps
         # this inside of a chdir block.
         Dir.chdir(File.dirname(__FILE__) + "/..")
