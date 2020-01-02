@@ -10,9 +10,11 @@ group :app do
 end
 
 group :app_tools do
-  gem 'rake'
+  gem 'rake', require: false
   gem 'skylight', require: false
-  gem 'derailed_benchmarks'
+  gem 'derailed_benchmarks', require: false
+  gem 'stackprof', require: false
+  gem 'rack-test', require: false
 end
 
 group :yard do
