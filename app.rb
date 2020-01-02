@@ -200,12 +200,16 @@ class DocServer < Sinatra::Base
     def cache(output)
       return output if settings.caching != true
       return '' if output.nil? || output.empty?
-      path = request.path.gsub(%r{^/|/$}, '')
-      path = 'index' if path == ''
-      path = File.join(settings.public_folder, path + '.html')
+      path = cache_file
       FileUtils.mkdir_p(File.dirname(path))
       File.open(path, "w") {|f| f.write(output) }
       output
+    end
+
+    def cache_file
+      path = request.path.gsub(%r{^/|/$}, '')
+      path = 'index' if path == ''
+      File.join(settings.public_folder, path + '.html')
     end
 
     def next_row(prefix = 'r', base = 1)
@@ -223,11 +227,23 @@ class DocServer < Sinatra::Base
 
   # Filters
 
+  # Check cache
+  before do
+    cache_control :public, :must_revalidate, :max_age => 60
+
+    return if settings.caching != true
+    path = cache_file
+    if File.exist?(path)
+      last_modified File.mtime(path)
+      cache_control :public
+      halt 200, File.read(path)
+    else
+      last_modified Time.now
+    end
+  end
+
   # Always reset safe mode
   before { YARD::Config.options[:safe_mode] = true }
-
-  # Set Last-Modified on all requests
-  after { last_modified Time.now }
 
   # Checkout and post commit hooks
 
