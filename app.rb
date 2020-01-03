@@ -344,10 +344,12 @@ class DocServer < Sinatra::Base
     end
   end
 
-  get %r{/gems(?:/~([a-z]))?} do |letter|
+  get %r{/gems(?:/~([a-z]))?(?:/([0-9]+))?} do |letter, page|
     @letter = letter || 'a'
     @adapter = settings.gems_adapter
-    @libraries = @adapter.libraries.each_of_letter(@letter)
+    @page = (page || 1).to_i
+    @max_pages = @adapter.libraries.pages_of_letter(@letter)
+    @libraries = @adapter.libraries.each_of_letter(@letter, @page)
     cache erb(:gems_index)
   end
 
@@ -424,8 +426,10 @@ class DocServer < Sinatra::Base
   get %r{/find/gems} do
     self.class.load_gems_adapter unless defined? settings.gems_adapter
     @search = params[:q] || ''
+    @page = (params[:page] || 1).to_i
     @adapter = settings.gems_adapter
-    @libraries = @adapter.libraries.find_by(@search)
+    @max_pages = @adapter.libraries.pages_of_find_by(@search)
+    @libraries = @adapter.libraries.find_by(@search, @page)
     erb(:gems_index)
   end
 

@@ -109,7 +109,7 @@ class GemUpdater
       changed_gems.keys.each do |gem_name|
         index_map[gem_name[0, 1]] = true
       end
-      Cache.invalidate("/gems", *index_map.keys.map {|k| "/gems/~#{k}" })
+      Cache.invalidate("/gems", *index_map.keys.map {|k| "/gems/~#{k}/" })
 
       changed_gems.keys.each_slice(50) do |list|
         Cache.invalidate(*list.map {|k| "/gems/#{k}" })

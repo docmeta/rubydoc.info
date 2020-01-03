@@ -16,6 +16,8 @@ end
 class RemoteGem < Sequel::Model; end
 
 class GemStore
+  PER_PAGE = 100
+
   include Enumerable
 
   def [](name) to_versions(RemoteGem.first(name: name)) end
@@ -41,18 +43,28 @@ class GemStore
   def size; RemoteGem.count end
   def empty?; size == 0 end
 
-  def each_of_letter(letter, &block)
-    return enum_for(:each_of_letter, letter) unless block_given?
+  def pages_of_letter(letter)
+    (RemoteGem.where(Sequel.like(:name, "#{letter}%")).count / PER_PAGE).to_i
+  end
 
-    RemoteGem.where(Sequel.like(:name, "#{letter}%")).each do |row|
+  def each_of_letter(letter, page, &block)
+    return enum_for(:each_of_letter, letter, page) unless block_given?
+
+    RemoteGem.where(Sequel.like(:name, "#{letter}%")).
+        limit(PER_PAGE, (page - 1) * PER_PAGE).each do |row|
       yield row.name, to_versions(row)
     end
   end
 
-  def find_by(search)
-    return enum_for(:find_by, search) unless block_given?
+  def pages_of_find_by(search)
+    (RemoteGem.where(Sequel.like(:name, "%#{search}%")).count / PER_PAGE).to_i
+  end
 
-    RemoteGem.where(Sequel.like(:name, "%#{search}%")).each do |row|
+  def find_by(search, page)
+    return enum_for(:find_by, search, page) unless block_given?
+
+    RemoteGem.where(Sequel.like(:name, "%#{search}%")).
+        limit(PER_PAGE, (page - 1) * PER_PAGE).each do |row|
       yield row.name, to_versions(row)
     end
   end

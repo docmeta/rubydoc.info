@@ -6,75 +6,245 @@ body {
   height: auto;
 }
 
-h2 { font-size: 1.6em; }
-a { outline: none; }
+h2 {
+  font-size: 1.6em;
+}
+h2 .small {
+  font-size: 0.7em;
+  font-weight: normal;
+}
+a {
+  outline: none;
+}
 
-#projects { font-size: 1.4em; list-style: circle; }
+#projects {
+  font-size: 1.4em;
+  list-style: circle;
+}
 
-#projects { list-style-position: inside; padding-left: 0; list-style: none; margin-left: 0; }
-#projects li { padding: 7px 15px; font-size: 1.1em; }
+#projects {
+  list-style-position: inside;
+  padding-left: 0;
+  list-style: none;
+  margin-left: 0;
+}
+#projects li {
+  padding: 7px 15px;
+  font-size: 1.1em;
+}
 
-.libraries { list-style: none; padding: 0; }
-.libraries li { font-size: 1.2em; line-height: 1.4em; padding: 3px 5px; }
-.libraries ul { padding: 0; margin-bottom: 5px; }
-.libraries ul li { list-style: none; line-height: 0.9em; font-size: 1.05em; padding: 3px 5px; font-weight: normal; padding-left: 25px; }
-.libraries ul { background: #eee; }
-.libraries { list-style: none; }
-.libraries li { line-height: 2em; border-bottom: 1px solid #ddd; }
-.libraries ul li { padding-bottom: 6px; background: #f0f0f0; }
-.libraries ul { padding-bottom: 10px; background: transparent; }
-.libraries li:hover { background: #eef; }
-.libraries li.alternate, .libraries li.alternate:hover { background: transparent; }
-.libraries li.alternate_fork img { position: relative; top: -3px; }
-.libraries li a:hover { background: transparent; color: #3ae; }
-.libraries li.core > a:first-child { font-weight: bold; }
+.libraries {
+  list-style: none;
+  padding: 0;
+}
+.libraries li {
+  font-size: 1.2em;
+  line-height: 1.4em;
+  padding: 3px 5px;
+}
+.libraries ul {
+  padding: 0;
+  margin-bottom: 5px;
+}
+.libraries ul li {
+  list-style: none;
+  line-height: 0.9em;
+  font-size: 1.05em;
+  padding: 3px 5px;
+  font-weight: normal;
+  padding-left: 25px;
+}
+.libraries ul {
+  background: #eee;
+}
+.libraries {
+  list-style: none;
+}
+.libraries li {
+  line-height: 2em;
+  border-bottom: 1px solid #ddd;
+}
+.libraries ul li {
+  padding-bottom: 6px;
+  background: #f0f0f0;
+}
+.libraries ul {
+  padding-bottom: 10px;
+  background: transparent;
+}
+.libraries li:hover {
+  background: #eef;
+}
+.libraries li.alternate,
+.libraries li.alternate:hover {
+  background: transparent;
+}
+.libraries li.alternate_fork img {
+  position: relative;
+  top: -3px;
+}
+.libraries li a:hover {
+  background: transparent;
+  color: #3ae;
+}
+.libraries li.core > a:first-child {
+  font-weight: bold;
+}
 
-#logo h1 { margin: 0; border: 0; color: #58b; }
-#logo small { color: #369; font-size: 0.6em; font-weight: normal; opacity: 0.6; }
-#logo a { text-decoration: none; color: #58b; }
-#logo a:hover { color: #8cf; border-bottom: 8px solid #8cf; }
+#logo h1 {
+  margin: 0;
+  border: 0;
+  color: #58b;
+}
+#logo small {
+  color: #369;
+  font-size: 0.6em;
+  font-weight: normal;
+  opacity: 0.6;
+}
+#logo a {
+  text-decoration: none;
+  color: #58b;
+}
+#logo a:hover {
+  color: #8cf;
+  border-bottom: 8px solid #8cf;
+}
 
-#top_nav { padding: 0; list-style: none; position: absolute; right: 140px; top: 3px; z-index: 9999; }
-#top_nav li { float: left; margin-right: 10px; }
-#top_nav a { display: block; padding: 5px 8px; background: #58a; text-decoration: none;
+#top_nav {
+  padding: 0;
+  list-style: none;
+  position: absolute;
+  right: 140px;
+  top: 3px;
+  z-index: 9999;
+}
+#top_nav li {
+  float: left;
+  margin-right: 10px;
+}
+#top_nav a {
+  display: block;
+  padding: 5px 8px;
+  background: #58a;
+  text-decoration: none;
   color: #eee;
   opacity: 0.7;
-  -webkit-border-radius: 5px; -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
   -webkit-transition: all 0.1s ease-in;
 }
-#top_nav a:hover { opacity: 1; color: #fff; }
+#top_nav a:hover {
+  opacity: 1;
+  color: #fff;
+}
 
 #info {
   font-size: 1.1em;
   line-height: 1.4em;
-  display: none; position: absolute; width: 350px; padding: 10px 20px; top: 55px;
-  right: 120px; background: #fff; z-index: 10000; border: 1px solid #aaa;
-  -webkit-box-shadow: 0px 2px 15px #aaa; -moz-box-shadow: 0px 2px 15px #aaa;
+  display: none;
+  position: absolute;
+  width: 350px;
+  padding: 10px 20px;
+  top: 55px;
+  right: 120px;
+  background: #fff;
+  z-index: 10000;
+  border: 1px solid #aaa;
+  -webkit-box-shadow: 0px 2px 15px #aaa;
+  -moz-box-shadow: 0px 2px 15px #aaa;
 }
-#info a { color: #05a; }
-#info a:hover { color: #5af; }
+#info a {
+  color: #05a;
+}
+#info a:hover {
+  color: #5af;
+}
 
-#notice { padding: 12px; background: #333; color: #eee; width: 545px; font-size: 1em; line-height: 1.4em; }
-#notice strong { color: #fff; }
-#notice { border-left: 8px solid #58b; }
-#notice a { color: #8cf; text-decoration: none; }
-#notice a:hover { text-decoration: underline; }
+#notice {
+  padding: 12px;
+  background: #333;
+  color: #eee;
+  width: 545px;
+  font-size: 1em;
+  line-height: 1.4em;
+}
+#notice strong {
+  color: #fff;
+}
+#notice {
+  border-left: 8px solid #58b;
+}
+#notice a {
+  color: #8cf;
+  text-decoration: none;
+}
+#notice a:hover {
+  text-decoration: underline;
+}
 
-#learn_yard { position: absolute; top: 0; right: 0; z-index: 9500; opacity: 0.9; }
-#learn_yard:hover { opacity: 1; }
-#learn_yard img { border: 0; }
-.framelink { z-index: 9999; position: relative; }
+#learn_yard {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 9500;
+  opacity: 0.9;
+}
+#learn_yard:hover {
+  opacity: 1;
+}
+#learn_yard img {
+  border: 0;
+}
+.framelink {
+  z-index: 9999;
+  position: relative;
+}
 
-#checkout form { display: inline; }
-#checkout h2 { margin: 0; padding: 0; border: 0; font-weight: normal; font-size: 1.1em; }
-#checkout .example { color: #999; }
-#checkout input { font-size: 1em; }
-#checkout .loadicon { display: none; float: right; position: relative; left: -20px; top: 6px; width: 16px; height: 16px; background: url(/images/loading.gif); }
-#checkout.error #url { background: #fdd; }
-#checkout #commit { width: 131px; }
-#checkout.error:after { content: "Invalid git repository or URL"; color: #e00; display: block; }
-#checkout.loading .loadicon { display: block; }
-#checkout .url { width: 225px; margin-bottom: 3px; }
+#checkout form {
+  display: inline;
+}
+#checkout h2 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: normal;
+  font-size: 1.1em;
+}
+#checkout .example {
+  color: #999;
+}
+#checkout input {
+  font-size: 1em;
+}
+#checkout .loadicon {
+  display: none;
+  float: right;
+  position: relative;
+  left: -20px;
+  top: 6px;
+  width: 16px;
+  height: 16px;
+  background: url(/images/loading.gif);
+}
+#checkout.error #url {
+  background: #fdd;
+}
+#checkout #commit {
+  width: 131px;
+}
+#checkout.error:after {
+  content: "Invalid git repository or URL";
+  color: #e00;
+  display: block;
+}
+#checkout.loading .loadicon {
+  display: block;
+}
+#checkout .url {
+  width: 225px;
+  margin-bottom: 3px;
+}
 #checkout {
   display: none;
   position: absolute;
@@ -83,18 +253,29 @@ a { outline: none; }
   height: 120px;
   padding: 8px 18px;
   margin: 12px;
-  background: #ddd; color: #666; border: 1px solid #ccc;
-  -webkit-box-shadow: 0px 2px 15px #aaa; -moz-box-shadow: 0px 2px 15px #aaa;
+  background: #ddd;
+  color: #666;
+  border: 1px solid #ccc;
+  -webkit-box-shadow: 0px 2px 15px #aaa;
+  -moz-box-shadow: 0px 2px 15px #aaa;
   *font-size: 0.9em;
   width: 280px;
 }
-#top_nav #new_checkout { display: none; }
+#top_nav #new_checkout {
+  display: none;
+}
 
-.alpha_index { display: block; padding-left: 0; font-size: 1.2em; }
+.alpha_index {
+  display: block;
+  padding-left: 0;
+  font-size: 1.2em;
+  margin-bottom: 30px;
+}
 .alpha_index li {
   display: inline;
   padding: 0 1px;
 }
+
 .alpha_index li.selected {
   padding: 3px 4px;
   margin-right: 0;
@@ -106,7 +287,35 @@ a { outline: none; }
   background: #eee;
 }
 
-#navigation { display: block; padding-left: 0; font-size: 1.2em; }
+.page_index {
+  display: block;
+  padding-left: 0;
+  font-size: 1em;
+}
+.page_index li.prefix {
+  padding: 0 1px;
+  background: transparent;
+}
+.page_index li {
+  display: inline;
+  padding: 0 1px;
+}
+.page_index li.selected {
+  padding: 3px 4px;
+  margin-right: 0;
+  background: #e5e5e5;
+}
+.page_index li a {
+  padding: 3px 4px;
+  margin-right: 0;
+  background: #f8f8f8;
+}
+
+#navigation {
+  display: block;
+  padding-left: 0;
+  font-size: 1.2em;
+}
 #navigation li {
   display: inline;
   margin-right: 4px;
@@ -126,28 +335,87 @@ a { outline: none; }
   height: 25px;
   border: 1px solid #dedede;
   font-size: 14px;
-  color: #ababab;
+  color: #111;
   padding: 2px 5px;
   width: 200px;
 }
 
-#content h1 { margin: 0; }
-#content h2 { margin-top: 0.8em; }
+#content h1 {
+  margin: 0;
+}
+#content h2 {
+  margin-top: 0.8em;
+}
 
-#advanced_options { margin: 0; display: block; border: none; color: #111; }
-.extra_options { display: none; }
+#advanced_options {
+  margin: 0;
+  display: block;
+  border: none;
+  color: #111;
+}
+.extra_options {
+  display: none;
+}
 
-.sponsor { margin-top: 12px; }
-.sponsor p { padding: 0; margin: 0; margin-bottom: 9px; }
-.sponsor a { margin-right: 9px; }
-.sponsor a:last { margin-right: 0; }
-.sponsor img { padding: 10px; border: 1px solid #eee; border-radius: 12px; }
-#footer { border-top: 0; margin-top: 20px; }
-#footer .sponsor a { border: 0; }
+.sponsor {
+  margin-top: 12px;
+}
+.sponsor p {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 9px;
+}
+.sponsor a {
+  margin-right: 9px;
+}
+.sponsor a:last {
+  margin-right: 0;
+}
+.sponsor img {
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+}
+#footer {
+  border-top: 0;
+  margin-top: 20px;
+}
+#footer .sponsor a {
+  border: 0;
+}
 
-#content.fof h1 { margin-bottom: 0; font-size: 3em; }
-#content.fof h2.nomargin { margin-top: 0; border: 0; font-size: 1.2em; color: #888; margin-bottom: 20px; }
-#content.fof.scm #checkout { display: block; position: relative; top: 0; right: 0; margin: 40px 0; }
+#content.fof h1 {
+  margin-bottom: 0;
+  font-size: 3em;
+}
+#content.fof h2.nomargin {
+  margin-top: 0;
+  border: 0;
+  font-size: 1.2em;
+  color: #888;
+  margin-bottom: 20px;
+}
+#content.fof.scm #checkout {
+  display: block;
+  position: relative;
+  top: 0;
+  right: 0;
+  margin: 40px 0;
+}
 
-.libraries .icon { width: 16px; height: 16px; position: relative; float: right; top: 6px; border: 1px solid #ccc; background: #eee; padding: 2px; -webkit-border-radius: 3px; -moz-border-radius: 3px; margin-left: 3px; }
-.libraries a:hover .icon { background: #fff; }
+.libraries .icon {
+  width: 16px;
+  height: 16px;
+  position: relative;
+  float: right;
+  top: 6px;
+  border: 1px solid #ccc;
+  background: #eee;
+  padding: 2px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  margin-left: 3px;
+}
+.libraries a:hover .icon {
+  background: #fff;
+}

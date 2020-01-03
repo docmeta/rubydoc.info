@@ -3,4 +3,4 @@
 require_relative '../init'
 require_relative '../lib/cache'
 
-Cache.invalidate *%w(/gems/* /github/* /featured /github /gems /stdlib /)
+Cache.invalidate *%w(/gems/~*/ /github/* /featured /github /gems /stdlib /)

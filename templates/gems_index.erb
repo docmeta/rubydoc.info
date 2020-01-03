@@ -3,21 +3,19 @@
   <ul id="navigation">
     <li><a href="/featured">Featured</a></li>
     <li><a href="/stdlib">Stdlib</a></li>
-    <li class="selected">RubyGems</li>
+    <% if @search %>
+      <li><a href="/gems">RubyGems</a></li>
+    <% else %>
+      <li class="selected">RubyGems</li>
+    <% end %>
     <li><a href="/github">GitHub</a></li>
     <li class="search"><form action="/find/gems" method="GET"><input type="text" id="docSearch" name="q" value="<%= h @search %>" placeholder="Search Gems"/></form></li>
   </ul>
   </nav>
-  <h2>RubyGems <%= h @search ? 'Search Results' : 'Listing' %></h2>
-  <ul class="alpha_index">
-    <% (?a..?z).each do |letter| %>
-      <% if letter == @letter %>
-        <li class="selected"><%= letter.upcase %></li>
-      <% else %>
-        <li><a href="/gems/~<%= letter %>"><%= letter.upcase %></a></li>
-      <% end %>
-    <% end %>
-  </ul>
+  <h2>RubyGems <%= h @search ? "Search Results for '#{@search}'" : 'Listing' %> <% if @search %><span class="small">(<a href="/<%= @adapter.router.docs_prefix %>">Back to Listing</a>)</span><% end %></h2>
+
+  <%= erb :alpha_index %>
+  <%= erb :pagination %>
 
   <% if @search && (exact_match = @libraries.find { |k,_| k == @search }) %>
     <h3>Exact match</h3>
@@ -37,6 +35,10 @@
   <% end %>
 
   <ul class="libraries">
+    <% if @libraries.count == 0 %>
+    <li>No matches found.</li>
+    <% end %>
+
     <% @libraries.sort_by {|name, _| name.downcase }.each do |name, library_versions| %>
     <li class="r<%= @row = @row == 1 ? 2 : 1 %>">
       <% library_versions = library_versions.dup %>
@@ -49,6 +51,8 @@
     </li>
     <% end %>
   </ul>
+
+  <%= erb :pagination %>
 </div>
 
 <script type="text/javascript" charset="utf-8">

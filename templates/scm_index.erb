@@ -8,21 +8,17 @@
     <li><a href="/featured">Featured</a></li>
     <li><a href="/stdlib">Stdlib</a></li>
     <li><a href="/gems">RubyGems</a></li>
-    <li class="selected">GitHub</li>
+    <% if @search %>
+      <li><a href="/github">GitHub</a></li>
+    <% else %>
+      <li class="selected">GitHub</li>
+    <% end %>
     <li class="search"><form action="/find/github" method="GET"><input type="text" id="docSearch" name="q" value="<%= h @search %>" placeholder="Search GitHub Projects"/></form></li>
   </ul>
   </nav>
-  <h2>GitHub Projects  <%= h @search ? 'Search Results' : 'Listing' %></small></h2>
-  <ul class="alpha_index">
-    <% (?a..?z).each do |letter| %>
-      <% if letter == @letter %>
-        <li class="selected"><%= letter.upcase %></li>
-      <% else %>
-        <li><a href="/github/~<%= letter %>"><%= letter.upcase %></a></li>
-      <% end %>
-    <% end %>
-    <li><a href="/github">Latest</a></li>
-  </ul>
+  <h2>GitHub Projects  <%= h @search ? "Search Results for '#{@search}'" : 'Listing' %> <% if @search %><span class="small">(<a href="/<%= @adapter.router.docs_prefix %>">Back to Listing</a>)</span><% end %></h2>
+  
+  <%= erb :alpha_index %>
 
   <%= erb :checkout, :layout => false %>
   <ul class="libraries">
@@ -70,4 +66,3 @@
   </ul>
 
 </div>
-
