@@ -69,9 +69,6 @@ class GemStore
     end
   end
 
-  def keys; RemoteGem.all.map(&:name) end
-  def values; RemoteGem.all.map {|r| to_versions(r) } end
-
   private
 
   def to_versions(row)

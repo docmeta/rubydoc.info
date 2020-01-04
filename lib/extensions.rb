@@ -4,6 +4,18 @@ require 'rubygems/package'
 
 module YARD
   module Server
+    class Adapter
+      def initialize(libs, opts = {}, server_opts = {})
+        self.class.setup
+        self.libraries = libs
+        self.options = opts
+        self.server_options = server_opts
+        self.document_root = server_options[:DocumentRoot]
+        self.router = (options[:router] || Router).new(self)
+        options[:adapter] = self
+      end
+    end
+
     class RubyDocServerSerializer < DocServerSerializer
       def initialize(command = nil)
         @asset_path = File.join('assets', command.library.to_s)

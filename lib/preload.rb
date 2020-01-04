@@ -5,6 +5,7 @@ module AppPreloader
   def self.preload!
     copy_static_files
     start_update_gems_timer
+    GC.compact
   end
 
   def self.copy_static_files
@@ -22,7 +23,7 @@ module AppPreloader
   def self.start_update_gems_timer
     Thread.new do
       loop do
-        GemUpdater.update_remote_gems display: true
+        fork { GemUpdater.update_remote_gems display: true }
         sleep 600
       end
     end
