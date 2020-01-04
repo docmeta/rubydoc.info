@@ -62,6 +62,7 @@ class DocServer < Sinatra::Base
 
     if $CONFIG.skylight_token
       require 'skylight/sinatra'
+      require 'skylight_instrumentation'
       ENV['SKYLIGHT_AUTHENTICATION'] = $CONFIG.skylight_token
       ENV['SKYLIGHT_LOG_FILE'] = 'log/skylight.log'
       ENV['SKYLIGHT_DAEMON_SOCKDIR_PATH'] = 'tmp/skylight.pid'
