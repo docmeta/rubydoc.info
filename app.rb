@@ -73,7 +73,7 @@ class DocServer < Sinatra::Base
       # Object#try is not properly pulled in on Skylight 4.2.0 and Ruby 2.7.0
       require 'active_support/core_ext/object/try'
 
-      Skylight.start! env: 'staging'
+      Skylight.start!
     end
 
     puts ">> Loading #{CONFIG_FILE}"
