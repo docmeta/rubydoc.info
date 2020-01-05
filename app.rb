@@ -36,6 +36,8 @@ end
 class DocServer < Sinatra::Base
   include YARD::Server
 
+  DOC_PREFIXES = ['', '/search', '/list', '/static']
+
   def self.adapter_options
     caching = %w(staging production).include?(ENV['RACK_ENV']) ? $CONFIG.caching : false
     {
@@ -61,12 +63,17 @@ class DocServer < Sinatra::Base
     end
 
     if $CONFIG.skylight_token
-      require 'skylight/sinatra'
-      require 'skylight_instrumentation'
       ENV['SKYLIGHT_AUTHENTICATION'] = $CONFIG.skylight_token
       ENV['SKYLIGHT_LOG_FILE'] = 'log/skylight.log'
       ENV['SKYLIGHT_DAEMON_SOCKDIR_PATH'] = 'tmp/skylight.pid'
-      Skylight.start!
+
+      require 'skylight/sinatra'
+      require 'skylight_instrumentation'
+
+      # Object#try is not properly pulled in on Skylight 4.2.0 and Ruby 2.7.0
+      require 'active_support/core_ext/object/try'
+
+      Skylight.start! env: 'staging'
     end
 
     puts ">> Loading #{CONFIG_FILE}"
@@ -171,6 +178,7 @@ class DocServer < Sinatra::Base
   set :repos, REPOS_PATH
   set :tmp, TMP_PATH
   set :logdir, LOG_PATH
+  set :static_cache_control, [:public, :max_age => 30]
 
   configure(:production) do
     # log to file
@@ -224,24 +232,34 @@ class DocServer < Sinatra::Base
     def shorten_commit_link(commit)
       commit.slice(0..5)
     end
+
+    def try_load_cached_file
+      cache_control :public, :must_revalidate, :max_age => 60
+
+      return if settings.caching != true
+      path = cache_file
+      if File.exist?(path)
+        cache_control :public
+        send_file(path, last_modified: File.mtime(path))
+      else
+        last_modified Time.now
+      end
+    end
+
+    def try_static_cache(prefix)
+      return unless prefix == '/static'
+      path = File.join(settings.public_folder, params['splat'].join('/'))
+      if File.exist?(path)
+        cache_control :public
+        send_file(path, last_modified: File.mtime(path))
+      end
+    end
   end
 
   # Filters
 
   # Check cache
-  before do
-    cache_control :public, :must_revalidate, :max_age => 60
-
-    return if settings.caching != true
-    path = cache_file
-    if File.exist?(path)
-      last_modified File.mtime(path)
-      cache_control :public
-      halt 200, File.read(path)
-    else
-      last_modified Time.now
-    end
-  end
+  before { try_load_cached_file }
 
   # Always reset safe mode
   before { YARD::Config.options[:safe_mode] = true }
@@ -329,7 +347,26 @@ class DocServer < Sinatra::Base
     end
   end
 
-  # Main URL handlers
+  # Indexes
+
+  get '/' do
+    @adapter = settings.scm_adapter
+    @libraries = recent_store
+    @featured = settings.featured_adapter.libraries if settings.featured_adapter
+    cache erb(:home)
+  end
+
+  get '/stdlib' do
+    @stdlib = settings.stdlib_adapter.libraries
+    cache erb(:stdlib_index)
+  end
+
+  %w(featured docs).each do |prefix|
+    get "/#{prefix}" do
+      @featured = settings.featured_adapter.libraries
+      cache erb(:featured_index)
+    end
+  end
 
   get %r{/github(?:/~([a-z]))?} do |letter|
     if letter.nil?
@@ -354,69 +391,71 @@ class DocServer < Sinatra::Base
     cache erb(:gems_index)
   end
 
-  get %r{/(?:(?:search|list|static)/)?github/([^/]+)/([^/]+).*} do |username, project|
-    @username, @project = username, project
-    if settings.whitelisted_projects.include?("#{username}/#{project}")
-      puts "Dropping safe mode for #{username}/#{project}"
+  DOC_PREFIXES.each do |prefix|
+    # gems
+    get "#{prefix}/gems/:gemname/?*" do
+      try_static_cache(prefix)
+
+      @gemname = params['gemname']
+      return status(503) && "Cannot parse this gem" if settings.disallowed_gems.include?(@gemname)
+      if settings.whitelisted_gems.include?(@gemname)
+        puts "Dropping safe mode for #{@gemname}"
+        YARD::Config.options[:safe_mode] = false
+      end
+      result = settings.gems_adapter.call(env)
+      return status(404) && erb(:gems_404) if result.first == 404
+      result
+    end
+
+    # github
+    get "#{prefix}/github/:username/:project/?*" do
+      try_static_cache(prefix)
+
+      @username, @project = params['username'], params['project']
+      if settings.whitelisted_projects.include?("#{@username}/#{@project}")
+        puts "Dropping safe mode for #{@username}/#{@project}"
+        YARD::Config.options[:safe_mode] = false
+      end
+      result = settings.scm_adapter.call(env)
+      return status(404) && erb(:scm_404) if result.first == 404
+      result
+    end
+
+    # stdlib
+    get "#{prefix}/stdlib/:libname/?*" do
+      try_static_cache(prefix)
+
+      libname = params['libname']
       YARD::Config.options[:safe_mode] = false
+      @libname = libname
+      pass unless settings.stdlib_adapter.libraries[libname]
+      result = settings.stdlib_adapter.call(env)
+      return status(404) && erb(:stdlib_404) if result.first == 404
+      result
     end
-    result = settings.scm_adapter.call(env)
-    return status(404) && erb(:scm_404) if result.first == 404
-    result
-  end
 
-  get %r{/(?:(?:search|list|static)/)?gems/([^/]+).*} do |gemname|
-    return status(503) && "Cannot parse this gem" if settings.disallowed_gems.include?(gemname)
-    if settings.whitelisted_gems.include?(gemname)
-      puts "Dropping safe mode for #{gemname}"
+    # featured
+    get "#{prefix}/docs/:libname/?*" do
+      try_static_cache(prefix)
+
+      libname = params['libname']
       YARD::Config.options[:safe_mode] = false
+      @libname = libname
+      lib = settings.featured_adapter.libraries[libname]
+      pass if lib.nil? || lib.empty?
+      if lib.first.source == :remote_gem
+        return redirect("/gems/#{libname}/#{params['splat'].join('/')}", 302)
+      end
+
+      result = settings.featured_adapter.call(env)
+      return status(404) && erb(:featured_404) if result.first == 404
+      result
     end
-    @gemname = gemname
-    result = settings.gems_adapter.call(env)
-    return status(404) && erb(:gems_404) if result.first == 404
-    result
-  end
-
-  # Stdlib
-
-  get %r{/(?:(?:search|list|static)/)?stdlib/([^/]+).*} do |libname|
-    YARD::Config.options[:safe_mode] = false
-    @libname = libname
-    pass unless settings.stdlib_adapter.libraries[libname]
-    result = settings.stdlib_adapter.call(env)
-    return status(404) && erb(:stdlib_404) if result.first == 404
-    result
-  end
-
-  get %r{/stdlib} do
-    @stdlib = settings.stdlib_adapter.libraries
-    cache erb(:stdlib_index)
-  end
-
-  # Featured libraries
-
-  get %r{/(?:(?:search|list|static)/)?docs/([^/]+)(/?.*)} do |libname, extra|
-    YARD::Config.options[:safe_mode] = false
-    @libname = libname
-    lib = settings.featured_adapter.libraries[libname]
-    pass if lib.nil? || lib.empty?
-    if lib.first.source == :remote_gem
-      return redirect("/gems/#{libname}#{extra}", 302)
-    end
-
-    result = settings.featured_adapter.call(env)
-    return status(404) && erb(:featured_404) if result.first == 404
-    result
-  end
-
-  get %r{/(featured|docs/?)} do
-    @featured = settings.featured_adapter.libraries
-    cache erb(:featured_index)
   end
 
   # Simple search interfaces
 
-  get %r{/find/github} do
+  get '/find/github' do
     @search = params[:q]
     @adapter = settings.scm_adapter
     @libraries = @adapter.libraries
@@ -424,7 +463,7 @@ class DocServer < Sinatra::Base
     erb(:scm_index)
   end
 
-  get %r{/find/gems} do
+  get '/find/gems' do
     self.class.load_gems_adapter unless defined? settings.gems_adapter
     @search = params[:q] || ''
     @page = (params[:page] || 1).to_i
@@ -435,40 +474,33 @@ class DocServer < Sinatra::Base
   end
 
   # Redirect /docs/ruby-core
-  get(%r{/docs/ruby-core/?(.*)}) do |all|
-    redirect("/stdlib/core/#{all}", 301)
+  get '/docs/ruby-core/?*' do
+    redirect("/stdlib/core/#{params['splat'].join('/')}", 301)
   end
 
   # Redirect /docs/ruby-stdlib
-  get(%r{/docs/ruby-stdlib/?(.*)}) do |all|
+  get '/docs/ruby-stdlib/?*' do
     redirect("/stdlib")
   end
 
   # Old URL structure redirection for yardoc.org
 
-  get(%r{/docs/([^/]+)-([^/]+)(/?.*)}) do |user, proj, extra|
+  get %r{/docs/([^/]+)-([^/]+)(/?.*)} do |user, proj, extra|
     redirect("/github/#{user}/#{proj}#{translate_file_links extra}", 301)
   end
 
-  get(%r{/docs/([^/]+)(/?.*)}) do |lib, extra|
+  get %r{/docs/([^/]+)(/?.*)} do |lib, extra|
     redirect("/gems/#{lib}#{translate_file_links extra}", 301)
   end
 
-  get('/docs/?') { redirect('/github', 301) }
+  get '/docs/?' do
+    redirect('/', 302)
+  end
 
   # Old URL structure redirection for rdoc.info
 
-  get(%r{/(?:projects|rdoc)/([^/]+)/([^/]+)(/?.*)}) do |user, proj, extra|
+  get %r{/(?:projects|rdoc)/([^/]+)/([^/]+)(/?.*)} do |user, proj, extra|
     redirect("/github/#{user}/#{proj}", 301)
-  end
-
-  # Root URL redirection
-
-  get '/' do
-    @adapter = settings.scm_adapter
-    @libraries = recent_store
-    @featured = settings.featured_adapter.libraries if settings.featured_adapter
-    cache erb(:home)
   end
 
   error do

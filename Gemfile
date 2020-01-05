@@ -7,7 +7,7 @@ group :app do
   gem 'json'
   gem 'version_sorter'
   gem 'net-http-persistent', '~> 2.0'
-  gem 'activesupport', '~> 5.0'
+  gem 'activesupport'
 end
 
 group :app_tools do
