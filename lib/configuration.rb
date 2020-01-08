@@ -5,6 +5,7 @@ class Configuration < Hash
 
   def initialize(hash)
     update(hash)
+    update('environment' => 'production') if environment.nil?
   end
 
   def method_missing(name, *args, &block)

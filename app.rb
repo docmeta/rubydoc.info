@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require File.join(File.dirname(__FILE__), 'init')
 
 require 'yard'
@@ -48,6 +50,7 @@ class DocServer < Sinatra::Base
   end
 
   def self.load_configuration
+    set :environment, ($CONFIG.environment || 'production').to_sym
     set :name, $CONFIG.name || 'RubyDoc.info'
     set :url, $CONFIG.url || 'https://www.rubydoc.info'
 
@@ -62,7 +65,14 @@ class DocServer < Sinatra::Base
       set :protection, :origin_whitelist => ["http://#{$CONFIG.varnish_host}"]
     end
 
-    if $CONFIG.skylight_token
+    if $CONFIG.environment == 'profile'
+      require 'rack-mini-profiler'
+      require 'flamegraph'
+      require 'stackprof'
+      require 'memory_profiler'
+      Rack::MiniProfiler.config.enable_advanced_debugging_tools = true
+      use Rack::MiniProfiler
+    elsif $CONFIG.skylight_token
       ENV['SKYLIGHT_AUTHENTICATION'] = $CONFIG.skylight_token
       ENV['SKYLIGHT_LOG_FILE'] = 'log/skylight.log'
       ENV['SKYLIGHT_DAEMON_SOCKDIR_PATH'] = 'tmp/skylight.pid'
@@ -73,7 +83,7 @@ class DocServer < Sinatra::Base
       # Object#try is not properly pulled in on Skylight 4.2.0 and Ruby 2.7.0
       require 'active_support/core_ext/object/try'
 
-      Skylight.start!
+      Skylight.start! env: settings.environment
     end
 
     puts ">> Loading #{CONFIG_FILE}"

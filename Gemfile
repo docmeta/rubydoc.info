@@ -8,12 +8,15 @@ group :app do
   gem 'version_sorter'
   gem 'net-http-persistent', '~> 2.0'
   gem 'activesupport'
+  gem 'rake', require: false
 end
 
-group :app_tools do
-  gem 'rake', require: false
+group :instrumentation do
   gem 'skylight', require: false
   gem 'derailed_benchmarks', require: false
+  gem 'rack-mini-profiler', require: false
+  gem 'memory_profiler', require: false
+  gem 'flamegraph', require: false
   gem 'stackprof', require: false
   gem 'rack-test', require: false
 end

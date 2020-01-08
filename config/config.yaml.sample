@@ -27,6 +27,10 @@
 # line and add your authentication token:
 skylight_token: YOUR_AUTH_TOKEN
 
+# Choose your environment, defaults to production. Use "profile" to turn on
+# profiling
+# environment: production
+
 # If you want to add a Tender help desk support link, uncomment the following
 # line and add your Site ID:
 # tender: YOUR_SITE_ID
