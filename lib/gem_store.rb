@@ -64,6 +64,7 @@ class GemStore
     return enum_for(:find_by, search, page) unless block_given?
 
     RemoteGem.where(Sequel.like(:name, "%#{search}%")).
+        order { length(:name).asc }.
         limit(PER_PAGE, (page - 1) * PER_PAGE).each do |row|
       yield row.name, to_versions(row)
     end
