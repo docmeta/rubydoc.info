@@ -68,7 +68,14 @@ module YARD
 
         Thread.new do
           begin
-            URI.open(url) do |io|
+            uri = URI(url)
+            credentials = uri.user, uri.password
+            uri.user, uri.password = nil
+
+            options = {}
+            options[:http_basic_authentication] = credentials if credentials.any?
+
+            URI.open(uri.to_s, **options) do |io|
               expand_gem(io)
               generate_yardoc(safe_mode)
               clean_source(safe_mode)
