@@ -91,6 +91,6 @@ namespace :docker do
       source_path = source_path.sub(/\A\/app/, File.read(host_path_file).strip)
     end
 
-    sh "docker run --rm -v #{source_path.inspect}:/build 127.0.0.1:5000/rubydoc-docparse"
+    sh "docker run --rm -u '#{Process.uid}:#{Process.gid}' -v #{source_path.inspect}:/build 127.0.0.1:5000/rubydoc-docparse"
   end
 end

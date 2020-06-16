@@ -110,7 +110,7 @@ module YARD
         # this inside of a chdir block.
         Dir.chdir(File.dirname(__FILE__) + "/..")
         sh "bundle exec rake docker:doc SOURCE=#{source_path.inspect}",
-          "Generating gem #{to_s}", false
+          title: "Generating gem #{to_s}"
       end
 
       def expand_gem(io)

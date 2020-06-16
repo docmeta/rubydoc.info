@@ -3,7 +3,7 @@ require 'open3'
 module Helpers
   module_function
 
-  def sh(command, title = "", write_error = true)
+  def sh(command, title: "", write_error: false, show_output: false)
     puts(log = "#{Time.now}: #{title}: #{command}")
     if write_error
       result, out_data, err_data = 0, "", ""
@@ -14,11 +14,17 @@ module Helpers
       `#{command}`
       result = $?
     end
+
     puts(log = "#{Time.now}: #{title}, result=#{result.to_i}")
+    output = "STDOUT:\n#{out_data}\n\nSTDERR:\n#{err_data}"
     if write_error && result != 0
-      data = "#{log}\n\nSTDOUT:\n#{out_data}\n\nSTDERR:\n#{err_data}\n\n"
+      data = "#{log}\n\n#{output}\n\n"
       write_error_file(data)
+      STDERR.puts("STDERR:\n#{err_data}\n")
+    elsif show_output
+      puts(output)
     end
+
     result
   end
 end

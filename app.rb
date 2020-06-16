@@ -340,28 +340,10 @@ class DocServer < Sinatra::Base
       end
 
       scm = GithubCheckout.new(self, url, commit)
-      scm.flush_cache
       scm.checkout
-      "OK"
+      JSON.generate(status: "OK", project_path: "/github/#{scm.project_path}")
     rescue InvalidSchemeError
-      "INVALIDSCHEME"
-    end
-  end
-
-  get '/checkout/:username/:project/:commit' do
-    git = GithubCheckout.new(self, [params[:username], params[:project]], params[:commit])
-    if libs = settings.scm_adapter.libraries[git.name]
-      if lib = libs.find {|l| l.version == git.commit }
-        return lib.ready? ? "YES" : "NO"
-      end
-    end
-
-    if File.exist?(git.error_file)
-      puts "#{git.error_file} found"
-      "ERROR"
-    else
-      puts "#{git.error_file} not found"
-      "NO"
+      JSON.generate(error: "INVALIDSCHEME")
     end
   end
 

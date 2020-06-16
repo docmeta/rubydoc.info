@@ -12,12 +12,7 @@ MAX_DOCS_PER_PROJECT = 4
 
     Dir.glob("#{project_dir}/*").each do |dir|
       dir_count += 1
-
-      if dir =~ /master$/
-        puts "  >> Keeping master #{dir}"
-      else
-        candidate_dirs[dir] = File.new(dir).mtime.to_i
-      end
+      candidate_dirs[dir] = File.new(dir).mtime.to_i
     end
 
     candidate_dirs = candidate_dirs.sort_by { |dir, time| time }.map { |d| d[0] }

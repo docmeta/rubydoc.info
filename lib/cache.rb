@@ -31,7 +31,7 @@ module Cache
     end
 
     rm_cmd = "rm -rf #{files.join(' ')}"
-    Helpers.sh(rm_cmd, "Flushing cache", false)
+    Helpers.sh(rm_cmd, title: "Flushing cache")
   end
 
   def invalidate_with_varnish(*paths)

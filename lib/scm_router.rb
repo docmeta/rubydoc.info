@@ -66,9 +66,15 @@ class ScmLibraryStore
     keys.zip(values).each(&block)
   end
 
-  def master_fork(name)
+  def primary_fork(name)
     project = name.split('/', 2).last
     File.read(File.join(REPOS_PATH, project, '.master_fork')).strip
+  rescue Errno::ENOENT
+    nil
+  end
+
+  def primary_branch(name)
+    File.read(File.join(REPOS_PATH, name, '.primary_branch')).strip
   rescue Errno::ENOENT
     nil
   end
@@ -78,21 +84,22 @@ class ScmLibraryStore
     Dir.glob("#{REPOS_PATH}/#{filter}*", File::FNM_CASEFOLD).each do |project|
       project = File.basename(project)
       next unless dir_valid?(project)
-      master = master_fork(project)
+      primary = primary_fork(project)
       Dir.entries(File.join(REPOS_PATH, project)).each do |username|
         next unless dir_valid?(project, username)
         projects[project] ||= {}
         projects[project][username] = sorted_versions("#{username}/#{project}")
       end
       projects[project] = projects[project].sort_by do |name, libs|
-        ["#{name}/#{project}" == master ? 0 : 1, name.downcase]
+        ["#{name}/#{project}" == primary ? 0 : 1, name.downcase]
       end
     end
     projects.sort_by {|name, users| name.downcase }
   end
 
   def sorted_versions(name)
-    self[name].sort_by {|lib| [lib.version == "master" ? 0 : 1, File.ctime(lib.source_path)] }
+    main_branch = primary_branch(name)
+    self[name].sort_by {|lib| [lib.version == main_branch ? 0 : 1, File.ctime(lib.source_path)] }
   end
 
   private

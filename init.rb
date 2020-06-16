@@ -16,7 +16,7 @@ def __p(*extra)
   file = extra.last == :file
   extra.pop if file
   path = File.join(File.dirname(__FILE__), *extra)
-  FileUtils.mkdir_p(path) unless File.exists?(path) || file
+  FileUtils.mkdir_p(path) unless Dir.exist?(path) || file
   path
 end
 
