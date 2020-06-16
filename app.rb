@@ -180,8 +180,16 @@ class DocServer < Sinatra::Base
   enable :static
   enable :dump_errors
   enable :lock
-  enable :logging
   disable :raise_errors
+
+  class FilteredCommonLogger < Rack::CommonLogger
+    LOGGING_DENYLIST = ['/healthcheck']
+    def call(env) filter_log?(env) ? super : @app.call(env) end
+    def filter_log?(env) !LOGGING_DENYLIST.include?(env['PATH_INFO']) end
+  end
+
+  disable :logging
+  use FilteredCommonLogger
 
   set :views, TEMPLATES_PATH
   set :public_folder, STATIC_PATH
