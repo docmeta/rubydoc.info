@@ -187,7 +187,7 @@ class GithubCheckout < ScmCheckout
 
     FileUtils.mkdir_p(File.join(repository_path, '..'))
     File.write(primary_branch_file, commit)
-    File.write("#{settings.repos}/#{project}/.master_fork", name) if fork?
+    File.write("#{settings.repos}/#{project}/.master_fork", name) unless fork?
 
     sh("rm -rf #{repository_path.inspect} && mv #{tmpdir.inspect} #{repository_path.inspect}",
       title: "Move #{name} into place")
