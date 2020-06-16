@@ -36,7 +36,7 @@ class ScmCheckout
   end
 
   def project_path
-    [name, is_primary_branch? ? nil : commit].compact.join('/')
+    [name, commit].compact.join('/')
   end
 
   def primary_branch
