@@ -39,6 +39,6 @@ require_relative 'lib/cache'
 require_relative 'lib/configuration'
 
 $CONFIG = Configuration.load
-# if ENV['DOCKERIZED'] && !$CONFIG.varnish_host
-#   $CONFIG.varnish_host = 'cache'
-# end
+if ENV['DOCKERIZED'] && !$CONFIG.varnish_host
+  $CONFIG.varnish_host = 'cache'
+end

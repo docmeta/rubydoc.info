@@ -24,6 +24,8 @@ sub vcl_init {
 }
 
 sub vcl_recv {
+  set req.grace = 30s;
+
   // We don't need no cookies
   unset req.http.Cookie;
 
@@ -74,6 +76,13 @@ sub vcl_deliver {
 }
 
 sub vcl_backend_error {
+  set beresp.ttl = 1s;
+  set beresp.grace = 10s;
+
+  if (beresp.status == 503) {
+    return(retry);
+  }
+
   set beresp.http.Content-Type = "text/html; charset=utf-8";
   synthetic({"
     <!DOCTYPE html>

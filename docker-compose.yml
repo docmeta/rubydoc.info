@@ -12,9 +12,9 @@ services:
       - ./data:/app/data
       - ./log:/app/log
     ports:
-      - "80:8080"
+      - "8080:8080"
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         order: start-first
     depends_on:
@@ -28,12 +28,17 @@ services:
       replicas: 0
       restart_policy:
         condition: none
-  # cache:
-  #   image: 127.0.0.1:5000/rubydoc-cache
-  #   build:
-  #     context: .
-  #     dockerfile: ./docker/cache/Dockerfile
-  #   ports:
-  #     - "80:80"
-  #   depends_on:
-  #     - app
+  cache:
+    image: 127.0.0.1:5000/rubydoc-cache
+    build:
+      context: .
+      dockerfile: ./docker/cache/Dockerfile
+    volumes:
+      - cache_storage:/var/lib/varnish
+    ports:
+      - "80:80"
+    depends_on:
+      - app
+
+volumes:
+  cache_storage:
