@@ -187,7 +187,7 @@ class GithubCheckout < ScmCheckout
 
     FileUtils.mkdir_p(File.join(repository_path, '..'))
     File.write(primary_branch_file, commit)
-    File.write("#{settings.repos}/#{project}/.master_fork", name) unless fork?
+    write_fork_data
 
     sh("rm -rf #{repository_path.inspect} && mv #{tmpdir.inspect} #{repository_path.inspect}",
       title: "Move #{name} into place")
@@ -198,7 +198,17 @@ class GithubCheckout < ScmCheckout
   end
 
   def run_checkout_git_pull
+    write_fork_data
     sh("cd #{repository_path.inspect} && git reset --hard origin/#{commit.inspect} && git pull --force",
       title: "Updating project #{name}", write_error: true).to_i == 0
+  end
+
+  def write_fork_data
+    return if File.exist?(fork_file) || fork?
+    File.write(fork_file, name)
+  end
+
+  def fork_file
+    "#{settings.repos}/#{project}/.master_fork"
   end
 end
