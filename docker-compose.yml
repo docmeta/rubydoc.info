@@ -33,7 +33,10 @@ services:
     build:
       context: .
       dockerfile: ./docker/cache/Dockerfile
+    environment:
+      APP_SERVICE: rubydoc_app
     volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
       - cache_storage:/var/lib/varnish
     ports:
       - "80:80"

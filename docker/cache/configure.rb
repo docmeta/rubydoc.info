@@ -5,16 +5,9 @@ require 'resolv'
 
 vcl_file = File.join(__dir__, 'default.vcl')
 
-@backends = []
-
-Resolv::DNS.open do |dns|
-  hosts = ENV['VARNISH_BACKENDS'].split(/\s+/)
-  hosts.each do |host|
-    dns.each_address(host) do |ip|
-      @backends.push(ip)
-    end
-  end
-end
+fmt = "{{range .Endpoint.VirtualIPs}}{{.Addr}} {{end}}"
+ips = `docker service inspect --format=#{fmt.inspect} #{ENV['APP_SERVICE']}`.strip
+@backends = ips.split(/\s+/).map {|s| s.split('/').first }
 
 puts "Varnish configuring with backends [#{ENV['VARNISH_BACKENDS']}]: #{@backends.join(', ')}"
 tpl = ERB.new(File.read(vcl_file + '.erb'))
