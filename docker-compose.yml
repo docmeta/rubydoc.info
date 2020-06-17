@@ -42,6 +42,9 @@ services:
       - "80:80"
     depends_on:
       - app
-
+    deploy:
+      replicas: 1
+      update_config:
+        order: start-first
 volumes:
   cache_storage:

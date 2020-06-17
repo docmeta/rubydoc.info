@@ -110,7 +110,14 @@ module YARD
         # this inside of a chdir block.
         Dir.chdir(File.dirname(__FILE__) + "/..")
         sh "bundle exec rake docker:doc SOURCE=#{source_path.inspect}",
-          title: "Generating gem #{to_s}"
+          title: "Generating gem #{to_s}", write_error: true
+      end
+
+      def write_error_file(out)
+        FileUtils.mkdir_p("#{::LOG_PATH}/errors")
+        @error_file ||=
+          "#{::LOG_PATH}/errors/gem_#{[name.gsub('/', '_'), version.to_s || 'unknown'].join('_')}.error.txt"
+        File.open(@error_file, "a") {|f| f.write(out + "\n") }
       end
 
       def expand_gem(io)

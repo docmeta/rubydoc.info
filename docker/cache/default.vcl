@@ -3,24 +3,15 @@ vcl 4.0;
 import std;
 import directors;
 
-<% @backends.each.with_index do |ip, idx| %>
-backend server<%= idx %> {
-  .host = "<%= ip %>";
+backend server {
+  .host = "app";
   .port = "8080";
   .probe = { .url = "/"; .timeout = 1s; .interval = 5s; .window = 5; .threshold = 3; }
 }
-<% end %>
 
 acl purge {
-  "10.0.0.0"/16;
+  "app";
   "localhost";
-}
-
-sub vcl_init {
-  new cluster = directors.round_robin();
-  <% @backends.each.with_index do |be, idx| %>
-  cluster.add_backend(server<%= idx %>);
-  <% end %>
 }
 
 sub vcl_recv {
@@ -44,7 +35,7 @@ sub vcl_recv {
     return (purge);
   }
 
-  set req.backend_hint = cluster.backend();
+  set req.backend_hint = server;
 }
 
 sub vcl_synth {
