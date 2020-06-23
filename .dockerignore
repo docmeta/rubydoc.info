@@ -6,6 +6,7 @@ spec
 tmp
 vendor
 .gitignore
+.git
 MIT-LICENSE
 README.md
 recent.sqlite
