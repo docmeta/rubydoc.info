@@ -22,7 +22,7 @@ group :instrumentation do
 end
 
 group :yard do
-  gem 'yard', git: 'https://github.com/lsegal/yard'
+  gem 'yard', git: 'https://github.com/lsegal/yard', branch: 'main'
   gem 'yard-rails'
   gem 'yard-kramdown'
   gem 'yard-sd'
