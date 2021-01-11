@@ -58,7 +58,7 @@ GEM
     rake (13.0.1)
     rdiscount (2.2.0.1)
     rdoc (6.2.1)
-    redcarpet (3.5.0)
+    redcarpet (3.5.1)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
       rspec-expectations (~> 3.9.0)
