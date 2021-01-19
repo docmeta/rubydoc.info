@@ -69,14 +69,6 @@ class GemUpdater
 
       flush_cache(changed_gems)
 
-      # deal with deleted gems
-      changed_gems.keys.each do |gem_name|
-        next if libs[gem_name]
-        removed_gems << gem_name
-        changed_gems.delete(gem_name)
-        store.delete(gem_name)
-      end
-
       result = [changed_gems, removed_gems]
 
       if display
