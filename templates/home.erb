@@ -40,6 +40,7 @@
     <li class="r<%= @row = @row == 1 ? 2 : 1 %>">
       <% library_versions = library_versions.dup %>
       <% first_lib = library_versions.pop %>
+      <% next if first_lib.nil? %>
       <a href="/<%= first_lib.source == :remote_gem ? 'gems' : 'docs' %>/<%= h first_lib %>"><%= h name %></a>
       <% if first_lib && first_lib.version %>
         <small>(<%= h first_lib.version %><% if library_versions.size > 0 %>,
