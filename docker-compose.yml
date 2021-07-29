@@ -14,7 +14,11 @@ services:
     ports:
       - "8080:8080"
     deploy:
-      replicas: 1
+      resources:
+        limits:
+          cpus: "2"
+          memory: 2G
+      replicas: 2
       update_config:
         order: start-first
     depends_on:
@@ -44,6 +48,10 @@ services:
       - app
     deploy:
       replicas: 1
+      resources:
+        limits:
+          cpus: "2"
+          memory: 6G
       update_config:
         order: start-first
 volumes:
