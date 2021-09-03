@@ -20,13 +20,13 @@ class GemStore
 
   include Enumerable
 
-  def [](name) to_versions(RemoteGem.first(name: name)) end
+  def [](name) to_versions(RemoteGem.first(name_eq(name))) end
   def []=(name, versions)
     versions = versions.split(' ') if versions.is_a?(String)
     versions = versions.map {|v| v.is_a?(YARD::Server::LibraryVersion) ? v.version : v }
     versions = VersionSorter.sort(versions)
-    if RemoteGem.where(name: name).count > 0
-      RemoteGem.first(name: name).update(versions: versions.join(" "))
+    if RemoteGem.where(name_eq(name)).count > 0
+      RemoteGem.first(name_eq(name)).update(versions: versions.join(" "))
     else
       RemoteGem.create(name: name, versions: versions.join(" "))
     end
@@ -35,10 +35,10 @@ class GemStore
   end
 
   def delete(name)
-    RemoteGem.where(name: name).delete
+    RemoteGem.where(name_eq(name)).delete
   end
 
-  def has_key?(name) !!RemoteGem.first(name: name) end
+  def has_key?(name) !!RemoteGem.first(name_eq(name)) end
   def each(&block) RemoteGem.each {|row| yield row.name, to_versions(row) } end
   def size; RemoteGem.count end
   def empty?; size == 0 end
@@ -71,6 +71,10 @@ class GemStore
   end
 
   private
+
+  def name_eq(name)
+    Sequel.lit("CAST(name as text) = CAST(? as text)", name)
+  end
 
   def to_versions(row)
     return nil unless row
