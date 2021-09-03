@@ -1,4 +1,4 @@
-FROM ruby:3-alpine
+FROM ruby:3-alpine3.13
 
 ADD ./generate.rb /rb/generate.rb
 RUN chmod +x /rb/generate.rb
