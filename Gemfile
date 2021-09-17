@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 group :app do
   gem 'sqlite3'
+  gem 'pg'
   gem 'sequel'
   gem 'syntax'
   gem 'json'

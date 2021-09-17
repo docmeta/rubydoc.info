@@ -2,18 +2,18 @@ require 'sequel'
 require 'base64'
 require 'version_sorter'
 require_relative 'extensions'
+require_relative 'db'
 
-GEM_STORE_DB = Sequel.sqlite(REMOTE_GEMS_FILE)
-unless GEM_STORE_DB.table_exists?(:remote_gems)
-  GEM_STORE_DB.create_table(:remote_gems) do
-    primary_key :id
-    string :name
-    text :versions
-    index :name
+unless DB.table_exists?(:remote_gems)
+  DB.create_table(:remote_gems) do
+    String :name, primary_key: true
+    String :versions
   end
 end
 
-class RemoteGem < Sequel::Model; end
+class RemoteGem < Sequel::Model(DB); end
+
+RemoteGem.unrestrict_primary_key
 
 class GemStore
   PER_PAGE = 100

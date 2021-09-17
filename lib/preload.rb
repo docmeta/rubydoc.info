@@ -1,4 +1,5 @@
 require_relative '../init'
+require_relative 'db'
 require_relative 'gem_updater'
 
 module AppPreloader
@@ -6,6 +7,7 @@ module AppPreloader
     copy_static_files
     start_update_gems_timer
     GC.compact
+    DB.disconnect
   end
 
   def self.copy_static_files
