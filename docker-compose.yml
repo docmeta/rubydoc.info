@@ -16,9 +16,9 @@ services:
     deploy:
       resources:
         limits:
-          cpus: "2"
-          memory: 2G
-      replicas: 2
+          cpus: "6"
+          memory: 6G
+      replicas: 1
       update_config:
         order: start-first
     depends_on:
@@ -32,27 +32,27 @@ services:
       replicas: 0
       restart_policy:
         condition: none
-  cache:
-    image: 127.0.0.1:5000/rubydoc-cache
-    build:
-      context: .
-      dockerfile: ./docker/cache/Dockerfile
-    environment:
-      APP_SERVICE: rubydoc_app
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - cache_storage:/var/lib/varnish
-    ports:
-      - "80:80"
-    depends_on:
-      - app
-    deploy:
-      replicas: 1
-      resources:
-        limits:
-          cpus: "2"
-          memory: 6G
-      update_config:
-        order: start-first
-volumes:
-  cache_storage:
+#   cache:
+#     image: 127.0.0.1:5000/rubydoc-cache
+#     build:
+#       context: .
+#       dockerfile: ./docker/cache/Dockerfile
+#     environment:
+#       APP_SERVICE: rubydoc_app
+#     volumes:
+#       - /var/run/docker.sock:/var/run/docker.sock:ro
+#       - cache_storage:/var/lib/varnish
+#     ports:
+#       - "80:80"
+#     depends_on:
+#       - app
+#     deploy:
+#       replicas: 1
+#       resources:
+#         limits:
+#           cpus: "2"
+#           memory: 6G
+#       update_config:
+#         order: start-first
+# volumes:
+#   cache_storage:
