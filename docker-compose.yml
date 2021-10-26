@@ -12,7 +12,7 @@ services:
       - ./data:/app/data
       - ./log:/app/log
     ports:
-      - "8080:8080"
+      - "80:8080"
     deploy:
       resources:
         limits:
