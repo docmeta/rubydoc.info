@@ -38,20 +38,6 @@ class RecentStore
   end
 
   def each(&block)
-    LibraryStore.select.order(Sequel.desc(:created_at)).limit(@maxsize).all.each do |row|
-      yield row.name, to_versions(row)
-    end
-  end
-
-  private
-
-  def to_versions(row)
-    return nil unless row
-    row.versions.split(" ").map do |v|
-      ver, platform = *v.split(',')
-      lib = YARD::Server::LibraryVersion.new(row.name, ver, nil, :github)
-      lib.platform = platform
-      lib
-    end
+    LibraryStore.select.order(Sequel.desc(:created_at)).limit(@maxsize).all.each(&block)
   end
 end
