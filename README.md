@@ -19,6 +19,7 @@ Running the doc server locally is easy:
 git clone git://github.com/lsegal/rubydoc.info
 cd rubydoc.info
 bundle install
+cp config/config.yaml.sample config/config.yaml
 bundle exec rake gems:update
 bundle exec rake server:start
 ```
