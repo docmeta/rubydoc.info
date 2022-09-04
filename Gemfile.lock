@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/lsegal/yard.git
-  revision: e21c9323bba88c841a917d0531281b90f27f2378
+  revision: e167846322cacdcecb12cbd438aee9e78c6873a2
   branch: main
   specs:
-    yard (0.9.26)
+    yard (0.9.28)
       webrick (~> 1.7.0)
 
 GEM
