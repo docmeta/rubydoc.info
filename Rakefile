@@ -21,11 +21,6 @@ namespace :server do
   task :restart => 'cache:clean_index' do
     sh "kill -USR1 `cat tmp/pids/server.pid`"
   end
-
-  desc 'Shut down the server'
-  task :stop do
-    sh "kill -9 `cat tmp/pids/server.pid`"
-  end
 end
 
 namespace :gems do

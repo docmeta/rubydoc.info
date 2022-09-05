@@ -42,7 +42,7 @@ end
 
 group :framework do
   gem 'sinatra', '>= 1.3'
-  gem 'puma', '4.3.12'
+  gem 'puma'
 end
 
 group :test do

@@ -23,11 +23,7 @@ bundle exec rake gems:update
 bundle exec rake server:start
 ```
 
-This will start a daemonized process, you can stop the server with:
-
-```sh
-bundle exec rake server:stop
-```
+You can access application page at http://localhost:8080/ now. 
 
 ### Running With Docker
 
