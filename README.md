@@ -30,6 +30,13 @@ This will start a daemonized process, you can stop the server with:
 bundle exec rake server:stop
 ```
 
+### Generate documentation
+To generate stdlib docs, you would need to run the following:
+
+```sh
+rake stdlib:install SOURCE="$HOME/.rvm/rubies/ruby-3.1.2" VERSION="3.1.2"
+```
+
 ### Running With Docker
 
 If you have Docker installed, you can get started using `docker-compose`:
