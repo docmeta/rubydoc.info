@@ -252,7 +252,7 @@ class DocServer < Sinatra::Base
     end
 
     def try_load_cached_file
-      cache_control :public, :must_revalidate, :max_age => 60
+      cache_control :public, :max_age => 14400
 
       return if settings.caching != true
       path = cache_file
