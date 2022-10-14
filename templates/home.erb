@@ -21,40 +21,37 @@
     }
   });
 </script>
-
 <div id="content">
   <nav>
-  <ul id="navigation">
-    <li><a href="/featured">Featured</a></li>
-    <li><a href="/stdlib">Stdlib</a></li>
-    <li><a href="/gems">RubyGems</a></li>
-    <li class="selected">GitHub</li>
-    <li class="search"><form action="/find/github" method="GET"><input type="text" id="docSearch" name="q" value="<%= h @search %>" placeholder="Search GitHub Projects"/></form></li>
-  </ul>
+    <ul id="navigation">
+      <li><a href="/featured">Featured</a></li>
+      <li><a href="/stdlib">Stdlib</a></li>
+      <li><a href="/gems">RubyGems</a></li>
+      <li class="selected">GitHub</li>
+      <li class="search">
+        <form action="/find/github" method="GET"><input type="text" id="docSearch" name="q" value="<%= h @search %>" placeholder="Search GitHub Projects"/></form>
+      </li>
+    </ul>
   </nav>
-
   <% if @featured && @featured.size > 0 %>
-  <h2>Featured Libraries</h2>
-  <ul class="libraries">
-    <% @featured.each do |name, library_versions| %>
-    <li class="r<%= @row = @row == 1 ? 2 : 1 %>">
-      <% library_versions = library_versions.dup %>
-      <% first_lib = library_versions.pop %>
-      <% next if first_lib.nil? %>
-      <a href="/<%= first_lib.source == :remote_gem ? 'gems' : 'docs' %>/<%= h first_lib %>"><%= h name %></a>
-      <% if first_lib && first_lib.version %>
-        <small>(<%= h first_lib.version %><% if library_versions.size > 0 %>,
-          <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/#{lib.source == :remote_gem ? 'gems' : 'docs'}/#{lib}\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
+    <h2>Featured Libraries</h2>
+    <ul class="libraries">
+      <% @featured.each do |name, library_versions| %>
+        <li class="r<%= @row = @row == 1 ? 2 : 1 %>">
+          <% library_versions = library_versions.dup %>
+          <% first_lib = library_versions.pop %>
+          <% next if first_lib.nil? %>
+          <a href="/<%= first_lib.source == :remote_gem ? 'gems' : 'docs' %>/<%= h first_lib %>"><%= h name %></a>
+          <% if first_lib && first_lib.version %>
+            <small>(<%= h first_lib.version %><% if library_versions.size > 0 %>,
+                <%= library_versions.reverse[0..3].map {|lib| "<a href=\"/#{lib.source == :remote_gem ? 'gems' : 'docs'}/#{lib}\">#{lib.version}</a>" }.join(', ') %><% end %>)</small>
+          <% end %>
+        </li>
       <% end %>
-    </li>
-    <% end %>
-  </ul>
+    </ul>
   <% end %>
-
   <h2>Recently Updated GitHub Projects</h2>
-  
   <%= erb :alpha_index %>
-
   <%= erb :checkout, :layout => false %>
   <ul class="libraries">
     <% if @libraries.size == 0 %>
@@ -66,9 +63,8 @@
         <a href="/<%= @adapter.router.docs_prefix %>/<%= h latest_version %>"><strong><%= h lib.name %></strong></a>
         <a href="#" class="project_reload" title="Reload this project"><img class="icon reload" src="/images/reload.png" /></a>
         <a href="http://github.com/<%= h lib.name %>" title="View this project on GitHub"><img class="icon github" src="/images/git.png" /></a>
-        <small>(<%= h latest_version.version %>)</small>
+        <small>(<%= h latest_version.split('/', 3).last %>)</small>
       </li>
     <% end %>
   </ul>
-
 </div>

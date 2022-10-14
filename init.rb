@@ -31,14 +31,12 @@ LOG_PATH         = __p('log')
 DATA_PATH        = __p('data')
 TEMPLATES_PATH   = __p('templates')
 CONFIG_FILE      = __p('config', 'config.yaml', :file)
-REMOTE_GEMS_FILE = __p('data', 'remote_gems.sqlite', :file)
-RECENT_SQL_FILE  = __p('data', 'recent.sqlite', :file)
 
 require_relative 'lib/helpers'
 require_relative 'lib/cache'
 require_relative 'lib/configuration'
 
 $CONFIG = Configuration.load
-if ENV['DOCKERIZED'] && !$CONFIG.varnish_host
-  $CONFIG.varnish_host = 'cache'
-end
+# if ENV['DOCKERIZED'] && !$CONFIG.varnish_host
+#   $CONFIG.varnish_host = 'cache'
+# end

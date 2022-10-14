@@ -1,7 +1,7 @@
 FROM ruby:3-alpine3.13
 LABEL Maintainer="Loren Segal <lsegal@soen.ca>"
 
-RUN apk add --no-cache -U docker git sqlite-dev build-base
+RUN apk add --no-cache -U docker git sqlite-dev build-base postgresql-dev
 RUN gem update --no-document --system
 
 RUN touch /var/run/docker.sock

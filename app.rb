@@ -330,11 +330,11 @@ class DocServer < Sinatra::Base
 
       if url =~ %r{github\.com/([^/]+)/([^/]+)}
         username, project = $1, $2
-        if settings.whitelisted_projects.include?("#{username}/#{project}")
+        if wildcard_match?(settings.whitelisted_projects, "#{username}/#{project}")
           puts "Dropping safe mode for #{username}/#{project}"
           YARD::Config.options[:safe_mode] = false
         end
-        if settings.disallowed_projects.include?("#{username}/#{project}")
+        if wildcard_match?(settings.disallowed_projects, "#{username}/#{project}")
           return status(503) && "Cannot parse this project"
         end
       end
@@ -345,6 +345,10 @@ class DocServer < Sinatra::Base
     rescue InvalidSchemeError
       JSON.generate(error: "INVALIDSCHEME")
     end
+  end
+
+  def wildcard_match?(list, item)
+    list.any? {|x| x == item || item =~ %r{\A#{x.sub('*', '.+')}\Z}ix }
   end
 
   # Indexes
@@ -397,7 +401,7 @@ class DocServer < Sinatra::Base
       try_static_cache(prefix)
 
       @gemname = params['gemname']
-      return status(503) && "Cannot parse this gem" if settings.disallowed_gems.include?(@gemname)
+      return status(503) && "Cannot parse this gem" if wildcard_match?(settings.disallowed_gems, @gemname)
       if settings.whitelisted_gems.include?(@gemname)
         puts "Dropping safe mode for #{@gemname}"
         YARD::Config.options[:safe_mode] = false

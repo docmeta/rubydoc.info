@@ -23,6 +23,14 @@ services:
         order: start-first
     depends_on:
       - docparse
+      - db
+  db:
+    image: postgres:13-alpine
+    environment:
+      POSTGRES_USER: db
+      POSTGRES_PASSWORD: db
+    volumes:
+      - db:/var/lib/postgresql/data
   docparse:
     image: 127.0.0.1:5000/rubydoc-docparse
     build:
@@ -54,5 +62,6 @@ services:
 #           memory: 6G
 #       update_config:
 #         order: start-first
-# volumes:
-#   cache_storage:
+volumes:
+  cache_storage:
+  db:
