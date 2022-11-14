@@ -11,8 +11,6 @@ services:
       - ./repos:/app/repos
       - ./data:/app/data
       - ./log:/app/log
-    ports:
-      - "80:8080"
     deploy:
       resources:
         limits:
@@ -40,28 +38,22 @@ services:
       replicas: 0
       restart_policy:
         condition: none
-#   cache:
-#     image: 127.0.0.1:5000/rubydoc-cache
-#     build:
-#       context: .
-#       dockerfile: ./docker/cache/Dockerfile
-#     environment:
-#       APP_SERVICE: rubydoc_app
-#     volumes:
-#       - /var/run/docker.sock:/var/run/docker.sock:ro
-#       - cache_storage:/var/lib/varnish
-#     ports:
-#       - "80:80"
-#     depends_on:
-#       - app
-#     deploy:
-#       replicas: 1
-#       resources:
-#         limits:
-#           cpus: "2"
-#           memory: 6G
-#       update_config:
-#         order: start-first
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - ./config/nginx:/etc/nginx/templates:ro
+      - ./config/certs:/etc/nginx/certs:ro
+      - ./public:/public:ro
+      - www-cache:/var/cache/nginx
+    deploy:
+      replicas: 1
+      update_config:
+        order: start-first
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+    depends_on:
+      - app
 volumes:
-  cache_storage:
+  www-cache:
   db:

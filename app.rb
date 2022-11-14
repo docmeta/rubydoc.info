@@ -196,7 +196,7 @@ class DocServer < Sinatra::Base
   set :repos, REPOS_PATH
   set :tmp, TMP_PATH
   set :logdir, LOG_PATH
-  set :static_cache_control, [:public, :max_age => 30]
+  set :static_cache_control, [:public, max_age: 14400]
 
   configure(:production) do
     # log to file
@@ -230,6 +230,7 @@ class DocServer < Sinatra::Base
       path = cache_file
       FileUtils.mkdir_p(File.dirname(path))
       File.open(path, "w") {|f| f.write(output) }
+      etag Digest::MD5.hexdigest(output)
       output
     end
 
@@ -252,7 +253,7 @@ class DocServer < Sinatra::Base
     end
 
     def try_load_cached_file
-      cache_control :public, :max_age => 14400
+      cache_control :public, max_age: 14400
 
       return if settings.caching != true
       path = cache_file

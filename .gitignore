@@ -1,5 +1,6 @@
 .bundle
 config/config.yaml
+config/certs/*.pem
 tmp
 repos
 data
