@@ -35,6 +35,15 @@ class NoCacheEmptyBody
   end
 end
 
+class NoCacheNonOK
+  def initialize(app) @app = app end
+  def call(env)
+    status, headers, body = *@app.call(env)
+    headers['Cache-Control'] = 'no-store' if status != 200
+    [status, headers, body]
+  end
+end
+
 class DocServer < Sinatra::Base
   include YARD::Server
 
@@ -176,6 +185,7 @@ class DocServer < Sinatra::Base
   use Rack::ConditionalGet
   use Rack::Head
   use NoCacheEmptyBody
+  use NoCacheNonOK
 
   enable :static
   enable :dump_errors
