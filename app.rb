@@ -206,7 +206,6 @@ class DocServer < Sinatra::Base
   set :repos, REPOS_PATH
   set :tmp, TMP_PATH
   set :logdir, LOG_PATH
-  set :static_cache_control, [:public, max_age: 14400]
 
   configure(:production) do
     # log to file
