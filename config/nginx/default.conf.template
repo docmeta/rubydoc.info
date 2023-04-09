@@ -7,8 +7,6 @@ upstream backend {
   server app:8080 fail_timeout=0;
 }
 
-proxy_cache_path /var/cache/nginx levels=1:2 keys_zone=CACHE:10m inactive=7d max_size=1g;
-
 server {
   listen 80;
   listen [::]:80;
@@ -83,12 +81,6 @@ server {
     proxy_http_version 1.1;
     proxy_set_header Upgrade $http_upgrade;
     proxy_set_header Connection $connection_upgrade;
-
-    proxy_cache CACHE;
-    proxy_cache_valid 200 1m;
-    proxy_cache_valid 410 10m;
-    proxy_cache_use_stale error timeout updating http_500 http_502 http_503 http_504;
-    add_header X-Cached $upstream_cache_status;
 
     tcp_nodelay on;
   }

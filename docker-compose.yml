@@ -50,7 +50,6 @@ services:
       - ./config/nginx:/etc/nginx/templates:ro
       - ./config/certs:/etc/nginx/certs:ro
       - ./public:/public:ro
-      - www-cache:/var/cache/nginx
     deploy:
       replicas: 1
       update_config:
@@ -61,5 +60,4 @@ services:
     depends_on:
       - app
 volumes:
-  www-cache:
   db:
