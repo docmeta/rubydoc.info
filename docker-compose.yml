@@ -29,6 +29,12 @@ services:
       POSTGRES_PASSWORD: db
     volumes:
       - db:/var/lib/postgresql/data
+    deploy:
+      replicas: 1
+      update_config:
+        order: start-first
+      restart_policy:
+        condition: any
   docparse:
     image: 127.0.0.1:5000/rubydoc-docparse
     build:
