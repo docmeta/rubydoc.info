@@ -90,6 +90,7 @@ class DocServer < Sinatra::Base
       require 'skylight_instrumentation'
 
       # Object#try is not properly pulled in on Skylight 4.2.0 and Ruby 2.7.0
+      require 'active_support'
       require 'active_support/core_ext/object/try'
 
       Skylight.start! env: settings.environment
