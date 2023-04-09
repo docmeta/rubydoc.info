@@ -4,6 +4,7 @@ GIT
   branch: main
   specs:
     yard (0.9.28)
+      webrick (~> 1.7.0)
 
 GEM
   remote: https://rubygems.org/
