@@ -18,8 +18,11 @@ group :instrumentation do
   gem 'rack-mini-profiler', require: false
   gem 'memory_profiler', require: false
   gem 'flamegraph', require: false
-  gem 'stackprof', require: false
   gem 'rack-test', require: false
+
+  platforms :ruby do
+    gem 'stackprof', require: false
+  end
 end
 
 group :yard do
@@ -30,15 +33,18 @@ group :yard do
 end
 
 group :markup do
-  gem 'rdoc'
   gem 'maruku'
   gem 'kramdown'
   gem 'redcarpet'
   gem 'github-markup'
   gem 'rdiscount'
-  gem 'bluecloth'
   gem 'RedCloth'
   gem 'asciidoctor'
+
+  platforms :ruby do
+    gem 'rdoc'
+    gem 'bluecloth'
+  end
 end
 
 group :framework do
