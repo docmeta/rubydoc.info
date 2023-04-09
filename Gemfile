@@ -14,6 +14,9 @@ end
 
 group :instrumentation do
   gem 'skylight', require: false
+end
+
+group :development do
   gem 'derailed_benchmarks', require: false
   gem 'rack-mini-profiler', require: false
   gem 'memory_profiler', require: false

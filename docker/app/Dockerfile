@@ -20,7 +20,7 @@ RUN gem install bundler
 ADD --chown=app:app ./Gemfile /app/Gemfile
 ADD --chown=app:app ./Gemfile.lock /app/Gemfile.lock
 WORKDIR /app
-RUN bundle config set without 'test'
+RUN bundle config set without 'development test'
 RUN bundle install
 
 LABEL docmeta.rubydoc=true
