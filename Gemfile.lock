@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/lsegal/yard.git
-  revision: a58f0da7927ca66459852dbe3b8d7eb67e02ed04
+  revision: 7df2a78a56fb5ee25a40ce56315e297981fed064
   branch: main
   specs:
-    yard (0.9.30)
+    yard (0.9.31)
 
 GEM
   remote: https://rubygems.org/
