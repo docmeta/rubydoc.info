@@ -25,7 +25,7 @@ services:
       - docparse
       - db
   db:
-    image: postgres:13-alpine
+    image: postgres:alpine
     environment:
       POSTGRES_USER: db
       POSTGRES_PASSWORD: db
