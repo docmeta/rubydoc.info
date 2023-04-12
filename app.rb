@@ -53,7 +53,7 @@ class DocServer < Sinatra::Base
     caching = %w(staging production).include?(ENV['RACK_ENV']) ? $CONFIG.caching : false
     {
       :libraries => {},
-      :options => {caching: false, single_library: false},
+      :options => {caching: caching, single_library: false},
       :server_options => {DocumentRoot: STATIC_PATH}
     }
   end
