@@ -377,7 +377,7 @@ class DocServer < Sinatra::Base
     end
   end
 
-  get %r{/github(?:/~([a-z]))?} do |letter|
+  get %r{/github(?:/~([a-z]))?/?} do |letter|
     if letter.nil?
       @adapter = settings.scm_adapter
       @libraries = recent_store
@@ -391,7 +391,7 @@ class DocServer < Sinatra::Base
     end
   end
 
-  get %r{/gems(?:/~([a-z]))?(?:/([0-9]+))?} do |letter, page|
+  get %r{/gems(?:/~([a-z]))?(?:/([0-9]+))?/?} do |letter, page|
     @letter = letter || 'a'
     @adapter = settings.gems_adapter
     @page = (page || 1).to_i
