@@ -70,10 +70,6 @@ class DocServer < Sinatra::Base
     set :caching, false
     set :rubygems, ""
 
-    if $CONFIG.varnish_host
-      set :protection, :origin_whitelist => ["http://#{$CONFIG.varnish_host}"]
-    end
-
     if $CONFIG.environment == 'profile'
       require 'rack-mini-profiler'
       require 'flamegraph'

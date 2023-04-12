@@ -39,9 +39,6 @@ skylight_token: YOUR_AUTH_TOKEN
 # image named #{sponsor-site.com}.png to the public/images/sponsor directory.
 # sponsor: linode.com
 
-# To invalidate cache on a Varnish host, add your Varnish hostname:
-# varnish_host: cache
-
 # To invalidate cache on CloudFlare, set the following keys:
 # cloudflare_token: YOUR_CLOUDFLARE_TOKEN
 # cloudflare_zones: YOUR_CLOUDFLARE_ZONES

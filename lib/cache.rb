@@ -15,7 +15,7 @@ module Cache
 
   def invalidate(*paths)
     invalidate_on_disk(*paths) if $CONFIG.caching
-    invalidate_with_varnish(*paths) if $CONFIG.varnish_host
+    invalidate_with_nginx(*paths) if ENV['DOCKERIZED']
     invalidate_with_cloudflare(*paths) if $CONFIG.cloudflare_token
   end
 
@@ -34,28 +34,17 @@ module Cache
     Helpers.sh(rm_cmd, title: "Flushing cache")
   end
 
-  def invalidate_with_varnish(*paths)
-    uri = URI("http://#{$CONFIG.varnish_host}")
+  def invalidate_with_nginx(*paths)
+    uri = URI("https://nginx")
     http = Net::HTTP::Persistent.new
-    puts "Flushing Varnish cache on #{uri}: #{paths}"
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    puts "Flushing Nginx cache on #{uri}: #{paths}"
     paths.each do |path|
-      if path == '/'
-        path = Regexp.quote(path) + '$'
-      elsif path[-1,1] == '/'
-        path = Regexp.quote(path[0...-1]) + '(/?$|/.*$)'
-      else
-        if path[-1,1] == '*'
-          path = Regexp.quote(path[0...-1]) + '[^/]*'
-        else
-          path = Regexp.quote(path)
-        end
-        path += '$'
-      end
-
       begin
-        http.request(uri, VarnishPurgeRequest.new('/', 'x-path' => path))
-      rescue
+        http.request(uri, Net::HTTP::Get.new(path, 'Cache-Bypass' => 'true'))
+      rescue => e
         puts "#{Time.now}: Could not invalidate cache on #{uri}#{path}"
+        puts e.message
       end
     end
     http.shutdown
