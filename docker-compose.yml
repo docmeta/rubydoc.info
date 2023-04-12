@@ -65,3 +65,7 @@ services:
       - app
 volumes:
   db:
+networks:
+  default:
+    driver: overlay
+    attachable: true
