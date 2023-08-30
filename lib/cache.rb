@@ -15,7 +15,7 @@ module Cache
 
   def invalidate(*paths)
     invalidate_on_disk(*paths) if $CONFIG.caching
-    invalidate_with_nginx(*paths) if ENV['DOCKERIZED']
+    #invalidate_with_nginx(*paths) if ENV['DOCKERIZED']
     invalidate_with_cloudflare(*paths) if $CONFIG.cloudflare_token
   end
 
