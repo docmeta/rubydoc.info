@@ -5,8 +5,6 @@ services:
     build:
       context: .
       dockerfile: ./docker/app/Dockerfile
-    environment:
-      RUBYOPT: --yjit
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config:/app/config
@@ -18,7 +16,7 @@ services:
         limits:
           cpus: "6"
           memory: 6G
-      replicas: 1
+      replicas: 2
       update_config:
         order: start-first
     depends_on:
@@ -41,8 +39,6 @@ services:
     image: 127.0.0.1:5000/rubydoc-docparse
     build:
       context: ./docker/docparse
-    environment:
-      RUBYOPT: --yjit
     entrypoint: sh -c "echo Docparse image is built. It is okay for this service to exit."
     deploy:
       replicas: 0
