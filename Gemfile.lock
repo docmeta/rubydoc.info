@@ -16,7 +16,6 @@ GEM
       tzinfo (~> 2.0)
     asciidoctor (2.0.20)
     benchmark-ips (2.12.0)
-    bigdecimal (3.1.9)
     bluecloth (2.2.0)
     concurrent-ruby (1.2.2)
     dead_end (4.0.0)
@@ -55,6 +54,7 @@ GEM
     net-http-persistent (2.9.4)
     nio4r (2.5.9)
     pg (1.5.3)
+    pg (1.5.3-x64-mingw-ucrt)
     psych (5.1.0)
       stringio
     puma (6.3.1)
@@ -87,8 +87,7 @@ GEM
     rspec-support (3.12.1)
     ruby-statistics (3.0.2)
     ruby2_keywords (0.0.5)
-    sequel (5.89.0)
-      bigdecimal
+    sequel (5.71.0)
     sinatra (3.1.0)
       mustermann (~> 3.0)
       rack (~> 2.2, >= 2.2.4)
@@ -98,6 +97,7 @@ GEM
       activesupport (>= 5.2.0)
     sqlite3 (1.6.3)
       mini_portile2 (~> 2.8.0)
+    sqlite3 (1.6.3-x64-mingw-ucrt)
     stackprof (0.2.25)
     stringio (3.0.8)
     syntax (1.2.2)
