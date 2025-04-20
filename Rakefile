@@ -93,7 +93,7 @@ namespace :docker do
     end
 
     image = "127.0.0.1:5000/rubydoc-docparse"
-    do
+    loop do
       num_images = `docker ps -q -f "ancestor=#{image}"`.strip.split("\n").count
       if num_images >= max_builds
         puts ">> Too many builds in progress (#{num_images} images)"
@@ -104,6 +104,7 @@ namespace :docker do
 
       puts ">> Starting Docker build for #{source_path}"
       break
+    end
   end
     sh "docker run --rm -u '#{Process.uid}:#{Process.gid}' -v #{source_path.inspect}:/build #{image}"
   end
