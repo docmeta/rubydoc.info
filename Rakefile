@@ -85,12 +85,26 @@ end
 namespace :docker do
   desc 'Builds documentation for SOURCE in an isolated Docker container'
   task :doc do
+    max_builds = $CONFIG.max_builds || 6
     source_path = ENV['SOURCE']
     host_path_file = File.join(__dir__, 'data', 'host_path')
     if File.exist?(host_path_file)
       source_path = source_path.sub(/\A\/app/, File.read(host_path_file).strip)
     end
 
-    sh "docker run --rm -u '#{Process.uid}:#{Process.gid}' -v #{source_path.inspect}:/build 127.0.0.1:5000/rubydoc-docparse"
+    image = "127.0.0.1:5000/rubydoc-docparse"
+    do
+      num_images = `docker ps -q -f "ancestor=#{image}"`.strip.split("\n").count
+      if num_images >= max_builds
+        puts ">> Too many builds in progress (#{num_images} images)"
+        puts ">> Waiting for Docker to free up space (#{num_images} images)"
+        sleep 5
+        next
+      end
+
+      puts ">> Starting Docker build for #{source_path}"
+      break
+  end
+    sh "docker run --rm -u '#{Process.uid}:#{Process.gid}' -v #{source_path.inspect}:/build #{image}"
   end
 end
