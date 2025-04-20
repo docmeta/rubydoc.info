@@ -105,7 +105,7 @@ namespace :docker do
       puts ">> Starting Docker build for #{source_path}"
       break
     end
-  end
+
     sh "docker run --rm -u '#{Process.uid}:#{Process.gid}' -v #{source_path.inspect}:/build #{image}"
   end
 end
