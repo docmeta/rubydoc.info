@@ -77,6 +77,7 @@ namespace :stdlib do
   task :install do
     raise 'Missing SOURCE path (SOURCE=pathtolib)' unless ENV['SOURCE']
     raise 'Missing Ruby version (VERSION=targetversion)' unless ENV['VERSION']
+
     require 'stdlib_installer'
     StdlibInstaller.new(ENV['SOURCE'], ENV['VERSION']).install
   end
@@ -85,7 +86,7 @@ end
 namespace :docker do
   desc 'Builds documentation for SOURCE in an isolated Docker container'
   task :doc do
-    max_builds = $CONFIG.max_builds || 6
+    max_builds = $CONFIG.max_builds&.to_i || 6
     source_path = ENV['SOURCE']
     host_path_file = File.join(__dir__, 'data', 'host_path')
     if File.exist?(host_path_file)
