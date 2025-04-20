@@ -11,8 +11,8 @@ pidfile root + 'tmp/pids/server.pid'
 unless ENV['DOCKERIZED']
   stdout_redirect root + 'log/puma.log', root + 'log/puma.err.log', true
 end
-threads 4, 64
-workers 8
+threads 5, 5
+workers 2
 preload_app!
 
 before_fork do
