@@ -68,12 +68,12 @@ class UpdateRemoteGemsListJob < ApplicationJob
 
   def flush_cache(gem_names)
     index_map = {}
-    changed_gems.keys.each do |gem_name|
+    gem_names.each do |gem_name|
       index_map[gem_name[0, 1]] = true
     end
     CacheClearJob.perform_later("/gems", "/featured", *index_map.keys.map { |k| "/gems/~#{k}" })
 
-    changed_gems.keys.each_slice(50) do |list|
+    gem_names.each_slice(50) do |list|
       CacheClearJob.perform_later(*list.map { |k| [ "/gems/#{k}/", "/list/gems/#{k}/", "/static/gems/#{k}" ] }.flatten)
     end
   end
