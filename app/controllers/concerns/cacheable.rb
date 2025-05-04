@@ -8,6 +8,6 @@ module Cacheable
   private
 
   def set_cache_headers
-    expires_in 1.hour, public: true
+    expires_in 1.day, public: true
   end
 end

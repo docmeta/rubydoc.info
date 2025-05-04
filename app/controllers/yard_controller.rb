@@ -62,6 +62,8 @@ class YARDController < ApplicationController
     if status == 404
       render "errors/library_not_found", status: 404, layout: "application"
       return
+    elsif status == 200
+      expires_in 1.day, public: true
     end
 
     Rails.cache.delete(cache_key) if library_version&.ready? && (status != 200 || body.first.blank?)
