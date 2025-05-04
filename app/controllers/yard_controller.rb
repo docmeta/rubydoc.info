@@ -66,7 +66,7 @@ class YARDController < ApplicationController
 
     Rails.cache.delete(cache_key) if library_version&.ready? && (status != 200 || body.first.blank?)
 
-    if status == 200 && !request.path.starts_with?("/search")
+    if status == 200 && !request.path.starts_with?("/search") && !request.path.starts_with?("/static")
       @contents = body.first
       render :show
     else
