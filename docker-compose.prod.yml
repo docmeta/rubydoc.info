@@ -14,7 +14,7 @@ services:
     ports:
       - "0.0.0.0:80:80"
     deploy:
-      replicas: 1
+      replicas: 2
       update_config:
         order: start-first
     depends_on:
