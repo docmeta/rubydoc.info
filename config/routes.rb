@@ -40,17 +40,13 @@ Rails.application.routes.draw do
     end
   end
 
-  %W[#{} search/ list/].each do |prefix|
+  %W[#{} search/ list/ static/].each do |prefix|
     get "#{prefix}docs/:name(/*rest)", to: "yard#featured", as: prefix.blank? ? "yard_featured" : nil
     get "#{prefix}stdlib/:name(/*rest)", to: "yard#stdlib", as: prefix.blank? ? "yard_stdlib" : nil
     get "#{prefix}gems/:name(/*rest)", to: "yard#gems", as: prefix.blank? ? "yard_gems" : nil
     get "#{prefix}github/:username/:project(/*rest)", to: "yard#github", as: prefix.blank? ? "yard_github" : nil
   end
 
-  get "/static/docs/:name/*rest(.:format)", to: redirect("/assets/%{rest}.%{format}", status: 302)
-  get "/static/stdlib/:name/*rest(.:format)", to: redirect("/assets/%{rest}.%{format}", status: 302)
-  get "/static/gems/:name/*rest(.:format)", to: redirect("/assets/%{rest}.%{format}", status: 302)
-  get "/static/github/:username/:project/*rest(.:format)", to: redirect("/assets/%{rest}.%{format}", status: 302)
   get "/js/*rest(.:format)", to: redirect("/assets/js/%{rest}.%{format}", status: 302)
   get "/css/*rest(.:format)", to: redirect("/assets/css/%{rest}.%{format}", status: 302)
   get "/images/*rest(.:format)", to: redirect("/assets/images/%{rest}.%{format}", status: 302)
