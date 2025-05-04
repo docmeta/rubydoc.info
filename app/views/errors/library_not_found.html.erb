@@ -1,0 +1,20 @@
+<div id="content" class="scm fof">
+  <h1>Oops,</h1>
+  <% if @library_version %>
+    <h2 class="nomargin">We Couldn't Find That Page</h2>
+    <p>
+      Sorry, but we couldn't find the page <strong><%= h request.path %></strong> in the
+      <strong><%= h library_name %></strong> <%= library_type %>.
+      Are you sure that class, method, or file exists?
+    </p>
+  <% else %>
+    <h2 class="nomargin">We Couldn't Find That <%= library_type_alt %></h2>
+    <p>We haven't generated any docs for <strong><%= h library_name %></strong>.
+      You can add the project yourself by entering the GitHub project information below.
+      You can also see a list of available projects <%= link_to "here", "/#{action_name}" %>.</p>
+    <script type="text/javascript" charset="utf-8">
+      $(function() { $('#url').val('https://github.com/<%= h library_name %>'); });
+    </script>
+    <%# erb :checkout, :layout => false %>
+  <% end %>
+</div>

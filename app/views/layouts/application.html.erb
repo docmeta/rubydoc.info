@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= content_for(:title) || Rubydoc.config.name %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <link rel="icon" href="/favicon.ico" type="image/png">
+    <link rel="apple-touch-icon" href="/favicon.ico">
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <link rel="stylesheet" href="/assets/css/style.css" type="text/css" media="screen" charset="utf-8" />
+    <link rel="stylesheet" href="/assets/css/custom.css" type="text/css" media="screen" charset="utf-8" />
+    <%= javascript_importmap_tags %>
+  </head>
+  <body class="root">
+    <% if controller_name == "github" && request.referrer.blank? %>
+      <span data-controller="path-rewriter"></span>
+    <% end %>
+    <% if %w[ featured stdlib gems github ].include?(controller_name) %>
+      <span data-controller="path-saver" data-path="<%= controller_name %>"></span>
+    <% end %>
+    <%= render 'shared/header' %>
+    <%= turbo_frame_tag "modal" %>
+    <div id="content">
+      <%= render 'shared/nav' %>
+      <%= yield %>
+    </div>
+    <%= render 'shared/footer' %>
+  </body>
+</html>

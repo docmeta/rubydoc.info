@@ -1,0 +1,18 @@
+<% if !@search %>
+  <ul class="alpha_index">
+    <% (?a..?z).each do |letter| %>
+      <% if letter == @letter %>
+        <li class="selected"><%= letter.upcase %></li>
+      <% else %>
+        <li><%= link_to letter.upcase, letter: letter.downcase %></li>
+      <% end %>
+    <% end %>
+    <% if controller_name == 'github' %>
+      <% if @letter.blank? %>
+        <li class="selected">Latest</li>
+      <% else %>
+        <li><%= link_to "Latest", github_index_path %></li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>

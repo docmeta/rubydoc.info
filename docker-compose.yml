@@ -1,66 +1,26 @@
-version: "3.7"
 services:
-  app:
-    image: 127.0.0.1:5000/rubydoc-app
-    build:
-      context: .
-      dockerfile: ./docker/app/Dockerfile
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-      - ./config:/app/config
-      - ./repos:/app/repos
-      - ./data:/app/data
-      - ./log:/app/log
-    deploy:
-      resources:
-        limits:
-          cpus: "6"
-          memory: 6G
-      replicas: 2
-      update_config:
-        order: start-first
-    depends_on:
-      - docparse
-      - db
   db:
-    image: postgres:13-alpine
+    image: postgres:alpine
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "db"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     environment:
       POSTGRES_USER: db
       POSTGRES_PASSWORD: db
     volumes:
-      - db:/var/lib/postgresql/data
-    deploy:
-      replicas: 1
-      update_config:
-        order: start-first
-      restart_policy:
-        condition: any
-  docparse:
-    image: 127.0.0.1:5000/rubydoc-docparse
-    build:
-      context: ./docker/docparse
-    entrypoint: sh -c "echo Docparse image is built. It is okay for this service to exit."
-    deploy:
-      replicas: 0
-      restart_policy:
-        condition: none
-  nginx:
-    image: nginx:alpine
-    volumes:
-      - ./config/nginx:/etc/nginx/templates:ro
-      - ./config/certs:/etc/nginx/certs:ro
-      - ./public:/public:ro
-    deploy:
-      replicas: 1
-      update_config:
-        order: start-first
+      - db1:/var/lib/postgresql/data
     ports:
-      - "0.0.0.0:80:80"
-      - "0.0.0.0:443:443"
-    depends_on:
-      - app
+      - "5432:5432"
+    deploy:
+      replicas: 1
+      update_config:
+        order: start-first
+      restart_policy:
+        condition: on-failure
 volumes:
-  db:
+  db1:
 networks:
   default:
     driver: overlay

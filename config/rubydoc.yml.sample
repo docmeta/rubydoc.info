@@ -1,0 +1,90 @@
+# Copy this file to config/rubydoc.yml and edit it to your liking.
+default: &default
+  # Display title. Defaults to RubyDoc.info
+  # name: RubyDoc.info
+
+  gem_hosting:
+    # If you want to enable or disable gem hosting, set the following to true or false
+    # enabled: true
+
+    # If you want to change the gem hosting URL, set the following to the URL of your gem hosting service
+    # source: https://rubygems.org/
+
+  github_hosting:
+    # If you want to enable or disable GitHub hosting, set the following to true or false
+    # enabled: true
+
+  # To add a "Featured" section to the site with a set of statically generated
+  # YARD documentation directories, add your own projects below followed by the
+  # path to the library root relative to repos/featured. You can also use an
+  # absolute path.
+  #
+  # featured:
+  #   yard: yard
+  #   ruby: /path/to/ruby_core
+  #
+  # You can also add libraries by version:
+  #
+  # featured:
+  #   yard: gem
+  #   other:
+  #     0.6.0: /path/to/other/0.6.0
+
+  # Projects / gems that are whitelisted for template and non-plugin code execution:
+  # whitelisted_projects:
+  #   - lsegal/yard
+  #
+  # whitelisted_gems:
+  #   - yard
+
+  # Projects / gems that are blacklisted from the site
+  # disallowed_projects:
+  #   - user/projectname
+  #
+  # disallowed_gems:
+  #   - gemname
+
+  # To display a sponsor link / image, uncomment the following line and add an
+  # image to public/assets/images/sponsor_#{sponsor}.png
+  # sponsors:
+  #   linode: https://www.linode.com/
+
+  integrations:
+    # If you use DISQUS for comments, set your username in config/credentials.yml.enc
+    # under rubydoc.disqus_username
+    # disqus: YOUR_DISQUS_USERNAME
+
+    # If you want to use Google Analytics, uncomment the following line and add
+    # your Site ID:
+    # google_analytics: YOUR_GOOGLE_ANALYTICS_SITE_ID
+
+    # If you want to use Clicky, set your Site ID in config/credentials.yml.enc
+    # under rubydoc.clicky_site_id
+    # clicky: YOUR_CLICKY_SITE_ID
+
+    # If you want to add a Tender help desk support link, set your Site ID in
+    # config/credentials.yml.enc under rubydoc.tender_site_id
+    # tender: YOUR_TENDER_SITE_ID
+
+    # If you want to enable Rubygems.org gem push notifications, set your key in
+    # config/credentials.yml.enc under rubydoc.rubygems_api_key
+    # rubygems: <%= Rails.application.credentials.rubydoc&.rubygems_api_key %>
+
+    # If you want to use Skylight performance monitoring, set your authentication
+    # token in config/credentials.yml.enc under rubydoc.skylight_token
+    # skylight: <%= Rails.application.credentials.rubydoc&.skylight_token %>
+
+    # To invalidate cache on CloudFlare, set the following keys in
+    # config/credentials.yml.enc under rubydoc.cloudflare_token and
+    # rubydoc.cloudflare_zones
+    # cloudflare_token: <%= Rails.application.credentials.rubydoc&.cloudflare_token %>
+    # cloudflare_zones: <%= Rails.application.credentials.rubydoc&.cloudflare_zones %>
+
+development:
+  <<: *default
+
+test:
+  <<: *default
+
+production:
+  <<: *default

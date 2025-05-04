@@ -1,0 +1,26 @@
+<% if @pagy.pages > 1 %>
+  <ul class="page_index">
+    <li class="prefix">Page:</li>
+    <% if @search %>
+      <% page_prefix = "/#{controller_name}?q=#{@search}&page=" %>
+    <% else %>
+      <% page_prefix = "/#{controller_name}/~#{@letter}/" %>
+    <% end %>
+    <% ((@page - 10)...(@page + 10)).each do |page| %>
+      <% if page == @page - 10 && page > 1 %>
+        <li><a href="<%= page_prefix %>1">1</a></li>
+        ...
+      <% end %>
+      <% next if page < 1 || page >= @pagy.pages %>
+      <% if page == @page %>
+        <li class="selected"><%= page %></li>
+      <% else %>
+        <li><a href="<%= page_prefix %><%= page %>"><%= page %></a></li>
+      <% end %>
+      <% if page == @page + 9 && page < @pagy.pages %>
+        ...
+        <li><a href="<%= page_prefix %><%= @pagy.pages - 1 %>"><%= @pagy.pages - 1 %></a></li>
+      <% end %>
+    <% end %>
+  </ul>
+<% end %>

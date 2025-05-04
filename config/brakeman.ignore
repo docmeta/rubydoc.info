@@ -1,0 +1,176 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "07f3833ebab8e8e42545553d21ac03bb5bca3d1819ef2d75b56cc5e772ddf790",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "app/models/stdlib_installer.rb",
+      "line": 17,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "system(\"git clone https://github.com/ruby/ruby #{ruby_root}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "StdlibInstaller",
+        "method": "setup_ruby_clone"
+      },
+      "user_input": "ruby_root",
+      "confidence": "Medium",
+      "cwe_id": [
+        77
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "0c1e2cbcf1f78dc317c3c60df5f39b06aceedbdbf2e21f9ce0522a0afbfe859e",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "app/jobs/github_checkout_job.rb",
+      "line": 68,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "`git -C #{temp_clone_path.to_s.inspect} rev-parse --abbrev-ref HEAD`",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "GithubCheckoutJob",
+        "method": "run_checkout_clone"
+      },
+      "user_input": "temp_clone_path.to_s.inspect",
+      "confidence": "Medium",
+      "cwe_id": [
+        77
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Cross-Site Scripting",
+      "warning_code": 2,
+      "fingerprint": "282b6e07d4110cb8012c325bfe31a94f2a077384fe902acb80637c60bbb27e60",
+      "check_name": "CrossSiteScripting",
+      "message": "Unescaped model attribute",
+      "file": "app/views/shared/_library.html.erb",
+      "line": 5,
+      "link": "https://brakemanscanner.org/docs/warning_types/cross_site_scripting",
+      "code": "sorted_versions((Unresolved Model).new).reverse[(1..3)].map do\n link_to_library((Unresolved Model).new, v)\n end.join(\", \")",
+      "render_path": [
+        {
+          "type": "template",
+          "name": "shared/library_list",
+          "line": 18,
+          "file": "app/views/shared/library_list.html.erb",
+          "rendered": {
+            "name": "shared/_library",
+            "file": "app/views/shared/_library.html.erb"
+          }
+        }
+      ],
+      "location": {
+        "type": "template",
+        "template": "shared/_library"
+      },
+      "user_input": "(Unresolved Model).new",
+      "confidence": "Weak",
+      "cwe_id": [
+        79
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "78838a80bc450a63a0b58aaaaed46ab6d4800be7de3850d32daf785df8e443b5",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "app/models/stdlib_installer.rb",
+      "line": 19,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "system(\"git -C #{ruby_root} checkout v#{version.gsub(\".\", \"_\")}\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "StdlibInstaller",
+        "method": "setup_ruby_clone"
+      },
+      "user_input": "ruby_root",
+      "confidence": "Medium",
+      "cwe_id": [
+        77
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "9bddd05a5a2f1100b4379a226936d4ac1166d873e97f0455e38be59ef25680c9",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "app/helpers/shell_helper.rb",
+      "line": 11,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "`#{command}`",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "ShellHelper",
+        "method": "sh"
+      },
+      "user_input": "command",
+      "confidence": "Medium",
+      "cwe_id": [
+        77
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Remote Code Execution",
+      "warning_code": 25,
+      "fingerprint": "a0eb20eded373b401a174a2e9dc49205a9fee899c5627278d0f35617b38a5624",
+      "check_name": "Deserialize",
+      "message": "Use of `Marshal.load` may be dangerous",
+      "file": "app/serializers/library_version_serializer.rb",
+      "line": 7,
+      "link": "https://brakemanscanner.org/docs/warning_types/unsafe_deserialization",
+      "code": "Marshal.load(data[\"marshal\"])",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "LibraryVersionSerializer",
+        "method": "deserialize"
+      },
+      "user_input": null,
+      "confidence": "Weak",
+      "cwe_id": [
+        502
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "dcd90520997cd3cc07f210cac72335d742766a59fa86ddf5aa2ed26338174bbe",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "app/models/stdlib_installer.rb",
+      "line": 18,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "system(\"git -C #{ruby_root} fetch --all\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "StdlibInstaller",
+        "method": "setup_ruby_clone"
+      },
+      "user_input": "ruby_root",
+      "confidence": "Medium",
+      "cwe_id": [
+        77
+      ],
+      "note": ""
+    }
+  ],
+  "brakeman_version": "7.0.2"
+}

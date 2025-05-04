@@ -1,0 +1,29 @@
+<div class="about">
+  <h2>About <%= h settings.name %></h2>
+  <p>
+    <strong><%= h settings.name %></strong> is your source for open source Ruby library documentation,
+    generating fresh docs for Gems and popular Git repositories.
+  </p>
+  <p>
+    This site uses <a href="http://yardoc.org">YARD</a> to generate docs on the fly.
+    To make your docs look better, you can check out some of YARD's
+    <a href="/gems/yard/file/docs/WhatsNew.md">killer features</a>.
+  </p>
+  <% if settings.integrations.disqus %>
+    <p>
+      <strong>We have DISQUS integration!</strong> Click the <em>permalink</em>
+      (<a href="/gems/yard/YARD/Templates/Engine.render">like this one</a>)
+      on a method to see user comments on a method page.
+    </p>
+  <% end %>
+  <p>
+    Looking for a <a href="http://github.com">GitHub</a>
+    <a href="http://help.github.com/post-receive-hooks/">post-receive hook</a>?
+    Use <tt><%= h settings.url %>/checkout</tt>.
+  </p>
+  <p>
+    <small>
+      <%= h settings.name %> was made possible by <strong>Loren Segal</strong> and <strong>Nick Plante</strong>, with help from a <a href="http://groups.google.com/group/yardoc">community</a> of <a href="http://github.com/lsegal/rubydoc.info">friendly contributors</a>.
+    </small>
+  </p>
+</div>

@@ -1,0 +1,531 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+body.root {
+  overflow: auto;
+  margin: 12px;
+  display: block;
+  width: auto;
+  height: auto;
+}
+
+h2 {
+  font-size: 1.6em;
+}
+h2 .small {
+  font-size: 0.7em;
+  font-weight: normal;
+}
+a {
+  outline: none;
+}
+
+#projects {
+  font-size: 1.4em;
+  list-style: circle;
+}
+
+#projects {
+  list-style-position: inside;
+  padding-left: 0;
+  list-style: none;
+  margin-left: 0;
+}
+#projects li {
+  padding: 7px 15px;
+  font-size: 1.1em;
+}
+
+.libraries {
+  list-style: none;
+  padding: 0;
+}
+.libraries li {
+  font-size: 1.2em;
+  line-height: 1.4em;
+  padding: 3px 5px;
+}
+.libraries ul {
+  padding: 0;
+  margin-bottom: 5px;
+}
+.libraries ul li {
+  list-style: none;
+  line-height: 0.9em;
+  font-size: 1.05em;
+  padding: 3px 5px;
+  font-weight: normal;
+  padding-left: 25px;
+}
+.libraries ul {
+  background: #eee;
+}
+.libraries li {
+  line-height: 2em;
+  border-bottom: 1px solid #ddd;
+}
+.libraries ul li {
+  padding-bottom: 6px;
+  background: #f0f0f0;
+}
+.libraries ul {
+  padding-bottom: 10px;
+  background: transparent;
+}
+.libraries li:hover {
+  background: #eef;
+}
+.libraries li.alternate,
+.libraries li.alternate:hover {
+  background: transparent;
+}
+.libraries li.alternate_fork img {
+  position: relative;
+  top: -3px;
+}
+.libraries li a:hover {
+  background: transparent;
+  color: #3ae;
+}
+.libraries li.core > a:first-child {
+  font-weight: bold;
+}
+
+#logo h1 {
+  margin: 0;
+  border: 0;
+  color: #58b;
+}
+#logo small {
+  color: #369;
+  font-size: 0.6em;
+  font-weight: normal;
+  opacity: 0.6;
+}
+#logo a {
+  text-decoration: none;
+  color: #58b;
+}
+#logo a:hover {
+  color: #8cf;
+  border-bottom: 8px solid #8cf;
+}
+
+#top_nav {
+  padding: 0;
+  list-style: none;
+  position: absolute;
+  right: 140px;
+  top: 3px;
+  z-index: 9999;
+}
+#top_nav li {
+  float: left;
+  margin-right: 10px;
+}
+#top_nav a {
+  display: block;
+  padding: 5px 8px;
+  background: #58a;
+  text-decoration: none;
+  color: #eee;
+  opacity: 0.7;
+  border-radius: 5px;
+  transition: all 0.1s ease-in;
+}
+#top_nav a:hover {
+  opacity: 1;
+  color: #fff;
+}
+
+.about {
+  font-size: 1.1em;
+  line-height: 1.4em;
+
+  a {
+    color: #05a;
+  }
+  a:hover {
+    color: #5af;
+  }
+}
+
+#notice {
+  border-left: 8px solid #58b;
+  padding: 12px;
+  background: #333;
+  color: #eee;
+  width: 545px;
+  font-size: 1em;
+  line-height: 1.4em;
+
+  strong {
+    color: #fff;
+  }
+  a {
+    color: #8cf;
+    text-decoration: none;
+  }
+  #notice a:hover {
+    text-decoration: underline;
+  }
+}
+
+#learn_yard {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 9500;
+  opacity: 0.9;
+}
+#learn_yard:hover {
+  opacity: 1;
+}
+#learn_yard img {
+  border: 0;
+}
+.framelink {
+  z-index: 9999;
+  position: relative;
+}
+
+#checkout form {
+  display: inline;
+}
+#checkout h2 {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-weight: normal;
+  font-size: 1.1em;
+}
+#checkout .example {
+  color: #999;
+  position: relative;
+  top: -6px;
+}
+#checkout input {
+  font-size: 1em;
+}
+#checkout.error #url {
+  background: #fdd;
+}
+#checkout #commit {
+  width: 131px;
+}
+#checkout.error:after {
+  content: "Invalid git repository or URL";
+  color: #e00;
+  display: block;
+}
+#checkout .url {
+  width: 225px;
+  margin-bottom: 3px;
+}
+.alpha_index {
+  display: block;
+  padding-left: 0;
+  font-size: 1.2em;
+  margin-bottom: 30px;
+}
+.alpha_index li {
+  display: inline;
+  padding: 0 1px;
+}
+
+.alpha_index li.selected {
+  padding: 3px 4px;
+  margin-right: 0;
+  background: #dedede;
+}
+.alpha_index li a {
+  padding: 3px 4px;
+  margin-right: 0;
+  background: #eee;
+}
+
+.page_index {
+  display: block;
+  padding-left: 0;
+  font-size: 1em;
+}
+.page_index li.prefix {
+  padding: 0 1px;
+  background: transparent;
+}
+.page_index li {
+  display: inline;
+  padding: 0 1px;
+}
+.page_index li.selected {
+  padding: 3px 4px;
+  margin-right: 0;
+  background: #e5e5e5;
+}
+.page_index li a {
+  padding: 3px 4px;
+  margin-right: 0;
+  background: #f8f8f8;
+}
+
+#navigation {
+  display: block;
+  padding-left: 0;
+  font-size: 1.2em;
+}
+#navigation li {
+  display: inline;
+  margin-right: 4px;
+}
+#navigation li.selected {
+  padding: 6px;
+  background: #dedede;
+}
+#navigation li a {
+  padding: 6px;
+  background: #eee;
+  text-decoration: none;
+}
+#navigation li form {
+  display: inline;
+}
+#navigation li input {
+  height: 25px;
+  border: 1px solid #dedede;
+  font-size: 14px;
+  color: #111;
+  padding: 2px 5px;
+  width: 200px;
+}
+
+#content h1 {
+  margin: 0;
+}
+#content h2 {
+  margin-top: 0.8em;
+}
+
+#advanced_options {
+  margin: 0;
+  display: block;
+  border: none;
+  color: #111;
+}
+.extra_options {
+  display: none;
+}
+
+.sponsor {
+  margin-top: 12px;
+}
+.sponsor p {
+  padding: 0;
+  margin: 0;
+  margin-bottom: 9px;
+}
+.sponsor a {
+  margin-right: 9px;
+}
+.sponsor a:last {
+  margin-right: 0;
+}
+.sponsor img {
+  padding: 10px;
+  border: 1px solid #eee;
+  border-radius: 12px;
+}
+.root #footer {
+  border-top: 0;
+  margin-top: 20px;
+}
+#footer .sponsor a {
+  border: 0;
+}
+
+#content.fof h1 {
+  margin-bottom: 0;
+  font-size: 3em;
+}
+#content.fof h2.nomargin {
+  margin-top: 0;
+  border: 0;
+  font-size: 1.2em;
+  color: #888;
+  margin-bottom: 20px;
+}
+#content.fof.scm #checkout {
+  display: block;
+  position: relative;
+  top: 0;
+  right: 0;
+  margin: 40px 0;
+}
+
+.libraries {
+  .icon {
+    width: 16px;
+    height: 16px;
+    position: relative;
+    float: right;
+    top: 6px;
+    border: 1px solid #ccc;
+    background: #eee;
+    padding: 2px;
+    border-radius: 3px;
+    margin-left: 3px;
+
+    .reload {
+      border: 0;
+      padding: 0;
+      position: relative;
+      top: -6px;
+      height: 16px;
+      width: 16px;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    &:hover {
+      background: #fff;
+    }
+  }
+}
+
+#modal-show {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 9999;
+
+  a.close {
+    display: block;
+    width: 100%;
+    text-align: right;
+    font-weight: bold;
+    text-decoration: none;
+    color: black;
+  }
+
+  .content {
+    position: fixed;
+    top: 4rem;
+    left: 50%;
+    translate: -50% 0;
+    background: #fefefe;
+    padding: 20px;
+    box-shadow: 0px 2px 15px #aaa;
+    z-index: 10000;
+    width: 80%;
+    max-width: 600px;
+    border-radius: 6px;
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .tender {
+      border: 0;
+      width: 100%;
+      height: 80vh;
+    }
+  }
+
+  &.no-margin {
+    a.close {
+      position: fixed;
+      top: -1.4rem;
+      right: -1.4rem;
+      width: auto;
+      z-index: 9999;
+      display: block;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.7);
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      text-align: center;
+
+      span {
+        position: relative;
+        top: 2px;
+      }
+    }
+
+    .content {
+      padding: 0;
+    }
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin-top: 1rem;
+
+  .group {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+
+    .field_with_errors {
+      color: #e00;
+      display: flex;
+      flex-direction: row;
+
+      input {
+        border: 1px solid #e00;
+        background-color: #fdd;
+        flex-grow: 1;
+      }
+
+      & + .field_with_errors {
+        flex-grow: 1;
+      }
+    }
+
+    label {
+      width: 8rem;
+    }
+
+    input {
+      flex-grow: 1;
+    }
+  }
+
+  .errors {
+    margin-top: 1rem;
+  }
+
+  .btn {
+    margin-top: 1rem;
+    width: 100%;
+    padding: 0.5rem;
+    background-color: #58a;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    &:hover {
+      background-color: #58b;
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: default;
+    }
+  }
+}

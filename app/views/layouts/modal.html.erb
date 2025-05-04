@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <%= turbo_frame_tag "modal" do %>
+      <div id="modal-show" class="<%= "no-margin" if @no_margin %>" data-controller="modal" data-action="click->modal#close:self">
+        <di class="content">
+          <%= link_to "#", class: "close", data: { turbo_action: "rewind" } do %>
+            <span>✕</span>
+          <% end %>
+          <div class="body">
+            <%= yield %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </body>
+</html>

@@ -18,7 +18,7 @@ require 'yard'
 class YARD::CLI::Yardoc
   def yardopts(file = options_file)
     list = IO.read(file).shell_split
-    list.map {|a| %w(-c --use-cache --db -b --query).include?(a) ? '-o' : a }
+    list.map { |a| %w[-c --use-cache --db -b --query].include?(a) ? '-o' : a }
   rescue Errno::ENOENT
     []
   end

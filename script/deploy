@@ -1,0 +1,7 @@
+#!/bin/sh
+
+set -e
+
+docker swarm init 2>/dev/null || true
+docker compose -f docker-compose.yml -f docker-compose.prod.yml build
+docker stack deploy --resolve-image never --compose-file docker-compose.yml --compose-file docker-compose.prod.yml rubydoc

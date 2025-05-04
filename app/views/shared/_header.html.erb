@@ -1,0 +1,15 @@
+<%= link_to "https://yardoc.org", title: "Learn More About YARD", id: "learn_yard" do %>
+  <%= image_tag "learn.png", alt: "Learn More About YARD" %>
+<% end %>
+<div id="logo">
+  <h1><a href="/"><%= h settings.name %></a> <small>YARD Documentation Server</small></h1>
+</div>
+<ul id="top_nav">
+  <% if controller_name == "github" %>
+    <li><%= link_to "Add Project", add_github_project_path, data: { turbo_frame: "modal" }  %></li>
+  <% end %>
+  <li><%= link_to "About", about_path, data: { turbo_frame: "modal" } %></li>
+  <% if settings.integrations.tender.present? %>
+    <li><%= link_to "Help", help_path, data: { turbo_frame: "modal" } %></li>
+  <% end %>
+</ul>

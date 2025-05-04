@@ -1,0 +1,26 @@
+<div data-controller="form">
+  <h2>Add your own project</h2>
+  <small class="example">(eg. https://github.com/lsegal/yard.git)</small>
+  <%= form_with model: @project, url: create_github_project_path do |form| %>
+    <div class="form-group">
+      <div class="group">
+        <%= form.label :url, "GitHub URL" %>
+        <%= form.text_field :url, class: 'form-control', placeholder: 'https://github.com/lsegal/yard' %>
+      </div>
+      <div class="group">
+        <%= form.label :commit, "Commit (optional)" %>
+        <%= form.text_field :commit, class: 'form-control', placeholder: 'main' %>
+      </div>
+      <%= form.submit "Add Project", class: 'btn', data: { turbo_submits_with: "Adding project..." }  %>
+      <% if @project.errors.any? %>
+        <div class="errors">
+          <%=
+          @project.errors.full_messages
+            .map.with_index { |msg, idx| idx == 1 && msg.starts_with?("Commit") ? msg.downcase_first : msg }
+            .join(" and ")
+        %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+</div>

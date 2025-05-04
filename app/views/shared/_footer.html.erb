@@ -1,0 +1,12 @@
+<div id="footer">
+  <p><a href="http://github.com/docmeta/rubydoc.info"><%= h settings.name %></a> is powered by <a href="http://yardoc.org/">yard</a> <%= YARD::VERSION %> (ruby-<%= RUBY_VERSION %>)</p>
+  <p>&copy; <%= Date.current.year %> DOCMETA, LLC</p>
+  <% if settings.sponsors.present? %>
+    <div class="sponsor">
+      <p>Sponsored by</p>
+      <% settings.sponsors.each do |sponsor, url| %>
+        <%= link_to(url) do %><img src="/images/sponsor_<%= sponsor %>.png" alt="Sponsored by <%= h sponsor.capitalize %>"/><% end %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

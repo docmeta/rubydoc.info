@@ -1,0 +1,26 @@
+services:
+  app:
+    image: 127.0.0.1:5000/docmeta/rubydoc-app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/healthcheck"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
+    environment:
+      WEB_CONCURRENCY: 6
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./config/master.key:/app/config/master.key
+      - ./config/credentials.yml.enc:/app/config/credentials.yml.enc
+      - ./storage:/app/storage
+    ports:
+      - "0.0.0.0:80:80"
+    deploy:
+      replicas: 1
+      update_config:
+        order: start-first
+    depends_on:
+      - db

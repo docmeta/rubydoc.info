@@ -1,0 +1,22 @@
+<li class="r<%= library_counter % 2 + 1 %>">
+  <% versions = sorted_versions(library) %>
+  <% first_version = versions.last %>
+  <%= link_to_library(library) %>
+  <small>(<%= h first_version %><% if versions.size > 1 %>, <%== versions.reverse[1..3].map {|v| link_to_library(library, v) }.join(", ") %><% end %>)
+  </small>
+  <% if library.source == :github %>
+    <%= link_to "https://github.com/#{h library.name}", title: "View this project on GitHub" do %>
+      <%= image_tag "github.png", class: "icon git" %>
+    <% end %>
+    <%= form_tag add_github_project_path, class: "icon" do %>
+      <%= hidden_field_tag "github_project[url]", "https://github.com/#{h library.name}" %>
+      <%= button_tag type: "submit", class: "reload", title: "Reload this project" do %>
+        <%= image_tag "reload.png" %>
+      <% end %>
+    <% end %>
+  <% elsif library.source == :remote_gem || library.source == :featured %>
+    <%= link_to "https://rubygems.org/gems/#{h library.name}", title: "View this Gem on RubyGems" do %>
+      <%= image_tag "gem.png", class: "icon" %>
+    <% end %>
+  <% end %>
+</li>

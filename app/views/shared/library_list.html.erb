@@ -1,0 +1,28 @@
+<% if controller_name == "github" && has_featured? %>
+  <h2>Featured Libraries Listing</h2>
+  <ul class="libraries">
+    <%= render partial: "shared/library", collection: featured_libraries %>
+  </ul>
+<% end %>
+<h2>
+  <%= @title %> <%= h @search ? "Search Results for '#{@search}'" : 'Listing' %>
+  <% if @search %>
+    <span class="small">(<%= link_to "Back to Listing", controller: controller_name %>)</span>
+  <% end %>
+</h2>
+<%= render "shared/alpha_index" if @has_alpha_index %>
+<%= render "shared/pagination" if @pagy %>
+<% if @exact_match %>
+  <h3>Exact match</h3>
+  <ul class="libraries">
+    <%= render partial: "shared/library", collection: [@exact_match] %>
+  </ul>
+  <h3>All matches</h3>
+<% end %>
+<ul class="libraries">
+  <% if @collection.count == 0 %>
+    <li>No matches found.</li>
+  <% end %>
+  <%= render partial: "shared/library", collection: @collection %>
+</ul>
+<%= render "shared/pagination" if @pagy %>
