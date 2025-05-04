@@ -44,6 +44,7 @@ class GenerateDocsJob < ApplicationJob
     controller_names_for_path.each do |controller_name|
       paths << "/#{controller_name}/#{library_version.name}/"
       paths << "/list/#{controller_name}/#{library_version.name}/"
+      paths << "/static/#{controller_name}/#{library_version.name}/"
     end
 
     CacheClearJob.perform_later(*paths)
