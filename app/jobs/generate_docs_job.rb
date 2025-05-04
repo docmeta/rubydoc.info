@@ -1,6 +1,7 @@
 class GenerateDocsJob < ApplicationJob
   limits_concurrency to: 1, key: ->(lv) { lv.to_s }, duration: 5.minutes
   include ShellHelper
+  extend ShellHelper
   queue_as :docparse
 
   IMAGE = "docmeta/rubydoc-docparse"
@@ -8,6 +9,8 @@ class GenerateDocsJob < ApplicationJob
   attr_accessor :library_version
 
   def perform(library_version)
+    ensure_image_prepared!
+
     self.library_version = library_version
     return if disallowed?
     return if library_version.ready?
@@ -18,7 +21,44 @@ class GenerateDocsJob < ApplicationJob
     clean_source
   end
 
+  def self.prepare_image
+    return if @image_prepared
+    sh "docker build -q -t #{IMAGE} -f #{context.join("Dockerfile")} #{context}",
+      title: "Building image: #{IMAGE}"
+    @image_prepared = true
+  end
+
+  def self.prepared?
+    @image_prepared
+  end
+
+  def self.clear_image
+    sh "docker rmi #{IMAGE}", title: "Clearing image: #{IMAGE}"
+    @image_prepared = false
+  end
+
+  def self.context
+    Rails.root.join("docker", "docparse")
+  end
+
   private
+
+  def ensure_image_prepared!
+    @tries = 0
+    until self.class.prepared? || @tries > 5
+      sleep 1
+      @tries += 1
+    end
+
+    unless self.class.prepared?
+      logger.error "Image #{IMAGE} not prepared, aborting"
+      return
+    end
+  end
+
+  def context
+    self.class.context
+  end
 
   def prepare_library
     case library_version.source.to_sym
@@ -31,9 +71,6 @@ class GenerateDocsJob < ApplicationJob
   end
 
   def run_generate
-    context = Rails.root.join("docker", "docparse")
-    sh "docker build -q -t #{IMAGE} -f #{context.join("Dockerfile")} #{context}",
-      title: "Building image: #{IMAGE}"
     sh "docker run --rm -u #{Process.uid}:#{Process.gid} -v #{library_version.source_path.inspect}:/build #{IMAGE}",
       title: "Generating #{library_version} (#{library_version.source})"
   end
