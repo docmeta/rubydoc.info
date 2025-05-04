@@ -9,8 +9,8 @@ default: &default
       polling_interval: 1
     - queues: [ docparse ]
       processes: 1
-      threads: 1
-      polling_interval: 0.1
+      threads: 2
+      polling_interval: 1
     - queues: [ default ]
       processes: 1
       threads: 1
