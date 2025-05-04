@@ -3,17 +3,13 @@ default: &default
     - polling_interval: 1
       batch_size: 500
   workers:
-    # - queues: [update_gems]
-    #   processes: 1
-    #   threads: 1
-    #   polling_interval: 1
     - queues: [docparse]
       processes: 1
       threads: 3
       polling_interval: 1
-    - queues: [default]
+    - queues: [default, update_gems]
       processes: 1
-      threads: 2
+      threads: 3
       polling_interval: 0.1
 
 development:

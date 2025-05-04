@@ -10,9 +10,9 @@
 #     schedule: at 5am every day
 
 default: &default
-  # update_remote_gems:
-  #   class: UpdateRemoteGemsListJob
-  #   schedule: every 10 minutes
+  update_remote_gems:
+    class: UpdateRemoteGemsListJob
+    schedule: every 10 minutes
 
   register_libraries:
     class: RegisterLibrariesJob
