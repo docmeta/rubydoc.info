@@ -12,7 +12,7 @@ namespace :rubydoc do
   namespace :gems do
     desc "Update remote gems list"
     task update: :rubydoc_environment do
-      QueueUpdateRemoteGemsListJob.perform_now
+      UpdateRemoteGemsListJob.perform_now
     end
   end
 
