@@ -24,4 +24,4 @@ class YARD::CLI::Yardoc
   end
 end
 
-YARD::CLI::Yardoc.run('-n', '-q', '--no-single-db')
+YARD::CLI::Yardoc.run('-n', '-q')
