@@ -3,7 +3,7 @@ class RegisterLibrariesJob < ApplicationJob
 
   def perform(library_version = nil)
     find_github(library_version)
-    find_stdlib
+    find_stdlib if library_version.nil?
   end
 
   def find_github(library_version = nil)
