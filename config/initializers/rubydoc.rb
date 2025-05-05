@@ -7,7 +7,6 @@ module Rubydoc
       name: "RubyDoc.info",
       integrations: {
         rubygems: Rails.application.credentials.rubydoc&.rubygems_api_key,
-        skylight: Rails.application.credentials.rubydoc&.skylight_token,
         cloudflare_token: Rails.application.credentials.rubydoc&.cloudflare_token,
         cloudflare_zones: Rails.application.credentials.rubydoc&.cloudflare_zones
       },
