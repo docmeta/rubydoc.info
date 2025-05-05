@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: ./docker/app/Dockerfile
     environment:
-      WEB_CONCURRENCY: 1
+      WEB_CONCURRENCY: 5
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config/master.key:/app/config/master.key
@@ -14,7 +14,7 @@ services:
     ports:
       - "0.0.0.0:80:80"
     deploy:
-      replicas: 3
+      replicas: 1
       update_config:
         order: start-first
     depends_on:
