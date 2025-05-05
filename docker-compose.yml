@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres
+    image: postgres:alpine
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "db"]
       interval: 10s
