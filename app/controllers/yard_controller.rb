@@ -1,4 +1,5 @@
 class YARDController < ApplicationController
+  include Skylight::Helpers
   layout "yard"
   @@adapter_mutex = Mutex.new
 
@@ -57,7 +58,7 @@ class YARDController < ApplicationController
   def respond
     set_adapter
 
-    status, headers, body = call_adapter_with_cache
+    status, headers, body = call_adapter
 
     if status == 404
       render "errors/library_not_found", status: 404, layout: "application"
@@ -66,7 +67,7 @@ class YARDController < ApplicationController
       expires_in 1.day, public: true
     end
 
-    Rails.cache.delete(cache_key) if library_version&.ready? && (status != 200 || body.first.blank?)
+    # Rails.cache.delete(cache_key) if library_version&.ready? && (status != 200 || body.first.blank?)
 
     if status == 200 && !request.path.starts_with?("/search") && !request.path.starts_with?("/static")
       @contents = body.first
@@ -90,13 +91,15 @@ class YARDController < ApplicationController
   end
 
   def call_adapter
-    Skylight.instrument title: "YARD render template (cache miss)" do
-      logger.info "Cache miss: #{@library_version}"
-      @@adapter_mutex.synchronize { set_whitelisted; @adapter.call(request.env) }
-    end
+    logger.info "Cache miss: #{@library_version}"
+    @@adapter_mutex.synchronize { set_whitelisted; @adapter.call(request.env) }
   end
 
   def cache_key
     @cache_key ||=  [ request.path, request.query_string, library_version.cache_key ].join(":")
+  end
+
+  %i[cache_key call_adapter library_version respond render set_adapter set_whitelisted].each do |m|
+    instrument_method(m)
   end
 end
