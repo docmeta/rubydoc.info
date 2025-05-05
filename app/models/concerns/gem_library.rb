@@ -4,7 +4,7 @@ module GemLibrary
   def load_yardoc_from_remote_gem
     return if ready?
 
-    GenerateDocsJob.perform_later(self)
+    # GenerateDocsJob.perform_later(self)
     raise YARD::Server::LibraryNotPreparedError
   end
 
