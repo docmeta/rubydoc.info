@@ -59,7 +59,6 @@ Rails.application.config.to_prepare do
         include GithubLibrary
         include StdlibLibrary
         include FeaturedLibrary
-        include CacheableLibrary
 
         attr_accessor :platform
 

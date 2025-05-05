@@ -50,10 +50,7 @@ class GenerateDocsJob < ApplicationJob
       @tries += 1
     end
 
-    unless self.class.prepared?
-      logger.error "Image #{IMAGE} not prepared, aborting"
-      return
-    end
+    raise RuntimeError, "Image #{IMAGE} not prepared" unless self.class.prepared?
   end
 
   def context

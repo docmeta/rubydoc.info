@@ -5,17 +5,10 @@ class CacheClearJob < ApplicationJob
   queue_as :default
 
   def perform(*paths)
-    clear_from_solid(*paths)
     clear_from_cloudflare(*paths)
   end
 
   private
-
-  def clear_from_solid(*paths)
-    paths.each do |path|
-      SolidCache::Entry.where("key LIKE ?", "#{Rails.env}:#{path}#{path != "/" && path.ends_with?("/") ? "" : ":"}%").delete_all
-    end
-  end
 
   def clear_from_cloudflare(*paths)
     return unless cloudflare_token
