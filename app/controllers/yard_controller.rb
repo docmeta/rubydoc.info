@@ -68,7 +68,7 @@ class YARDController < ApplicationController
     end
 
     if status == 200 && !request.path.starts_with?("/search") && !request.path.starts_with?("/static")
-      @contents = body.first
+      @contents, @title = extract_title_and_body(body)
       render :show
     else
       render plain: body.first, status: status, headers: headers, content_type: headers["Content-Type"]
@@ -84,7 +84,15 @@ class YARDController < ApplicationController
     @adapter.call(request.env)
   end
 
-  %i[call_adapter library_version respond render set_adapter set_whitelisted].each do |m|
+  def extract_title_and_body(body)
+    if body.first =~ /<title>(.*?)<\/title>(.*)/mi
+      [ $2, $1 ]
+    else
+      [ body.first, nil ]
+    end
+  end
+
+  %i[call_adapter library_version respond render set_adapter set_whitelisted extract_title_and_body].each do |m|
     instrument_method(m)
   end
 end
