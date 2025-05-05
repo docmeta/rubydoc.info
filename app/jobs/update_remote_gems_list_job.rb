@@ -2,7 +2,24 @@ class UpdateRemoteGemsListJob < ApplicationJob
   limits_concurrency to: 1, key: "updated_gems", duration: 5.minutes
   queue_as :update_gems
 
+  def self.clear_lock_file
+    lock_file.delete rescue nil
+  end
+
+  def self.locked?
+    lock_file.exist?
+  end
+
+  def self.lock_file
+    @lock_file ||= Rails.root.join("storage", "update_gems.lock")
+  end
+
   def perform
+    return if self.class.locked?
+
+    FileUtils.touch(self.class.lock_file)
+    @can_clear_lock_file = true
+
     logger.info "Updating remote RubyGems..."
 
     inserts = []
@@ -39,9 +56,15 @@ class UpdateRemoteGemsListJob < ApplicationJob
       Library.delete_by(name: removed_gems)
       logger.info "Removed #{removed_gems.size} gems: #{removed_gems.join(', ')}"
     end
+  ensure
+    self.class.clear_lock_file if @can_clear_lock_file
   end
 
   private
+
+  def ensure_only_one_job_running!
+    !self.class.lock_file.exist?
+  end
 
   def fetch_remote_gems
     spec_fetcher.available_specs(:released).first.values.flatten(1).group_by(&:name)

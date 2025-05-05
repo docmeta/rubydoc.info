@@ -22,5 +22,5 @@ if Rails.application.credentials.rubydoc&.skylight_token
 
   Skylight.start!(config)
   Rails.application.middleware.insert(0, Skylight::Middleware, config: config)
-  Rails.logger.info "Skylight started with config"
+  Rails.logger.info "[Skylight] started with config"
 end
