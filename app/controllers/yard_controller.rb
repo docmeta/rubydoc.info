@@ -56,7 +56,6 @@ class YARDController < ApplicationController
 
   def respond
     set_adapter
-    set_whitelisted
 
     status, headers, body = call_adapter
 
@@ -81,7 +80,11 @@ class YARDController < ApplicationController
   end
 
   def call_adapter
-    @adapter.call(request.env)
+    @@adapter_mutex ||= Mutex.new
+    @@adapter_mutex.synchronize do
+      set_whitelisted
+      @adapter.call(request.env)
+    end
   end
 
   def extract_title_and_body(body)
