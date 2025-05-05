@@ -20,6 +20,8 @@ enhancements are welcome.
 
 ### Configuration
 
+#### 1. `config/rubydoc.yml`
+
 This server uses typical Rails configuration, but we rely on a specific `config/rubydoc.yml` file to configure the
 application level settings. You should first copy the `config/rubydoc.yml.sample` file to `config/rubydoc.yml` and
 then edit the file to configure your server (although the defaults should provide a working experience).
@@ -27,6 +29,21 @@ then edit the file to configure your server (although the defaults should provid
 ```sh
 cp config/rubydoc.yml.sample config/rubydoc.yml
 ```
+
+#### 2. Credentials
+
+This Ruby on Rails application stores credentials in the `config/credentials.yml.enc` file, however for extra security
+this file is not checked into the repository. You can create your own credentials file by running:
+
+```sh
+rails credentials:edit
+```
+
+> [!NOTE]
+> You may need to export `$VISUAL` or `$EDITOR` to your preferred editor before running this command.
+
+This is mosty only necessary when deploying or if using custom integrations. Since we do not use the session store,
+the standard Rails credentials are not used for the application.
 
 ### Development
 
