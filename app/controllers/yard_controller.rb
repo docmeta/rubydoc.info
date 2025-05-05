@@ -90,7 +90,7 @@ class YARDController < ApplicationController
   end
 
   def call_adapter
-    Skylight.instrument title: "YARD: render template: #{library_version.name} (#{library_version.version})" do
+    Skylight.instrument title: "YARD render template (cache miss)" do
       logger.info "Cache miss: #{@library_version}"
       @@adapter_mutex.synchronize { set_whitelisted; @adapter.call(request.env) }
     end
