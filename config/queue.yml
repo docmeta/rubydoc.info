@@ -6,7 +6,7 @@ default: &default
     - queues: [docparse]
       processes: 1
       threads: 2
-      polling_interval: 1
+      polling_interval: 0.5
     - queues: [default, update_gems]
       processes: 1
       threads: 3
