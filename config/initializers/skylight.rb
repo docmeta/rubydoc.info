@@ -16,7 +16,8 @@ if Rails.application.credentials.rubydoc&.skylight_token
     root: Rails.root,
     "daemon.sockdir_path": Rails.application.config.paths["tmp"].first,
     "normalizers.render.view_paths": view_paths + [ Rails.root.to_s ],
-    log_level: Rails.application.config.log_level
+    log_level: Rails.application.config.log_level,
+    deploy: { git_sha: Rails.env.development? ? `git rev-parse HEAD`.strip : ENV["GIT_SHA"] }
   }
 
   Skylight.start!(config)

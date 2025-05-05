@@ -44,6 +44,9 @@ RUN chmod +x bin/* && \
 # Precompiling assets for production without requiring secret RAILS_MASTER_KEY
 RUN WITHOUT_JOBS=1 SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
+ARG GIT_SHA=unknown
+ENV GIT_SHA=$GIT_SHA
+
 # Entrypoint prepares the database.
 ENTRYPOINT ["/app/bin/docker-entrypoint"]
 
