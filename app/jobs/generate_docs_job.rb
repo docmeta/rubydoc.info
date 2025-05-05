@@ -4,6 +4,8 @@ class GenerateDocsJob < ApplicationJob
   extend ShellHelper
   queue_as :docparse
 
+  @prepare_mutex = Mutex.new
+
   IMAGE = "docmeta/rubydoc-docparse"
 
   attr_accessor :library_version
@@ -22,19 +24,16 @@ class GenerateDocsJob < ApplicationJob
   end
 
   def self.prepare_image
-    return if @image_prepared
-    sh "docker build -q -t #{IMAGE} -f #{context.join("Dockerfile")} #{context}",
-      title: "Building image: #{IMAGE}"
-    @image_prepared = true
+    @prepare_mutex.synchronize do
+      return if @image_prepared
+      sh "docker build -q -t #{IMAGE} -f #{context.join("Dockerfile")} #{context}",
+        title: "Building image: #{IMAGE}"
+      @image_prepared = true
+    end
   end
 
   def self.prepared?
     @image_prepared
-  end
-
-  def self.clear_image
-    sh "docker rmi #{IMAGE}", title: "Clearing image: #{IMAGE}"
-    @image_prepared = false
   end
 
   def self.context
@@ -44,12 +43,7 @@ class GenerateDocsJob < ApplicationJob
   private
 
   def ensure_image_prepared!
-    @tries = 0
-    until self.class.prepared? || @tries > 5
-      sleep 1
-      @tries += 1
-    end
-
+    self.class.prepare_image
     raise RuntimeError, "Image #{IMAGE} not prepared" unless self.class.prepared?
   end
 
