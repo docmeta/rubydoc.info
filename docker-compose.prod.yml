@@ -31,7 +31,8 @@ services:
       - ./storage:/app/storage
     environment:
       RAILS_MAX_THREADS: 5
-      DOCPARSE_MAX_BUILDS: 1
+      DOCPARSE_MAX_BUILDS: 3
+      DEFAULT_QUEUE_PROCESSES: 2
     entrypoint: ["./bin/jobs", "start"]
     deploy:
       replicas: 1
