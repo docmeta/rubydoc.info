@@ -5,10 +5,10 @@ default: &default
   workers:
     - queues: [docparse]
       processes: 1
-      threads: <%= ENV.fetch("DOCPARSE_MAX_BUILDS", 1) %>
+      threads: <%= ENV.fetch("DOCPARSE_MAX_BUILDS", 3) %>
       polling_interval: 0.5
     - queues: [default, update_gems]
-      processes: 1
+      processes: 2
       threads: 3
       polling_interval: 0.1
 
