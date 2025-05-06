@@ -6,22 +6,22 @@
 #
 default: &default
   adapter: postgresql
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 6 } %>
   timeout: 5000
 
 development:
   <<: *default
-  url: postgres://db:db@localhost/development
+  url: postgres://db:db@localhost/development?pool=6
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  url: postgres://db:db@localhost/test
+  url: postgres://db:db@localhost/test?pool=6
 
 # Store production database in the storage/ directory, which by default
 # is mounted as a persistent Docker volume in config/deploy.yml.
 production:
   <<: *default
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 3 } %>
   url: <%= ENV.fetch("DATABASE_URL", "postgres://db:db@db/production") %>

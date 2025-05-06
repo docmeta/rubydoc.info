@@ -29,6 +29,8 @@ services:
       - ./config/master.key:/app/config/master.key
       - ./config/credentials.yml.enc:/app/config/credentials.yml.enc
       - ./storage:/app/storage
+    environment:
+      RAILS_MAX_THREADS: 6
     entrypoint: ["./bin/jobs", "start"]
     deploy:
       replicas: 1
