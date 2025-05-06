@@ -58,6 +58,8 @@ class YARDController < ApplicationController
     set_adapter
 
     status, headers, body = call_adapter
+    @contents, @title = extract_title_and_body(body)
+    status = 404 if @contents.blank?
 
     if status == 404
       render "errors/library_not_found", status: 404, layout: "application"
@@ -68,7 +70,6 @@ class YARDController < ApplicationController
     end
 
     if status == 200 && !request.path.starts_with?("/search") && !request.path.starts_with?("/static")
-      @contents, @title = extract_title_and_body(body)
       render :show
     else
       render plain: body.first, status: status, headers: headers, content_type: headers["Content-Type"]
@@ -93,7 +94,7 @@ class YARDController < ApplicationController
   end
 
   def extract_title_and_body(body)
-    if body.first =~ /<title>(.*?)<\/title>(.*)/mi
+    if body.first.to_s =~ /<title>(.*?)<\/title>(.*)/mi
       [ $2, $1 ]
     else
       [ body.first, nil ]
