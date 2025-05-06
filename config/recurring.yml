@@ -18,6 +18,10 @@ default: &default
     class: RegisterLibrariesJob
     schedule: every 15 minutes
 
+  reap_old_containers:
+    class: ReapGenerateDocsJob
+    schedule: every 5 minutes
+
 development:
   <<: *default
 
