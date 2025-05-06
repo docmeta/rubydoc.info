@@ -24,8 +24,14 @@ class DeleteDocsJob < ApplicationJob
     library = Library.where(opts.merge(source: library_version.source)).first
     if library
       library.versions.delete(library_version.version)
-      library.save
+      if library.versions.empty?
+        library.destroy
+      else
+        library.save
+      end
     end
+
+    CacheClearJob.perform_later(library_version)
   end
 
   def remove_directory(library_version)
