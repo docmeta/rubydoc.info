@@ -1,11 +1,6 @@
 services:
   db:
     image: postgres:alpine
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "db"]
-      interval: 10s
-      timeout: 5s
-      retries: 3
     environment:
       POSTGRES_USER: db
       POSTGRES_PASSWORD: db
@@ -13,15 +8,5 @@ services:
       - db1:/var/lib/postgresql/data
     ports:
       - "5432:5432"
-    deploy:
-      replicas: 1
-      update_config:
-        order: start-first
-      restart_policy:
-        condition: on-failure
 volumes:
   db1:
-networks:
-  default:
-    driver: overlay
-    attachable: true

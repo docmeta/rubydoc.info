@@ -39,3 +39,27 @@ services:
         order: start-first
     depends_on:
       - db
+  db:
+    image: postgres:alpine
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "db"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    environment:
+      POSTGRES_USER: db
+      POSTGRES_PASSWORD: db
+    volumes:
+      - db1:/var/lib/postgresql/data
+    deploy:
+      replicas: 1
+      update_config:
+        order: start-first
+      restart_policy:
+        condition: on-failure
+volumes:
+  db1:
+networks:
+  default:
+    driver: overlay
+    attachable: true
