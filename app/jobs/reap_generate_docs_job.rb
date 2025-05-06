@@ -3,7 +3,7 @@ class ReapGenerateDocsJob < ApplicationJob
 
   def perform
     running_containers.each do |id, created_at|
-      if created_at < 5.minutes.ago
+      if created_at < 10.minutes.ago
         logger.info "Stopping DEAD container #{id} (created at #{created_at})"
         `docker rm -f #{id}`
       end
