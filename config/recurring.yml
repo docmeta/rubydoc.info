@@ -22,6 +22,11 @@ default: &default
     class: ReapGenerateDocsJob
     schedule: every 5 minutes
 
+  delete_old_docs:
+    class: CleanupUnvisitedDocsJob
+    queue: default
+    schedule: every 1 week
+
 development:
   <<: *default
 

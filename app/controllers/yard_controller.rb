@@ -63,6 +63,7 @@ class YARDController < ApplicationController
       render "errors/library_not_found", status: 404, layout: "application"
       return
     elsif status == 200
+      visit_library
       expires_in 1.day, public: true
     end
 
@@ -72,6 +73,10 @@ class YARDController < ApplicationController
     else
       render plain: body.first, status: status, headers: headers, content_type: headers["Content-Type"]
     end
+  end
+
+  def visit_library
+    FileUtils.touch(library_version.source_path)
   end
 
   def library_version
@@ -95,7 +100,7 @@ class YARDController < ApplicationController
     end
   end
 
-  %i[call_adapter library_version respond render set_adapter set_whitelisted extract_title_and_body].each do |m|
+  %i[call_adapter visit_library library_version respond render set_adapter set_whitelisted extract_title_and_body].each do |m|
     instrument_method(m)
   end
 end
