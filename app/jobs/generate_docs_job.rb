@@ -62,6 +62,7 @@ class GenerateDocsJob < ApplicationJob
   end
 
   def run_generate
+    FileUtils.rm_rf(library_version.yardoc_file)
     sh "docker run --rm -u #{Process.uid}:#{Process.gid} -v #{library_version.source_path.inspect}:/build #{IMAGE}",
       title: "Generating #{library_version} (#{library_version.source})"
   end
