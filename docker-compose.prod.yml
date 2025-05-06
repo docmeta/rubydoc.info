@@ -1,6 +1,9 @@
 services:
   web:
     image: 127.0.0.1:5000/docmeta/rubydoc-app
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
     environment:
       WEB_CONCURRENCY: 5
     volumes:
@@ -18,6 +21,9 @@ services:
       - db
   jobs:
     image: 127.0.0.1:5000/docmeta/rubydoc-app
+    build:
+      context: .
+      dockerfile: ./docker/app/Dockerfile
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config/master.key:/app/config/master.key
