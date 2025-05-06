@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: ./docker/app/Dockerfile
     environment:
-      WEB_CONCURRENCY: 1
+      WEB_CONCURRENCY: 5
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config/master.key:/app/config/master.key
