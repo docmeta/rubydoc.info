@@ -91,7 +91,7 @@ class GithubCheckoutJob < ApplicationJob
   end
 
   def flush_cache
-    CacheClearJob.perform_later("/", "/github", "/github/~#{project[0, 1]}",
+    CacheClearJob.perform_now("/", "/github", "/github/~#{project[0, 1]}",
       "/github/#{name}/", "/list/github/#{name}/", "/static/github/#{name}/")
   end
 
