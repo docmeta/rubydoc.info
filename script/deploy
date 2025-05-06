@@ -6,7 +6,7 @@ docker swarm init 2>/dev/null || true
 docker compose -f docker-compose.prod.yml build --build-arg GIT_SHA=$(git rev-parse HEAD)
 docker stack deploy --resolve-image never --compose-file docker-compose.prod.yml rubydoc
 
-if [ "_$(docker ps --filter ancestor=127.0.0.1:5000/docmeta/rubydoc-app:latest -q)" != "_" ]; then
+if [ "_$(docker ps --filter status=running -q)" != "_" ]; then
   docker service update --force rubydoc_web &
   docker service update --force rubydoc_jobs &
 fi
