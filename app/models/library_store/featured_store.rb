@@ -3,7 +3,7 @@ module LibraryStore
     include Enumerable
 
     def [](name)
-      case Rubydoc.config.libraries.featured[name]
+      (@items ||= {})[name] ||= case Rubydoc.config.libraries.featured[name]
       when "gem"
         Library.gem.find_by(name: name)&.library_versions
       when "featured"

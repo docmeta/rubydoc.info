@@ -57,7 +57,7 @@ class YARDController < ApplicationController
   def respond
     set_adapter
 
-    if library_version.disallowed?
+    if library_version.blank?
       render "errors/library_not_found", status: 404, layout: "application"
       return
     end
