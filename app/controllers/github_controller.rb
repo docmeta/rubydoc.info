@@ -4,7 +4,7 @@ class GithubController < ApplicationController
   include Pageable
   include Cacheable
 
-  layout "modal", only: [ :add_project ]
+  layout "modal", only: [ :add_project, :create ]
 
   prepend_before_action do
     @title = "GitHub Projects"
@@ -16,7 +16,7 @@ class GithubController < ApplicationController
   end
 
   def add_project
-    @project = GithubProject.new
+    @project ||= GithubProject.new
   end
 
   def create
@@ -25,8 +25,12 @@ class GithubController < ApplicationController
       GithubCheckoutJob.perform_now(owner: @project.owner, project: @project.name, commit: @project.commit)
       redirect_to yard_github_path(@project.owner, @project.name, @project.commit)
     else
-      render :add_project, layout: "modal"
+      add_project
     end
+  rescue IOError => e
+    logger.error "Failed to create GitHub project: #{e.message}"
+    @project.errors.add(:url, "could not be cloned. Please check the URL and try again.")
+    render :add_project
   end
 
   private

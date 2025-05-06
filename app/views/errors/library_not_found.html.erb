@@ -9,12 +9,22 @@
     </p>
   <% else %>
     <h2 class="nomargin">We Couldn't Find That <%= library_type_alt %></h2>
-    <p>We haven't generated any docs for <strong><%= h library_name %></strong>.
-      You can add the project yourself by entering the GitHub project information below.
-      You can also see a list of available projects <%= link_to "here", "/#{action_name}" %>.</p>
-    <script type="text/javascript" charset="utf-8">
-      $(function() { $('#url').val('https://github.com/<%= h library_name %>'); });
-    </script>
-    <%# erb :checkout, :layout => false %>
+    <% if action_name == "github" %>
+      <p>
+        We haven't generated any docs for <strong><%= h library_name %></strong>.
+        You can add the project yourself by entering the GitHub project information below.
+        You can also see a list of available projects <%= link_to "here", "/#{action_name}" %>.
+      </p>
+      <div class="add-library-small">
+        <%= turbo_frame_tag "add_project" do %>
+          <% @project = GithubProject.new(url: "https://github.com/#{params[:username]}/#{params[:project]}") %>
+          <%= render "github/add_project" %>
+        <% end %>
+      </div>
+    <% else %>
+      <p>
+        We haven't generated any docs for <strong><%= h library_name %></strong>.
+      </p>
+    <% end %>
   <% end %>
 </div>

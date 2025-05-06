@@ -9,39 +9,24 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
+h2 {
+  font-size: 1.6em;
+
+  .small {
+    font-size: 0.7em;
+    font-weight: normal;
+  }
+}
+a {
+  outline: none;
+}
+
 body.root {
   overflow: auto;
   margin: 12px;
   display: block;
   width: auto;
   height: auto;
-}
-
-h2 {
-  font-size: 1.6em;
-}
-h2 .small {
-  font-size: 0.7em;
-  font-weight: normal;
-}
-a {
-  outline: none;
-}
-
-#projects {
-  font-size: 1.4em;
-  list-style: circle;
-}
-
-#projects {
-  list-style-position: inside;
-  padding-left: 0;
-  list-style: none;
-  margin-left: 0;
-}
-#projects li {
-  padding: 7px 15px;
-  font-size: 1.1em;
 }
 
 .libraries {
@@ -99,24 +84,27 @@ a {
   font-weight: bold;
 }
 
-#logo h1 {
-  margin: 0;
-  border: 0;
-  color: #58b;
-}
-#logo small {
-  color: #369;
-  font-size: 0.6em;
-  font-weight: normal;
-  opacity: 0.6;
-}
-#logo a {
-  text-decoration: none;
-  color: #58b;
-}
-#logo a:hover {
-  color: #8cf;
-  border-bottom: 8px solid #8cf;
+#logo {
+  h1 {
+    margin: 0;
+    border: 0;
+    color: #58b;
+  }
+  small {
+    color: #369;
+    font-size: 0.6em;
+    font-weight: normal;
+    opacity: 0.6;
+  }
+  a {
+    text-decoration: none;
+    color: #58b;
+
+    &:hover {
+      color: #8cf;
+      border-bottom: 8px solid #8cf;
+    }
+  }
 }
 
 #top_nav {
@@ -126,24 +114,26 @@ a {
   right: 140px;
   top: 3px;
   z-index: 9999;
-}
-#top_nav li {
-  float: left;
-  margin-right: 10px;
-}
-#top_nav a {
-  display: block;
-  padding: 5px 8px;
-  background: #58a;
-  text-decoration: none;
-  color: #eee;
-  opacity: 0.7;
-  border-radius: 5px;
-  transition: all 0.1s ease-in;
-}
-#top_nav a:hover {
-  opacity: 1;
-  color: #fff;
+
+  li {
+    float: left;
+    margin-right: 10px;
+  }
+  a {
+    display: block;
+    padding: 5px 8px;
+    background: #58a;
+    text-decoration: none;
+    color: #eee;
+    opacity: 0.7;
+    border-radius: 5px;
+    transition: all 0.1s ease-in;
+
+    &:hover {
+      opacity: 1;
+      color: #fff;
+    }
+  }
 }
 
 .about {
@@ -152,9 +142,10 @@ a {
 
   a {
     color: #05a;
-  }
-  a:hover {
-    color: #5af;
+
+    &:hover {
+      color: #5af;
+    }
   }
 }
 
@@ -185,71 +176,38 @@ a {
   right: 0;
   z-index: 9500;
   opacity: 0.9;
-}
-#learn_yard:hover {
-  opacity: 1;
-}
-#learn_yard img {
-  border: 0;
-}
-.framelink {
-  z-index: 9999;
-  position: relative;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  img {
+    border: 0;
+  }
 }
 
-#checkout form {
-  display: inline;
-}
-#checkout h2 {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  font-weight: normal;
-  font-size: 1.1em;
-}
-#checkout .example {
-  color: #999;
-  position: relative;
-  top: -6px;
-}
-#checkout input {
-  font-size: 1em;
-}
-#checkout.error #url {
-  background: #fdd;
-}
-#checkout #commit {
-  width: 131px;
-}
-#checkout.error:after {
-  content: "Invalid git repository or URL";
-  color: #e00;
-  display: block;
-}
-#checkout .url {
-  width: 225px;
-  margin-bottom: 3px;
-}
 .alpha_index {
   display: block;
   padding-left: 0;
   font-size: 1.2em;
   margin-bottom: 30px;
-}
-.alpha_index li {
-  display: inline;
-  padding: 0 1px;
-}
 
-.alpha_index li.selected {
-  padding: 3px 4px;
-  margin-right: 0;
-  background: #dedede;
-}
-.alpha_index li a {
-  padding: 3px 4px;
-  margin-right: 0;
-  background: #eee;
+  li {
+    display: inline;
+    padding: 0 1px;
+
+    &.selected {
+      padding: 3px 4px;
+      margin-right: 0;
+      background: #dedede;
+    }
+
+    a {
+      padding: 3px 4px;
+      margin-right: 0;
+      background: #eee;
+    }
+  }
 }
 
 .page_index {
@@ -526,6 +484,20 @@ a {
     &:disabled {
       background-color: #ccc;
       cursor: default;
+    }
+  }
+}
+
+#content {
+  .add-library-small {
+    width: 400px;
+    padding: 12px 16px;
+    padding-bottom: 16px;
+    border-radius: 4px;
+    background: #eee;
+
+    h2 {
+      margin-top: 0;
     }
   }
 }
