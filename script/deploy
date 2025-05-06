@@ -5,4 +5,3 @@ set -e
 docker swarm init 2>/dev/null || true
 docker compose -f docker-compose.yml -f docker-compose.prod.yml build --build-arg GIT_SHA=$(git rev-parse HEAD)
 docker stack deploy --resolve-image never --compose-file docker-compose.yml --compose-file docker-compose.prod.yml rubydoc
-docker service update rubydoc_app

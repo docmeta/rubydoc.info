@@ -37,8 +37,4 @@ plugin :tmp_restart
 # In other environments, only set the PID file if requested.
 pidfile ENV["PIDFILE"] if ENV["PIDFILE"]
 
-begin
-  fork { }
-  plugin :solid_queue unless ENV["WITHOUT_JOBS"]
-rescue NotImplementedError
-end
+plugin :solid_queue unless ENV["RAILS_ENV"] == "production"
