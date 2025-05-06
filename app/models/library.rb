@@ -1,9 +1,13 @@
 class Library < ApplicationRecord
   enum :source, %i[remote_gem github stdlib featured].index_with(&:to_s)
   default_scope { order("lower(name) ASC") }
-  scope :gem, -> { where(source: :remote_gem).and(where.not(name: Rubydoc.config.libraries.disallowed_gems)) }
-  scope :github, -> { where(source: :github).and(where.not(name: Rubydoc.config.libraries.disallowed_projects)) }
+  scope :gem, -> { where(source: :remote_gem).and(where.not("name LIKE ANY (array[?])", wildcard(Rubydoc.config.libraries.disallowed_gems))) }
+  scope :github, -> { where(source: :github).and(where.not("name LIKE ANY (array[?])", wildcard(Rubydoc.config.libraries.disallowed_projects))) }
   scope :stdlib, -> { where(source: :stdlib) }
+
+  def self.wildcard(list)
+    list.map { |item| item.gsub("*", "%") }
+  end
 
   def library_versions
     items = versions.map do |v|

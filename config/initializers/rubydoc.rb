@@ -55,6 +55,7 @@ Rails.application.config.to_prepare do
   module YARD
     module Server
       class LibraryVersion
+        include DisallowedLibrary
         include GemLibrary
         include GithubLibrary
         include StdlibLibrary

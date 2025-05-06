@@ -31,6 +31,10 @@ class GithubController < ApplicationController
     logger.error "Failed to create GitHub project: #{e.message}"
     @project.errors.add(:url, "could not be cloned. Please check the URL and try again.")
     render :add_project
+  rescue DisallowedCheckoutError => e
+    logger.error "Failed to create GitHub project: #{e.message}"
+    @project.errors.add(:url, "is not allowed. Please check the URL and try again.")
+    render :add_project
   end
 
   private

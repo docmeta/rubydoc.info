@@ -20,11 +20,11 @@ class GithubCheckoutJob < ApplicationJob
   end
 
   def perform(owner:, project:, commit: nil)
-    return if disallowed?(owner, project)
-
     self.owner = owner
     self.project = project
     self.commit = commit || primary_branch
+
+    raise DisallowedCheckoutError.new(owner:, project:) if library_version.disallowed?
 
     if run_checkout
       register_project
@@ -128,14 +128,5 @@ class GithubCheckoutJob < ApplicationJob
   rescue IOError, OpenURI::HTTPError, Timeout::Error
     @is_fork = nil
     false
-  end
-
-  def disallowed?(owner, project)
-    if Rubydoc.config.libraries.disallowed_projects.include?("#{owner}/#{project}")
-      logger.info "Skip checkout for disallowed github project #{owner}/#{project}"
-      true
-    else
-      false
-    end
   end
 end

@@ -49,8 +49,8 @@ class DownloadGemJob < ApplicationJob
   end
 
   def disallowed?(library_version)
-    if Rubydoc.config.libraries.disallowed_gems.include?(library_version.name)
-      logger.info "Skip downloading for disallowed gem #{library_version.name} (#{library_version.version})"
+    if library_version.disallowed?
+      logger.info "Skip downloading for disallowed gem #{library_version}"
       true
     else
       false

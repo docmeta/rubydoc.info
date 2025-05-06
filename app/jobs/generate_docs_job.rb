@@ -95,22 +95,11 @@ class GenerateDocsJob < ApplicationJob
   end
 
   def disallowed?
-    if disallowed_list.include?(library_version.name)
-      logger.info "Skip generating docs for disallowed #{library_version.name} (#{library_version.version})"
+    if library_version.disallowed?
+      logger.info "Skip generating docs for disallowed #{library_version.source}: #{library_version}"
       true
     else
       false
-    end
-  end
-
-  def disallowed_list
-    case library_version.source.to_sym
-    when :github
-      Rubydoc.config.libraries.disallowed_projects
-    when :remote_gem
-      Rubydoc.config.libraries.disallowed_gems
-    else
-      []
     end
   end
 end

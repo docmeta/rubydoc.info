@@ -19,4 +19,8 @@ module GemLibrary
   def self.base_path
     @base_path ||= Rails.root.join("storage", "repos", "gems")
   end
+
+  def disallowed_list
+    source.to_sym == :remote_gem ? Rubydoc.config.libraries.disallowed_gems : super
+  end
 end

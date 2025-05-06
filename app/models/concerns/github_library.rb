@@ -19,4 +19,8 @@ module GithubLibrary
   def self.base_path
     @base_path ||= Rails.root.join("storage", "repos", "github")
   end
+
+  def disallowed_list
+    source.to_sym == :github ? Rubydoc.config.libraries.disallowed_projects : super
+  end
 end
