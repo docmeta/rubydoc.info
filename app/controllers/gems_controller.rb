@@ -6,7 +6,7 @@ class GemsController < ApplicationController
 
   prepend_before_action do
     @title = "RubyGems"
-    @collection = Library.gem.all
+    @collection = Library.gem.all.without_disallowed_gems
   end
 
   def index

@@ -8,7 +8,7 @@ class GithubController < ApplicationController
 
   prepend_before_action do
     @title = "GitHub Projects"
-    @collection = Library.github.all
+    @collection = Library.github.all.without_disallowed_github
   end
 
   def index
