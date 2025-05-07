@@ -1,6 +1,6 @@
-if Rails.application.credentials.rubydoc&.skylight_token
-  require "skylight"
+require "skylight"
 
+if Rails.application.credentials.rubydoc&.skylight_token
   Rails.application.config.skylight.logger = ActiveSupport::Logger.new(STDOUT)
   Rails.application.config.skylight.environments << "development"
   Rails.application.config.skylight.probes << "active_job"
