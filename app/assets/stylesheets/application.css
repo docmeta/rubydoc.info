@@ -9,14 +9,6 @@
  * Consider organizing styles into separate files for maintainability.
  */
 
-h2 {
-  font-size: 1.6rem;
-
-  .small {
-    font-size: 0.7rem;
-    font-weight: normal;
-  }
-}
 a {
   outline: none;
 }
@@ -27,21 +19,22 @@ body.root {
   display: block;
   width: auto;
   height: auto;
+  font-size: 13px;
 
   .header {
     display: flex;
     justify-content: space-between;
     gap: 1rem;
+    margin-bottom: 1rem;
 
-    #logo {
-      h1 {
-        margin: 0;
-        border: 0;
-        color: #58b;
-      }
-      small {
+    .logo {
+      color: #58b;
+      font-size: 1.5rem;
+      font-weight: bold;
+
+      .description {
         color: #369;
-        font-size: 0.6em;
+        font-size: 1rem;
         font-weight: normal;
         opacity: 0.6;
       }
@@ -56,7 +49,7 @@ body.root {
       }
     }
 
-    #top_nav {
+    .top-nav {
       margin-right: 9rem;
       display: flex;
       justify-content: flex-end;
@@ -93,36 +86,41 @@ body.root {
     .header {
       flex-direction: column;
 
-      #top_nav {
+      .top-nav {
         margin-right: 0;
         justify-content: flex-start;
       }
     }
 
-    #learn_yard {
+    .learn-yard {
       display: none;
     }
   }
 }
 
-.libraries {
-  list-style: none;
-  padding: 0;
+#content .libraries {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
 
-  li {
+  .row {
     font-size: 1rem;
     line-height: 1.4em;
     padding: 3px 5px;
     line-height: 2em;
     border-bottom: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &.r1 {
+      background: #eee;
+    }
+    &.r2 {
+      background: #f8f8f8;
+    }
 
     &:hover {
       background: #eef;
-    }
-
-    &.alternate,
-    &.alternate:hover {
-      background: transparent;
     }
 
     a:hover {
@@ -130,36 +128,54 @@ body.root {
       color: #3ae;
     }
 
-    &.core > a:first-child {
-      font-weight: bold;
-    }
-  }
+    .actions {
+      display: flex;
+      justify-items: flex-end;
+      align-items: center;
+      margin-right: 4px;
+      gap: 2px;
 
-  .icon {
-    width: 16px;
-    height: 16px;
-    position: relative;
-    float: right;
-    top: 6px;
-    border: 1px solid #ccc;
-    background: #eee;
-    padding: 2px;
-    border-radius: 3px;
-    margin-left: 3px;
+      a,
+      form {
+        width: 22px;
+        height: 22px;
+        display: inline-block;
+        &:hover {
+          background: transparent;
+        }
 
-    .reload {
-      border: 0;
-      padding: 0;
-      position: relative;
-      top: -6px;
-      height: 16px;
-      width: 16px;
-      background: transparent;
-      cursor: pointer;
-    }
+        img,
+        button {
+          width: 16px;
+          height: 16px;
+          border: 1px solid #ccc;
+          background: #eee;
+          padding: 2px;
+          border-radius: 3px;
 
-    &:hover {
-      background: #fff;
+          &:hover {
+            background: #fff;
+          }
+        }
+
+        form {
+          width: 22px;
+          height: 22px;
+        }
+
+        .reload {
+          border: 0;
+          padding: 0;
+          height: 16px;
+          width: 16px;
+          background: transparent;
+          cursor: pointer;
+
+          &:hover {
+            background: #fff;
+          }
+        }
+      }
     }
   }
 }
@@ -198,7 +214,7 @@ body.root {
   }
 }
 
-#learn_yard {
+.learn-yard {
   position: absolute;
   top: 0;
   right: 0;
@@ -238,62 +254,60 @@ body.root {
   }
 }
 
-.page_index {
-  display: block;
-  padding-left: 0;
-  font-size: 1em;
+.tabbed-links {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: larger;
 
-  li {
-    display: inline;
-    padding: 0 1px;
-
-    &.selected {
+  &.alpha {
+    margin-bottom: 1rem;
+    & > * {
       padding: 3px 4px;
-      margin-right: 0;
+    }
+  }
+
+  &.numeric {
+    font-size: small;
+    & > * {
+      padding: 3px 4px;
+    }
+    .selected {
       background: #e5e5e5;
     }
-
-    &.prefix {
-      padding: 0 1px;
-      background: transparent;
-    }
-
     a {
-      padding: 3px 4px;
-      margin-right: 0;
       background: #f8f8f8;
     }
   }
+
+  & > * {
+    padding: 6px 8px;
+
+    &.search {
+      padding: 0;
+    }
+  }
+  .selected {
+    background: #dedede;
+  }
+  a {
+    background: #eee;
+    text-decoration: none;
+  }
 }
 
-#navigation {
-  display: block;
-  padding-left: 0;
-  font-size: 1.2em;
-}
-#navigation li {
-  display: inline;
-  margin-right: 4px;
-}
-#navigation li.selected {
-  padding: 6px;
-  background: #dedede;
-}
-#navigation li a {
-  padding: 6px;
-  background: #eee;
-  text-decoration: none;
-}
-#navigation li form {
-  display: inline;
-}
-#navigation li input {
-  height: 25px;
-  border: 1px solid #dedede;
-  font-size: 14px;
-  color: #111;
-  padding: 2px 5px;
-  width: 200px;
+nav {
+  form {
+    display: inline;
+
+    input {
+      border: 1px solid #dedede;
+      color: #111;
+      padding: 6px 8px;
+      width: 200px;
+    }
+  }
 }
 
 #content {
@@ -303,6 +317,10 @@ body.root {
 
   h2 {
     margin-top: 0.8em;
+
+    .small {
+      font-size: small;
+    }
   }
 
   &.fof {

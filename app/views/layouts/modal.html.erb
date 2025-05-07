@@ -4,7 +4,7 @@
     <%= turbo_frame_tag "modal" do %>
       <div id="modal-show" class="<%= "no-margin" if @no_margin %>" data-controller="modal" data-action="click->modal#close:self">
         <di class="content">
-          <%= link_to "#", class: "close", data: { turbo_action: "rewind" } do %>
+          <%= link_to "#", class: "close", data: { action: "click->modal#close" } do %>
             <span>✕</span>
           <% end %>
           <div class="body">

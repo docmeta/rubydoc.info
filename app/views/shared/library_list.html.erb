@@ -1,8 +1,8 @@
 <% if controller_name == "github" && has_featured? %>
   <h2>Featured Libraries Listing</h2>
-  <ul class="libraries">
+  <div class="libraries">
     <%= render partial: "shared/library", collection: featured_libraries %>
-  </ul>
+  </div>
 <% end %>
 <h2>
   <%= @title %> <%= h @search ? "Search Results for '#{@search}'" : 'Listing' %>
@@ -14,15 +14,15 @@
 <%= render "shared/pagination" if @pagy %>
 <% if @exact_match %>
   <h3>Exact match</h3>
-  <ul class="libraries">
+  <div class="libraries">
     <%= render partial: "shared/library", collection: [@exact_match] %>
-  </ul>
+  </div>
   <h3>All matches</h3>
 <% end %>
-<ul class="libraries">
+<div class="libraries">
   <% if @collection.count == 0 %>
-    <li>No matches found.</li>
+    <div class="row">No matches found.</div>
   <% end %>
   <%= render partial: "shared/library", collection: @collection %>
-</ul>
+</div>
 <%= render "shared/pagination" if @pagy %>

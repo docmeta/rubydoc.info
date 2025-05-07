@@ -1,20 +1,18 @@
 <% if controller_name != 'yard' %>
-  <nav>
-    <ul id="navigation">
-      <% nav_links.each do |title, link| %>
-        <% if "/#{controller_name}" == link %>
-          <li class="selected"><%= title %></li>
-        <% else %>
-          <li><%= link_to title, link %></li>
+  <nav class="tabbed-links">
+    <% nav_links.each do |title, link| %>
+      <% if "/#{controller_name}" == link %>
+        <span class="selected"><%= title %></span>
+      <% else %>
+        <%= link_to title, link %>
+      <% end %>
+    <% end %>
+    <% if has_search? %>
+      <div class="search">
+        <%= form_tag url_for(letter: nil), method: :get do %>
+          <input type="text" id="docSearch" name="q" value="<%= h @search %>" placeholder="Search <%= h controller_name.capitalize %>"/>
         <% end %>
-      <% end %>
-      <% if has_search? %>
-        <li class="search">
-          <%= form_tag url_for(letter: nil), method: :get do %>
-            <input type="text" id="docSearch" name="q" value="<%= h @search %>" placeholder="Search <%= h controller_name.capitalize %>"/>
-          <% end %>
-        </li>
-      <% end %>
-    </ul>
+      </div>
+    <% end %>
   </nav>
 <% end %>

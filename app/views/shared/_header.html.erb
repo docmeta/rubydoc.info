@@ -1,11 +1,12 @@
-<%= link_to "https://yardoc.org", title: "Learn More About YARD", id: "learn_yard" do %>
+<%= link_to "https://yardoc.org", title: "Learn More About YARD", class: "learn-yard" do %>
   <%= image_tag "learn.png", alt: "Learn More About YARD" %>
 <% end %>
 <div class="header">
-  <div id="logo">
-    <h1><a href="/"><%= h settings.name %></a> <small>YARD Documentation Server</small></h1>
+  <div class="logo">
+    <a href="/"><%= h settings.name %></a>
+    <span class="description">YARD Documentation Server</span>
   </div>
-  <div id="top_nav">
+  <div class="top-nav">
     <% if controller_name == "github" %>
       <%= link_to "Add Project", add_github_project_path, data: { turbo_frame: "modal" }  %>
     <% end %>

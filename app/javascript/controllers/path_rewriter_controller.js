@@ -10,6 +10,8 @@ export default class extends Controller {
       return;
     }
 
-    Turbo.visit(localStorage.getItem("defaultIndex"), { action: "replace" });
+    Turbo.visit("/" + localStorage.getItem("defaultIndex"), {
+      action: "replace",
+    });
   }
 }
