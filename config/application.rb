@@ -38,5 +38,6 @@ module Rubydoc
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
     config.session_store :disabled
+    config.exceptions_app = routes
   end
 end

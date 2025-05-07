@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   # root "posts#index"
 
   root "github#index"
+  match "/:code", to: "errors#show", via: :all, constraints: ErrorsController.constraints
 
   get "/about", to: "about#index", as: :about
   get "/help", to: "help#index", as: :help

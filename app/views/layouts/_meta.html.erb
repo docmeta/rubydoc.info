@@ -6,9 +6,11 @@
 <% else %>
   <meta name="robots" content="index, follow">
 <% end %>
-<link rel="canonical" href="<%= request.original_url %>">
-<meta property="og:title" content="<%= h page_title %>">
-<meta property="og:description" content="<%= h page_description %>">
-<meta property="og:image" content="<%= URI(request.original_url).tap { it.path = "/favicon.ico" }.to_s %>">
-<meta property="og:url" content="<%= request.original_url %>">
-<meta property="og:type" content="website">
+<% if controller_name != "errors" %>
+  <link rel="canonical" href="<%= request.original_url %>">
+  <meta property="og:title" content="<%= h page_title %>">
+  <meta property="og:description" content="<%= h page_description %>">
+  <meta property="og:image" content="<%= URI(request.original_url).tap { it.path = "/favicon.ico" }.to_s %>">
+  <meta property="og:url" content="<%= request.original_url %>">
+  <meta property="og:type" content="website">
+<% end %>

@@ -1,0 +1,19 @@
+<div id="content" class="scm fof">
+  <h1>Oops,</h1>
+  <% case response.code.to_i %>
+  <% when 404 %>
+    <h2 class="nomargin">The page could not be found.</h2>
+    <p>
+      Sorry, but we couldn't find the page <strong><%= h URI(request.original_url).path %></strong>.
+      Are you sure that page?
+    </p>
+  <% else %>
+    <h2 class="nomargin">An unexpected error occurred.</h2>
+    <p>
+      Sorry, but an unexpected error occurred while processing your request.
+      Please try again later or contact support using the Help link above.
+    </p>
+  <% end %>
+</h2>
+<%= link_to "Go back home", root_path %>
+</div>
