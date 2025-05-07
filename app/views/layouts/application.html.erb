@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/assets/css/custom.css" type="text/css" media="screen" charset="utf-8" />
     <%= javascript_importmap_tags %>
+    <%= render "shared/analytics" %>
   </head>
   <body class="root">
     <% if controller_name == "github" && request.referrer.blank? %>
