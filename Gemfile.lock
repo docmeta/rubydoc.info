@@ -198,7 +198,8 @@ GEM
       turbo-rails
     msgpack (1.8.0)
     mutex_m (0.3.0)
-    net-http-persistent (2.9.4)
+    net-http-persistent (4.0.5)
+      connection_pool (~> 2.2)
     net-imap (0.5.7)
       date
       net-protocol
@@ -417,7 +418,7 @@ DEPENDENCIES
   maruku
   memory_profiler
   mission_control-jobs
-  net-http-persistent (~> 2.0)
+  net-http-persistent (~> 4.0)
   pagy
   pg (~> 1.5)
   propshaft
