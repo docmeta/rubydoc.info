@@ -17,6 +17,11 @@ services:
       replicas: 1
       update_config:
         order: start-first
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/healthcheck"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
     depends_on:
       - db
   jobs:
@@ -53,6 +58,11 @@ services:
         order: start-first
       restart_policy:
         condition: on-failure
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "db"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
 volumes:
   db1:
 networks:
