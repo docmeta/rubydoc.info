@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%= render "shared/meta" %>
+    <%= render "layouts/meta" %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
     <%= yield :head %>
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="/assets/css/style.css" type="text/css" media="screen" charset="utf-8" />
     <link rel="stylesheet" href="/assets/css/custom.css" type="text/css" media="screen" charset="utf-8" />
     <%= javascript_importmap_tags %>
-    <%= render "shared/analytics" %>
+    <%= render "layouts/analytics" %>
   </head>
   <body class="root">
     <% if controller_name == "github" && request.referrer.blank? %>
@@ -23,12 +23,12 @@
     <% if %w[ featured stdlib gems github ].include?(controller_name) %>
       <span data-controller="path-saver" data-path="<%= controller_name %>"></span>
     <% end %>
-    <%= render 'shared/header' %>
+    <%= render 'layouts/header' %>
     <%= turbo_frame_tag "modal" %>
     <div id="content">
-      <%= render 'shared/nav' %>
+      <%= render 'layouts/nav' %>
       <%= yield %>
     </div>
-    <%= render 'shared/footer' %>
+    <%= render 'layouts/footer' %>
   </body>
 </html>

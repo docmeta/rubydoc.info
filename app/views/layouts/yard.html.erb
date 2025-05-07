@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= [@title, content_for(:title) || Rubydoc.config.name].compact.join(" – ") %></title>
+    <title><%= [@title, Rubydoc.config.name].compact.join(" – ") %></title>
     <%= yield :head %>
     <% if request.path.starts_with? "/list" %>
       <link rel="stylesheet" href="/assets/css/full_list.css" type="text/css" media="screen" charset="utf-8" />
@@ -13,7 +13,7 @@
       <link rel="stylesheet" href="/assets/css/custom.css" type="text/css" media="screen" charset="utf-8" />
     <% end %>
     <link rel="stylesheet" href="/assets/css/common.css" type="text/css" media="screen" charset="utf-8" />
-    <%= render "shared/analytics" %>
+    <%= render "layouts/analytics" %>
   </head>
   <body>
     <%= yield %>

@@ -1,4 +1,4 @@
-<% if controller_name != 'yard' %>
+<% unless ['yard', 'errors'].include?(controller_name) %>
   <nav class="tabbed-links">
     <% nav_links.each do |title, link| %>
       <% if "/#{controller_name}" == link %>
