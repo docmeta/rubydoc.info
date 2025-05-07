@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= [@title, Rubydoc.config.name].compact.join(" – ") %></title>
+    <%= content_for :title do %>
+      <%= h [@title, Rubydoc.config.name].compact.join(" – ") %>
+    <% end %>
+    <%= render "layouts/meta" %>
     <%= yield :head %>
     <% if request.path.starts_with? "/list" %>
       <link rel="stylesheet" href="/assets/css/full_list.css" type="text/css" media="screen" charset="utf-8" />
