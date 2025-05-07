@@ -13,5 +13,6 @@ module Pageable
   def set_pagination
     @page = params[:page].to_i || 1
     @pagy, @collection = pagy(@collection)
+  rescue Pagy::OverflowError
   end
 end
