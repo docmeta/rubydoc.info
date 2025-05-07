@@ -8,6 +8,7 @@ module AlphaIndexable
   def set_alpha_index
     @has_alpha_index = true
     @letter = params[:letter] || default_alpha_index
+    @page_title = "#{@title} Index: #{@letter.upcase}" if @letter.present?
     set_alpha_index_collection
   end
 

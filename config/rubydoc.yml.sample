@@ -3,6 +3,9 @@ default: &default
   # Display title. Defaults to RubyDoc.info
   # name: RubyDoc.info
 
+  # Default page description
+  # description: Documenting RubyGems, Stdlib, and GitHub Projects
+
   gem_hosting:
     # If you want to enable or disable gem hosting, set the following to true or false
     # enabled: true

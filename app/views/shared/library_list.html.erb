@@ -5,7 +5,7 @@
   </div>
 <% end %>
 <h2>
-  <%= @title %> <%= h @search ? "Search Results for '#{@search}'" : 'Listing' %>
+  <%= h @search ? @page_description : "#{@title} Listing" %>
   <% if @search %>
     <span class="small">(<%= link_to "Back to Listing", controller: controller_name %>)</span>
   <% end %>

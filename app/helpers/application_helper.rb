@@ -30,6 +30,18 @@ module ApplicationHelper
     Rubydoc.config
   end
 
+  def page_title
+    "#{settings.name}: #{title_content}"
+  end
+
+  def title_content
+    @page_title || content_for(:title) || page_description
+  end
+
+  def page_description
+    @page_description || content_for(:description) || settings.description
+  end
+
   def link_to_library(library, version = nil)
     prefix = case library.source
     when :featured

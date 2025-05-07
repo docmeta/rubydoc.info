@@ -5,6 +5,7 @@ module Rubydoc
   def self.config=(config)
     @config = JSON.parse({
       name: "RubyDoc.info",
+      description: "Documenting RubyGems, Stdlib, and GitHub Projects",
       integrations: {
         rubygems: Rails.application.credentials.rubydoc&.rubygems_api_key,
         cloudflare_token: Rails.application.credentials.rubydoc&.cloudflare_token,

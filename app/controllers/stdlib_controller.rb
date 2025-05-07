@@ -3,6 +3,7 @@ class StdlibController < ApplicationController
 
   prepend_before_action do
     @title = "Ruby Standard Library"
+    @page_title = @title
     @collection = Library.stdlib.all
   end
 

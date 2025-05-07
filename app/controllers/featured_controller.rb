@@ -4,6 +4,7 @@ class FeaturedController < ApplicationController
 
   prepend_before_action do
     @title = "Featured Libraries"
+    @page_title = @title
     @collection = featured_libraries
   end
 
