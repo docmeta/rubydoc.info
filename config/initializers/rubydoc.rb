@@ -96,5 +96,31 @@ Rails.application.config.to_prepare do
         end
       end
     end
+
+    class Verifier
+      def call(object)
+        return true if object.is_a?(CodeObjects::Proxy)
+        @object = object
+        __execute ? true : false
+      rescue NoMethodError
+        modify_nilclass
+        @object = object
+        retval = __execute ? true : false
+        unmodify_nilclass
+        retval
+      end
+    end
+
+    module CodeObjects
+      class ExtraFileObject
+        def translate(data)
+          return data if locale.nil?
+          text = YARD::I18n::Text.new(data, have_header: true)
+          text.translate(YARD::Registry.locale(locale))
+        end
+      end
+    end
   end
 end
+
+YARD::I18n::Locale.default = nil
