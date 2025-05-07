@@ -37,6 +37,7 @@ body.root {
         font-size: 1rem;
         font-weight: normal;
         opacity: 0.6;
+        text-wrap: nowrap;
       }
       a {
         text-decoration: none;
@@ -82,7 +83,7 @@ body.root {
     }
   }
 
-  @media (max-width: 810px) {
+  @media (max-width: 830px) {
     .header {
       flex-direction: column;
 
@@ -121,6 +122,15 @@ body.root {
 
     &:hover {
       background: #eef;
+    }
+
+    .library {
+      flex-grow: 1;
+      text-wrap: nowrap;
+      white-space: nowrap;
+      overflow: hidden;
+      margin-right: 4px;
+      text-overflow: ellipsis;
     }
 
     a:hover {
@@ -257,6 +267,7 @@ body.root {
 .tabbed-links {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
   font-size: larger;
