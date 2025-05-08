@@ -13,6 +13,12 @@
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'update', {
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied',
+      'ad_storage': 'denied',
+      'analytics_storage': 'denied'
+    });
     gtag('js', new Date());
 
     gtag('config', '<%= Rubydoc.config.integrations.google_analytics %>');
