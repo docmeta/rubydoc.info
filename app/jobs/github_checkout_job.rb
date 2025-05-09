@@ -22,7 +22,7 @@ class GithubCheckoutJob < ApplicationJob
   def perform(owner:, project:, commit: nil)
     self.owner = owner
     self.project = project
-    self.commit = commit || primary_branch
+    self.commit = commit.present? ? commit : primary_branch
 
     raise DisallowedCheckoutError.new(owner:, project:) if library_version.disallowed?
 
@@ -64,7 +64,7 @@ class GithubCheckoutJob < ApplicationJob
     clone_cmd = "git clone --depth 1 --single-branch #{branch_opt}#{url.inspect} #{temp_clone_path.to_s.inspect}"
     sh(clone_cmd, title: "Cloning project #{name}")
 
-    if commit.nil?
+    if commit.blank?
       self.commit = `git -C #{temp_clone_path.to_s.inspect} rev-parse --abbrev-ref HEAD`.strip
     end
 
