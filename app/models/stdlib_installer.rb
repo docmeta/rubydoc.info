@@ -10,7 +10,7 @@ class StdlibInstaller
   end
 
   def ruby_root
-    @ruby_root ||= Rails.root.join("storage", "ruby")
+    @ruby_root ||= Rubydoc.storage_path.join("ruby")
   end
 
   def setup_ruby_clone

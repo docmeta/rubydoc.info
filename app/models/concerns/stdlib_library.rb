@@ -17,6 +17,6 @@ module StdlibLibrary
   end
 
   def self.base_path
-    @base_path ||= Rails.root.join("storage", "repos", "stdlib")
+    @base_path ||= Rubydoc.storage_path.join("repos", "stdlib")
   end
 end

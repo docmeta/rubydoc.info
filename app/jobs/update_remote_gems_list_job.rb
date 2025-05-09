@@ -11,7 +11,7 @@ class UpdateRemoteGemsListJob < ApplicationJob
   end
 
   def self.lock_file
-    @lock_file ||= Rails.root.join("storage", "update_gems.lock")
+    @lock_file ||= Rubydoc.storage_path.join("update_gems.lock")
   end
 
   def perform

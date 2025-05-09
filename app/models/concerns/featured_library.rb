@@ -17,7 +17,7 @@ module FeaturedLibrary
   end
 
   def self.base_path
-    @base_path ||= Rails.root.join("storage", "repos", "featured")
+    @base_path ||= Rubydoc.storage_path.join("repos", "featured")
   end
 
   def self.versions_for(name)

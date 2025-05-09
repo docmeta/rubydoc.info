@@ -17,7 +17,7 @@ module GithubLibrary
   end
 
   def self.base_path
-    @base_path ||= Rails.root.join("storage", "repos", "github")
+    @base_path ||= Rubydoc.storage_path.join("repos", "github")
   end
 
   def disallowed_list

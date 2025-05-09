@@ -17,7 +17,7 @@ module GemLibrary
   end
 
   def self.base_path
-    @base_path ||= Rails.root.join("storage", "repos", "gems")
+    @base_path ||= Rubydoc.storage_path.join("repos", "gems")
   end
 
   def disallowed_list

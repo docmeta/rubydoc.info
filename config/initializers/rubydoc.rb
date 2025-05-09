@@ -37,6 +37,10 @@ module Rubydoc
       Rubydoc.config = {}
     end
   end
+
+  def self.storage_path
+    Rails.env.test? ? Rails.root.join("tmp", "storage", "test") : Rails.root.join("storage")
+  end
 end
 
 # Serializers

@@ -77,3 +77,7 @@ RSpec.configure do |config|
 
   config.include FactoryBot::Syntax::Methods
 end
+
+# Reset storage
+Rubydoc.storage_path.rmtree if Rubydoc.storage_path.directory?
+Rubydoc.storage_path.mkpath

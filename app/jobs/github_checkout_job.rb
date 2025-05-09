@@ -20,6 +20,7 @@ class GithubCheckoutJob < ApplicationJob
   end
 
   def perform(owner:, project:, commit: nil)
+    commit = nil if commit.blank?
     self.owner = owner
     self.project = project
     self.commit = commit.present? ? commit : primary_branch
@@ -41,7 +42,7 @@ class GithubCheckoutJob < ApplicationJob
   end
 
   def run_checkout
-    if commit && repository_path.directory?
+    if commit.present? && repository_path.directory?
       run_checkout_pull
     else
       run_checkout_clone
@@ -79,7 +80,7 @@ class GithubCheckoutJob < ApplicationJob
   end
 
   def temp_clone_path
-    @temp_clone_path ||= Rails.root.join("storage", "github_clones", "#{project}-#{owner}-#{Time.now.to_f}")
+    @temp_clone_path ||= Rubydoc.storage_path.join("github_clones", "#{project}-#{owner}-#{Time.now.to_f}")
   end
 
   def repository_path
@@ -87,7 +88,7 @@ class GithubCheckoutJob < ApplicationJob
   end
 
   def library_version
-    @library_version ||= YARD::Server::LibraryVersion.new(name, commit, nil, :github)
+    YARD::Server::LibraryVersion.new(name, commit, nil, :github)
   end
 
   def flush_cache
