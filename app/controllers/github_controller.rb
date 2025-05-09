@@ -25,7 +25,7 @@ class GithubController < ApplicationController
       GithubCheckoutJob.perform_now(owner: @project.owner, project: @project.name, commit: @project.commit)
       redirect_to yard_github_path(@project.owner, @project.name, @project.commit)
     else
-      add_project
+      render :add_project
     end
   rescue IOError => e
     logger.error "Failed to create GitHub project: #{e.message}"
