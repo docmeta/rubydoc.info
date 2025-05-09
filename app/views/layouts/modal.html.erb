@@ -2,8 +2,8 @@
 <html>
   <body>
     <%= turbo_frame_tag "modal" do %>
-      <div id="modal-show" class="<%= "no-margin" if @no_margin %>" data-controller="modal" data-action="click->modal#close:self">
-        <di class="content">
+      <div id="modal-show" class="<%= "no-margin" if @no_margin %>" data-controller="modal" data-action="click->modal#close:self keyup.esc->modal#close" tabindex="0">
+        <div class="content">
           <%= link_to "#", class: "close", data: { action: "click->modal#close" } do %>
             <span>✕</span>
           <% end %>
