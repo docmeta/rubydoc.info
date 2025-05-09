@@ -4,8 +4,16 @@ class Library < ApplicationRecord
   scope :gem, -> { where(source: :remote_gem) }
   scope :github, -> { where(source: :github) }
   scope :stdlib, -> { where(source: :stdlib) }
-  scope :allowed_gem, -> { gem.where.not("name LIKE ANY (array[?])", wildcard(Rubydoc.config.libraries.disallowed_gems)) }
-  scope :allowed_github, -> { github.where.not("concat(owner, '/', name) LIKE ANY (array[?])", wildcard(Rubydoc.config.libraries.disallowed_projects)) }
+
+  scope :allowed_gem, -> do
+    list = Rubydoc.config.libraries.disallowed_gems
+    list.blank? ? gem : gem.where.not("name LIKE ANY (array[?])", wildcard(list))
+  end
+
+  scope :allowed_github, -> do
+    list = Rubydoc.config.libraries.disallowed_projects
+    list.blank? ? github : github.where.not("concat(owner, '/', name) LIKE ANY (array[?])", wildcard(list))
+  end
 
   def self.wildcard(list)
     list.map { |item| item.gsub("*", "%") }
