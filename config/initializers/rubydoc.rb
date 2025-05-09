@@ -115,16 +115,6 @@ Rails.application.config.to_prepare do
         retval
       end
     end
-
-    module CodeObjects
-      class ExtraFileObject
-        def translate(data)
-          return data if locale.nil?
-          text = YARD::I18n::Text.new(data, have_header: true)
-          text.translate(YARD::Registry.locale(locale))
-        end
-      end
-    end
   end
 end
 
