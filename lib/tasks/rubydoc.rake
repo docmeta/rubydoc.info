@@ -33,7 +33,7 @@ namespace :rubydoc do
 
   namespace :db do
     task :start do
-      system "docker compose up -d >/dev/null 2>&1" if Rails.env.development?
+      system "docker compose up -d >/dev/null 2>&1"
     end
   end
 end

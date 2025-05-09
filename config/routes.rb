@@ -42,15 +42,16 @@ Rails.application.routes.draw do
   end
 
   %W[#{} search/ list/ static/].each do |prefix|
-    get "#{prefix}docs/:name(/*rest)", to: "yard#featured", as: prefix.blank? ? "yard_featured" : nil
-    get "#{prefix}stdlib/:name(/*rest)", to: "yard#stdlib", as: prefix.blank? ? "yard_stdlib" : nil
-    get "#{prefix}gems/:name(/*rest)", to: "yard#gems", as: prefix.blank? ? "yard_gems" : nil
-    get "#{prefix}github/:username/:project(/*rest)", to: "yard#github", as: prefix.blank? ? "yard_github" : nil
+    get "#{prefix}docs/:name(/*rest)", to: "yard#featured", as: prefix.blank? ? "yard_featured" : nil, format: false
+    get "#{prefix}stdlib/:name(/*rest)", to: "yard#stdlib", as: prefix.blank? ? "yard_stdlib" : nil, format: false
+    get "#{prefix}gems/:name(/*rest)", to: "yard#gems", as: prefix.blank? ? "yard_gems" : nil, format: false
+    get "#{prefix}github/:username/:project(/*rest(.:format))", to: "yard#github", as: prefix.blank? ? "yard_github" : nil,
+      constraints: { username: /[a-z0-9_\.-]+/i, project: /[a-z0-9_\.-]+/i }, format: false
   end
 
-  get "/js/*rest(.:format)", to: redirect("/assets/js/%{rest}.%{format}", status: 302)
-  get "/css/*rest(.:format)", to: redirect("/assets/css/%{rest}.%{format}", status: 302)
-  get "/images/*rest(.:format)", to: redirect("/assets/images/%{rest}.%{format}", status: 302)
+  get "/js/*rest", to: redirect("/assets/js/%{rest}", status: 302), format: false
+  get "/css/*rest", to: redirect("/assets/css/%{rest}", status: 302), format: false
+  get "/images/*rest", to: redirect("/assets/images/%{rest}", status: 302), format: false
 
   mount MissionControl::Jobs::Engine, at: "/jobs"
 end

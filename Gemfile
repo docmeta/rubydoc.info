@@ -43,6 +43,12 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  gem "capybara", require: "capybara"
+  gem "selenium-webdriver"
+  gem "rspec-rails", "~> 8.0.0"
+  gem "faker"
+  gem "factory_bot_rails"
 end
 
 group :development do
@@ -53,12 +59,6 @@ group :development do
   gem "flamegraph"
   gem "rack-mini-profiler"
   gem "memory_profiler"
-end
-
-group :test do
-  # Use system testing [https://guides.rubyonrails.org/testing.html#system-testing]
-  gem "capybara"
-  gem "selenium-webdriver"
 end
 
 # Application dependencies
