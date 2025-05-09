@@ -17,6 +17,13 @@ RSpec.describe "Github", type: :system do
           expect(page).to have_selector("h2", text: "GitHub Projects Listing")
           expect(page).to have_no_selector("h2", text: "Featured Libraries Listing")
           expect(page).to have_link(text: "xyz/abc", href: yard_github_path("xyz", "abc"))
+          expect(page).not_to have_selector(".alpha a", text: "Latest")
+          expect(page).to have_selector(".alpha .selected", text: "Latest")
+          expect(page).to have_selector("nav .selected", text: "GitHub")
+
+          (?a.. ?z).each do |letter|
+            expect(page).to have_selector(".alpha a", text: letter.chr.upcase)
+          end
         end
       end
 
@@ -24,6 +31,7 @@ RSpec.describe "Github", type: :system do
         with_rubydoc_config(libraries: { featured: { yard: "gem" } }) do
           it do
             visit root_path(letter: "b")
+            expect(page).to have_selector(".alpha .selected", text: "B")
             expect(page).to have_selector("h2", text: "Featured Libraries Listing")
             expect(page).to have_link(text: "yard", href: yard_gems_path("yard"))
             expect(page).to have_link(text: "4.0.0", href: yard_gems_path("yard", "4.0.0"))
