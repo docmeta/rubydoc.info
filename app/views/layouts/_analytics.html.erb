@@ -13,10 +13,12 @@
   <script>
     window.dataLayer = window.dataLayer || [];
     if (window.gtag) {
-      gtag('event', 'page_view', {
-        page_title: document.title,
-        page_location: window.location.href,
-      });
+      setTimeout(() => {
+        gtag('event', 'page_view', {
+          page_title: document.title,
+          page_location: window.location.href,
+        });
+      }, 1000);
     } else {
       function gtag(){dataLayer.push(arguments);}
       gtag('consent', 'update', {
