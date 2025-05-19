@@ -12,15 +12,21 @@
   <script async src="https://www.googletagmanager.com/gtag/js?id=<%= Rubydoc.config.integrations.google_analytics %>"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('consent', 'update', {
+    if (window.gtag) {
+      gtag('event', 'page_view', {
+        page_title: document.title,
+        page_location: window.location.href,
+      });
+    } else {
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'update', {
       'ad_user_data': 'denied',
       'ad_personalization': 'denied',
       'ad_storage': 'denied',
       'analytics_storage': 'denied'
-    });
-    gtag('js', new Date());
-
-    gtag('config', '<%= Rubydoc.config.integrations.google_analytics %>');
+      });
+      gtag('js', new Date());
+      gtag('config', '<%= Rubydoc.config.integrations.google_analytics %>');
+    }
   </script>
 <% end %>

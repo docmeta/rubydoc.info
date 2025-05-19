@@ -74,18 +74,11 @@ class YARDController < ApplicationController
       expires_in 1.day, public: true
     end
 
-    if use_template?
+    if status == 200 && Mime::Type.lookup(headers["Content-Type"]).html?
       render :show
     else
       render plain: body.first, status: status, headers: headers, content_type: headers["Content-Type"]
     end
-  end
-
-  def use_template?
-    return false if status != 200
-    return false if %w[/search /static].any? { |path| request.path.starts_with?(path) }
-    return false if params[:rest].to_s.starts_with?("file/")
-    true
   end
 
   def visit_library
