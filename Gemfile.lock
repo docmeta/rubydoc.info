@@ -195,7 +195,7 @@ GEM
     mini_histogram (0.3.1)
     mini_mime (1.1.5)
     minitest (5.25.5)
-    mission_control-jobs (1.0.2)
+    mission_control-jobs (1.1.0)
       actioncable (>= 7.1)
       actionpack (>= 7.1)
       activejob (>= 7.1)
