@@ -6,6 +6,7 @@
 
 # Ignore bundler config.
 /.bundle
+/vendor/bundle
 
 # Ignore all environment files.
 /.env*
@@ -34,3 +35,7 @@
 /config/credentials.yml.enc
 /config/master.key
 /config/rubydoc.yml
+
+# Ignore key files for decrypting credentials and more.
+/config/credentials/*.key
+

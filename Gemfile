@@ -84,3 +84,5 @@ platforms :ruby do
   gem "rdoc"
   gem "bluecloth"
 end
+
+gem "newrelic_rpm", "~> 9.23"
