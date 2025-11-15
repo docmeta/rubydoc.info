@@ -25,7 +25,7 @@ common: &default_settings
   agent_enabled: <%= Rails.application.credentials.dig(:new_relic, :license_key).present? %>
 
   # Logging level for log/newrelic_agent.log
-  log_level: info
+  log_level: error
 
   application_logging:
     # If `true`, all logging-related features for the agent can be enabled or disabled
