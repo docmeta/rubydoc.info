@@ -90,7 +90,7 @@ module ApplicationHelper
 
     featured_config.map do |name, source|
       if source == "gem"
-        gem_libraries[name]
+        gem_libraries[name.to_s]
       elsif source == "featured"
         versions = FeaturedLibrary.versions_for(name)
         Library.new(name: name, source: :featured, versions: versions)
