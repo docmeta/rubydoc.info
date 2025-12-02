@@ -20,14 +20,16 @@ class Library < ApplicationRecord
   end
 
   def library_versions
-    items = versions.map do |v|
-      ver, platform = *v.split(",")
-      lib = YARD::Server::LibraryVersion.new(name, ver, nil, source)
-      lib.platform = platform
-      lib
-    end
+    @library_versions ||= begin
+      items = versions.map do |v|
+        ver, platform = *v.split(",")
+        lib = YARD::Server::LibraryVersion.new(name, ver, nil, source)
+        lib.platform = platform
+        lib
+      end
 
-    source == :github ? sorted_github_library_versions(items) : items
+      source == :github ? sorted_github_library_versions(items) : items
+    end
   end
 
   def name

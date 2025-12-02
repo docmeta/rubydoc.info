@@ -81,9 +81,16 @@ module ApplicationHelper
   end
 
   def featured_libraries
-    Rubydoc.config.libraries[:featured].map do |name, source|
+    featured_config = Rubydoc.config.libraries[:featured]
+    return [] if featured_config.blank?
+
+    # Batch load all gem libraries in one query to avoid N+1
+    gem_names = featured_config.select { |_, source| source == "gem" }.keys
+    gem_libraries = Library.gem.where(name: gem_names).index_by(&:name)
+
+    featured_config.map do |name, source|
       if source == "gem"
-        Library.gem.find_by(name: name)
+        gem_libraries[name]
       elsif source == "featured"
         versions = FeaturedLibrary.versions_for(name)
         Library.new(name: name, source: :featured, versions: versions)

@@ -6,7 +6,8 @@ class GemsController < ApplicationController
 
   prepend_before_action do
     @title = "RubyGems"
-    @collection = Library.allowed_gem.all
+    # Select only needed columns to reduce memory usage
+    @collection = Library.allowed_gem.select(:id, :name, :source, :owner, :versions)
   end
 
   def index

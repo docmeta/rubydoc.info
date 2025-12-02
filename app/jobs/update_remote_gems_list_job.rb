@@ -23,18 +23,21 @@ class UpdateRemoteGemsListJob < ApplicationJob
     logger.info "Updating remote RubyGems..."
 
     inserts = []
-    changed_gems = Library.gem.all.map { |lib| [ lib.name, lib ] }.to_h
-    removed_gems = changed_gems.keys
+    # Use pluck + index to reduce memory usage instead of loading full AR objects
+    changed_gems = Library.gem.pluck(:name, :id, :versions).each_with_object({}) do |(name, id, versions), hash|
+      hash[name] = { id: id, versions: versions }
+    end
+    removed_gems = changed_gems.keys.to_set
 
     fetch_remote_gems.each do |name, versions|
       versions = pick_best_versions(versions)
-      lib = changed_gems[name]
+      lib_data = changed_gems[name]
 
-      if lib
+      if lib_data
         removed_gems.delete(name)
 
-        if lib.versions != versions
-          lib.update(versions: versions)
+        if lib_data[:versions] != versions
+          Library.where(id: lib_data[:id]).update_all(versions: versions)
         else
           changed_gems.delete(name)
         end
@@ -53,8 +56,8 @@ class UpdateRemoteGemsListJob < ApplicationJob
     end
 
     if removed_gems.size > 0
-      Library.delete_by(name: removed_gems)
-      logger.info "Removed #{removed_gems.size} gems: #{removed_gems.join(', ')}"
+      Library.where(source: :remote_gem, name: removed_gems.to_a).delete_all
+      logger.info "Removed #{removed_gems.size} gems: #{removed_gems.to_a.join(', ')}"
     end
   ensure
     self.class.clear_lock_file if @can_clear_lock_file
@@ -96,8 +99,9 @@ class UpdateRemoteGemsListJob < ApplicationJob
     end
     CacheClearJob.perform_later("/gems", "/featured", *index_map.keys.map { |k| "/gems/~#{k}" })
 
-    gem_names.each_slice(50) do |list|
-      CacheClearJob.perform_later(*list.map { |k| [ "/gems/#{k}/", "/list/gems/#{k}/", "/static/gems/#{k}" ] }.flatten)
+    # Batch into larger chunks to reduce job overhead
+    gem_names.each_slice(100) do |list|
+      CacheClearJob.perform_later(*list.flat_map { |k| [ "/gems/#{k}/", "/list/gems/#{k}/", "/static/gems/#{k}" ] })
     end
   end
 end

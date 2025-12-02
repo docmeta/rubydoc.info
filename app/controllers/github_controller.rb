@@ -8,7 +8,8 @@ class GithubController < ApplicationController
 
   prepend_before_action do
     @title = "GitHub Projects"
-    @collection = Library.allowed_github.all
+    # Select only needed columns to reduce memory usage
+    @collection = Library.allowed_github.select(:id, :name, :source, :owner, :versions, :updated_at)
   end
 
   def index

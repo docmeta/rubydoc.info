@@ -20,7 +20,7 @@
   <h3>All matches</h3>
 <% end %>
 <div class="libraries">
-  <% if @collection.count == 0 %>
+  <% if @collection.empty? %>
     <div class="row">No matches found.</div>
   <% end %>
   <%= render partial: "shared/library", collection: @collection %>
