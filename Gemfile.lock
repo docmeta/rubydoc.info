@@ -221,7 +221,7 @@ GEM
       timeout
     net-smtp (0.5.1)
       net-protocol
-    newrelic_rpm (9.23.0)
+    newrelic_rpm (9.24.0)
     nio4r (2.7.4)
     nokogiri (1.18.10-aarch64-linux-musl)
       racc (~> 1.4)
@@ -457,7 +457,7 @@ DEPENDENCIES
   memory_profiler
   mission_control-jobs
   net-http-persistent (~> 4.0)
-  newrelic_rpm (~> 9.23)
+  newrelic_rpm (~> 9.24)
   pagy
   pg (~> 1.6)
   propshaft

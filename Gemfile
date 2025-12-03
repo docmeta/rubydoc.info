@@ -85,4 +85,4 @@ platforms :ruby do
   gem "bluecloth"
 end
 
-gem "newrelic_rpm", "~> 9.23"
+gem "newrelic_rpm", "~> 9.24"
