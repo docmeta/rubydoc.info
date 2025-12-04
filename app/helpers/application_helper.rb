@@ -1,6 +1,4 @@
 module ApplicationHelper
-  include Pagy::Frontend
-
   LIBRARY_TYPES = {
     featured: "Gem",
     stdlib: "Standard Library",
