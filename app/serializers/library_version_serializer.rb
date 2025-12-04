@@ -7,8 +7,6 @@ class LibraryVersionSerializer < ActiveJob::Serializers::ObjectSerializer
     Marshal.load(data["marshal"])
   end
 
-  private
-
   def klass
     YARD::Server::LibraryVersion
   end
