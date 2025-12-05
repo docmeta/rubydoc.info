@@ -1,5 +1,8 @@
 FROM ruby:3-alpine
 
+ARG GIT_SHA
+ENV GIT_SHA=$GIT_SHA
+
 ADD ./generate.rb /rb/generate.rb
 RUN chmod +x /rb/generate.rb
 
