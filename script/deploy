@@ -4,6 +4,7 @@ set -e
 
 docker swarm init 2>/dev/null || true
 docker compose -f docker-compose.prod.yml build --build-arg GIT_SHA=$(git rev-parse HEAD)
+docker build --no-cache -t docmeta/rubydoc-docparse -f docker/docparse/Dockerfile docker/docparse
 docker stack deploy --resolve-image never --compose-file docker-compose.prod.yml rubydoc
 
 if [ "_$(docker ps --filter status=running -q)" != "_" ]; then
