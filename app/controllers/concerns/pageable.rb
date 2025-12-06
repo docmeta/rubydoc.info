@@ -1,16 +1,15 @@
 module Pageable
   extend ActiveSupport::Concern
 
-  Pagy.options[:limit] = 100
+  PAGE_SIZE = 100
 
   included do
-    include Pagy::Method
-
     before_action :set_pagination
   end
 
   def set_pagination
     @page = params[:page]&.to_i || 1
-    @pagy, @collection = pagy(@collection, page: @page)
+    @total_pages = (@collection.except(:select).count / PAGE_SIZE.to_f).ceil
+    @collection = @collection.offset((@page - 1) * PAGE_SIZE).limit(PAGE_SIZE)
   end
 end
