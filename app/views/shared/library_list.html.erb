@@ -11,7 +11,7 @@
   <% end %>
 </h2>
 <%= render "shared/alpha_index" if @has_alpha_index %>
-<%= render "shared/pagination" if @pagy %>
+<%= render "shared/pagination" if @total_pages %>
 <% if @exact_match %>
   <h3>Exact match</h3>
   <div class="libraries">
@@ -25,4 +25,4 @@
   <% end %>
   <%= render partial: "shared/library", collection: @collection %>
 </div>
-<%= render "shared/pagination" if @pagy %>
+<%= render "shared/pagination" if @total_pages %>

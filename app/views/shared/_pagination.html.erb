@@ -1,4 +1,4 @@
-<% if @pagy.pages > 1 %>
+<% if @total_pages > 1 %>
   <div class="tabbed-links numeric">
     Page:
     <% if @search %>
@@ -11,15 +11,15 @@
         <a href="<%= page_prefix %>1">1</a>
         ...
       <% end %>
-      <% next if page < 1 || page >= @pagy.pages %>
+      <% next if page < 1 || page > @total_pages %>
       <% if page == @page %>
         <span class="selected"><%= page %></span>
       <% else %>
         <a href="<%= page_prefix %><%= page %>"><%= page %></a>
       <% end %>
-      <% if page == @page + 9 && page < @pagy.pages %>
+      <% if page == @page + 9 && page < @total_pages %>
         ...
-        <a href="<%= page_prefix %><%= @pagy.pages - 1 %>"><%= @pagy.pages - 1 %></a>
+        <a href="<%= page_prefix %><%= @total_pages %>"><%= @total_pages %></a>
       <% end %>
     <% end %>
   </div>

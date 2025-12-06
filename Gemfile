@@ -65,7 +65,6 @@ end
 gem "version_sorter"
 gem "skylight", require: false
 gem "net-http-persistent", "~> 4.0"
-gem "pagy"
 gem "deep_merge", require: "deep_merge/rails_compat"
 gem "syntax"
 gem "yard", github: "lsegal/yard", branch: "main"
