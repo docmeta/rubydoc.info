@@ -3,7 +3,7 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   connect() {
     var re = new RegExp(
-      "^" + window.location.protocol + "//" + window.location.host + "/"
+      `^${window.location.protocol}//${window.location.host}/`
     );
     if (document.referrer.match(re)) {
       localStorage.removeItem("defaultIndex");
@@ -11,7 +11,7 @@ export default class extends Controller {
     }
 
     const action = localStorage.getItem("defaultIndex");
-    if (action) {
+    if (action && action !== window.location.pathname.slice(1)) {
       Turbo.visit(`/${action}`, { action: "replace" });
     }
   }
