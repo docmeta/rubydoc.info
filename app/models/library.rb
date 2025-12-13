@@ -59,7 +59,7 @@ class Library < ApplicationRecord
       nil
     end
 
-    items.sort do |item|
+    items.sort_by do |item|
       path = Pathname.new(item.source_path)
       begin
         path.basename.to_s == primary_branch ? -1 : path.join(".yardoc", "complete").mtime.to_i
