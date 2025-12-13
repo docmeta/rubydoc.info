@@ -3,6 +3,7 @@ class RubygemsWebhookController < ApplicationController
     if settings.integrations.rubygems.blank?
       logger.error "RubyGems integration not configured, failing webhook request"
       render status: :unauthorized
+      return
     end
 
     data = JSON.parse(request.body.read || "{}")
@@ -11,6 +12,7 @@ class RubygemsWebhookController < ApplicationController
     if request.headers["Authorization"] != authorization
       logger.error "RubyGems webhook unauthorized: #{request.headers["Authorization"]}"
       render status: :unauthorized
+      return
     end
 
     lib = Library.gem.find_or_create_by!(name: data["name"])
