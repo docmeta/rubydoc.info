@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe GemsController, type: :controller do
   describe "GET #index" do
     before do
-      create(:gem, name: 'activerecord', versions: ['7.0.0'])
-      create(:gem, name: 'actionpack', versions: ['3.12.0'])
+      create(:gem, name: 'activerecord', versions: [ '7.0.0' ])
+      create(:gem, name: 'actionpack', versions: [ '3.12.0' ])
     end
 
     it "returns a successful response" do

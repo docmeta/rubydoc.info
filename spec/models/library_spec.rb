@@ -41,7 +41,7 @@ RSpec.describe Library, type: :model do
       end
 
       context 'when disallowed gems are configured' do
-        with_rubydoc_config(libraries: { disallowed_gems: ['rails*'] }) do
+        with_rubydoc_config(libraries: { disallowed_gems: [ 'rails*' ] }) do
           it 'excludes disallowed gems' do
             expect(Library.allowed_gem).to contain_exactly(@gem1)
           end
@@ -57,7 +57,7 @@ RSpec.describe Library, type: :model do
       end
 
       context 'when disallowed projects are configured' do
-        with_rubydoc_config(libraries: { disallowed_projects: ['rails/*'] }) do
+        with_rubydoc_config(libraries: { disallowed_projects: [ 'rails/*' ] }) do
           it 'excludes disallowed projects' do
             expect(Library.allowed_github).to be_empty
           end
@@ -68,7 +68,7 @@ RSpec.describe Library, type: :model do
 
   describe '.wildcard' do
     it 'converts asterisks to SQL wildcards' do
-      expect(Library.wildcard(['rails*', '*gem*'])).to eq(['rails%', '%gem%'])
+      expect(Library.wildcard([ 'rails*', '*gem*' ])).to eq([ 'rails%', '%gem%' ])
     end
   end
 
@@ -106,18 +106,18 @@ RSpec.describe Library, type: :model do
   describe '#library_versions' do
     context 'for gem library' do
       it 'returns library versions' do
-        library = create(:gem, name: 'rails', versions: ['7.0.0', '6.1.0', '5.2.0'])
+        library = create(:gem, name: 'rails', versions: [ '7.0.0', '6.1.0', '5.2.0' ])
         versions = library.library_versions
 
         expect(versions.size).to eq(3)
         expect(versions.first).to be_a(YARD::Server::LibraryVersion)
-        expect(versions.map(&:version)).to eq(['7.0.0', '6.1.0', '5.2.0'])
+        expect(versions.map(&:version)).to eq([ '7.0.0', '6.1.0', '5.2.0' ])
       end
     end
 
     context 'for github library' do
       it 'returns library versions' do
-        library = create(:github, name: 'rails', owner: 'rails', versions: ['main', 'develop'])
+        library = create(:github, name: 'rails', owner: 'rails', versions: [ 'main', 'develop' ])
         versions = library.library_versions
 
         expect(versions.size).to eq(2)
@@ -126,7 +126,7 @@ RSpec.describe Library, type: :model do
     end
 
     it 'caches the result' do
-      library = create(:gem, name: 'rails', versions: ['7.0.0'])
+      library = create(:gem, name: 'rails', versions: [ '7.0.0' ])
       first_call = library.library_versions
       second_call = library.library_versions
 

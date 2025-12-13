@@ -67,12 +67,12 @@ RSpec.describe GithubProject, type: :model do
   describe '#path' do
     it 'returns path components as array' do
       project = GithubProject.new(url: 'https://github.com/rails/rails')
-      expect(project.path).to eq(['rails', 'rails'])
+      expect(project.path).to eq([ 'rails', 'rails' ])
     end
 
     it 'handles different URL formats' do
       project = GithubProject.new(url: 'https://github.com/ruby/ruby')
-      expect(project.path).to eq(['ruby', 'ruby'])
+      expect(project.path).to eq([ 'ruby', 'ruby' ])
     end
   end
 end

@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe GithubController, type: :controller do
   describe "GET #index" do
     before do
-      create(:github, name: 'rails', owner: 'rails', versions: ['main'])
-      create(:github, name: 'ruby', owner: 'ruby', versions: ['master'])
+      create(:github, name: 'rails', owner: 'rails', versions: [ 'main' ])
+      create(:github, name: 'ruby', owner: 'ruby', versions: [ 'master' ])
     end
 
     it "returns a successful response" do

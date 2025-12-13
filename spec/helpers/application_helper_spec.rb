@@ -148,9 +148,9 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe '#sorted_versions' do
     it 'returns sorted versions' do
-      library = create(:gem, name: 'rails', versions: ['7.0.0', '6.1.0', '5.2.0'])
+      library = create(:gem, name: 'rails', versions: [ '7.0.0', '6.1.0', '5.2.0' ])
       versions = helper.sorted_versions(library)
-      expect(versions).to eq(['7.0.0', '6.1.0', '5.2.0'])
+      expect(versions).to eq([ '7.0.0', '6.1.0', '5.2.0' ])
     end
   end
 
@@ -184,8 +184,8 @@ RSpec.describe ApplicationHelper, type: :helper do
     context 'when featured gems are configured' do
       with_rubydoc_config(libraries: { featured: { rails: 'gem', rspec: 'gem' } }) do
         before do
-          create(:gem, name: 'rails', versions: ['7.0.0'])
-          create(:gem, name: 'rspec', versions: ['3.12.0'])
+          create(:gem, name: 'rails', versions: [ '7.0.0' ])
+          create(:gem, name: 'rspec', versions: [ '3.12.0' ])
         end
 
         it 'returns featured gem libraries' do

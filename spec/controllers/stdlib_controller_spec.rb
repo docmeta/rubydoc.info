@@ -3,8 +3,8 @@ require 'rails_helper'
 RSpec.describe StdlibController, type: :controller do
   describe "GET #index" do
     before do
-      create(:stdlib, name: 'json', versions: ['2.6.0'])
-      create(:stdlib, name: 'csv', versions: ['3.2.0'])
+      create(:stdlib, name: 'json', versions: [ '2.6.0' ])
+      create(:stdlib, name: 'csv', versions: [ '3.2.0' ])
     end
 
     it "returns a successful response" do

@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe CacheClearJob, type: :job do
   describe '#perform' do
-    let(:paths) { ['/docs/rails/7.0.0', '/docs/rspec/3.12.0'] }
+    let(:paths) { [ '/docs/rails/7.0.0', '/docs/rspec/3.12.0' ] }
 
     context 'when Cloudflare token is configured' do
-      with_rubydoc_config(integrations: { cloudflare_token: 'test_token', cloudflare_zones: ['zone123'] }) do
+      with_rubydoc_config(integrations: { cloudflare_token: 'test_token', cloudflare_zones: [ 'zone123' ] }) do
         it 'clears cache from Cloudflare' do
           http = instance_double(Net::HTTP::Persistent)
           allow(Net::HTTP::Persistent).to receive(:new).and_return(http)
@@ -52,7 +52,7 @@ RSpec.describe CacheClearJob, type: :job do
     end
 
     context 'with multiple zones' do
-      with_rubydoc_config(integrations: { cloudflare_token: 'test_token', cloudflare_zones: ['zone1', 'zone2'] }) do
+      with_rubydoc_config(integrations: { cloudflare_token: 'test_token', cloudflare_zones: [ 'zone1', 'zone2' ] }) do
         it 'clears cache for all zones' do
           http = instance_double(Net::HTTP::Persistent)
           allow(http).to receive(:request)

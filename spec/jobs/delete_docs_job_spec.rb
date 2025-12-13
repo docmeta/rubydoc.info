@@ -12,7 +12,7 @@ RSpec.describe DeleteDocsJob, type: :job do
   end
 
   let(:library) do
-    create(:gem, name: 'rails', versions: ['7.0.0', '6.1.0'])
+    create(:gem, name: 'rails', versions: [ '7.0.0', '6.1.0' ])
   end
 
   describe '#perform' do
@@ -23,7 +23,7 @@ RSpec.describe DeleteDocsJob, type: :job do
     context 'when library version should be invalidated' do
       it 'removes the library version from database' do
         allow(Library).to receive(:where).and_return(double(first: library))
-        allow(library).to receive(:versions).and_return(['7.0.0', '6.1.0'])
+        allow(library).to receive(:versions).and_return([ '7.0.0', '6.1.0' ])
         allow(library).to receive(:save)
         allow(Pathname).to receive(:new).and_return(double(rmtree: nil))
         allow(CacheClearJob).to receive(:perform_later)
@@ -35,7 +35,7 @@ RSpec.describe DeleteDocsJob, type: :job do
 
       it 'removes the directory' do
         allow(Library).to receive(:where).and_return(double(first: library))
-        allow(library).to receive(:versions).and_return(['7.0.0'])
+        allow(library).to receive(:versions).and_return([ '7.0.0' ])
         allow(library.versions).to receive(:delete)
         allow(library).to receive(:save)
         allow(CacheClearJob).to receive(:perform_later)
@@ -49,7 +49,7 @@ RSpec.describe DeleteDocsJob, type: :job do
 
       it 'queues cache clear job' do
         allow(Library).to receive(:where).and_return(double(first: library))
-        allow(library).to receive(:versions).and_return(['7.0.0'])
+        allow(library).to receive(:versions).and_return([ '7.0.0' ])
         allow(library.versions).to receive(:delete)
         allow(library).to receive(:save)
         allow(Pathname).to receive(:new).and_return(double(rmtree: nil))
@@ -61,7 +61,7 @@ RSpec.describe DeleteDocsJob, type: :job do
 
       context 'when it is the last version' do
         it 'destroys the library record' do
-          library.versions = ['7.0.0']
+          library.versions = [ '7.0.0' ]
           allow(Library).to receive(:where).and_return(double(first: library))
           allow(library.versions).to receive(:delete)
           allow(library.versions).to receive(:empty?).and_return(true)
@@ -77,7 +77,7 @@ RSpec.describe DeleteDocsJob, type: :job do
       context 'when there are other versions' do
         it 'keeps the library record and saves' do
           allow(Library).to receive(:where).and_return(double(first: library))
-          allow(library).to receive(:versions).and_return(['7.0.0', '6.1.0'])
+          allow(library).to receive(:versions).and_return([ '7.0.0', '6.1.0' ])
           allow(library.versions).to receive(:delete)
           allow(library.versions).to receive(:empty?).and_return(false)
           allow(Pathname).to receive(:new).and_return(double(rmtree: nil))
@@ -114,7 +114,7 @@ RSpec.describe DeleteDocsJob, type: :job do
 
       it 'handles owner/name format' do
         allow(CleanupUnvisitedDocsJob).to receive(:should_invalidate?).and_return(true)
-        github_lib = create(:github, name: 'rails', owner: 'rails', versions: ['main'])
+        github_lib = create(:github, name: 'rails', owner: 'rails', versions: [ 'main' ])
         allow(Library).to receive(:where).and_return(double(first: github_lib))
         allow(github_lib.versions).to receive(:delete)
         allow(github_lib).to receive(:save)
