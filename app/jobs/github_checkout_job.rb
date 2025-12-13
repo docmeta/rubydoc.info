@@ -1,4 +1,5 @@
 require "open-uri"
+require "shellwords"
 
 class GithubCheckoutJob < ApplicationJob
   include ShellHelper
@@ -51,7 +52,7 @@ class GithubCheckoutJob < ApplicationJob
 
   def run_checkout_pull
     write_fork_data
-    sh("cd #{repository_path.to_s.inspect} && git reset --hard origin/#{commit.inspect} && git pull --force",
+    sh("cd #{Shellwords.escape(repository_path.to_s)} && git reset --hard origin/#{Shellwords.escape(commit)} && git pull --force",
       title: "Updating project #{name}")
 
     yardoc = repository_path.join(".yardoc")
@@ -61,19 +62,19 @@ class GithubCheckoutJob < ApplicationJob
   def run_checkout_clone
     temp_clone_path.parent.mkpath
 
-    branch_opt = commit ? "--branch #{commit.inspect} " : ""
-    clone_cmd = "git clone --depth 1 --single-branch #{branch_opt}#{url.inspect} #{temp_clone_path.to_s.inspect}"
+    branch_opt = commit ? "--branch #{Shellwords.escape(commit)} " : ""
+    clone_cmd = "git clone --depth 1 --single-branch #{branch_opt}#{Shellwords.escape(url)} #{Shellwords.escape(temp_clone_path.to_s)}"
     sh(clone_cmd, title: "Cloning project #{name}")
 
     if commit.blank?
-      self.commit = `git -C #{temp_clone_path.to_s.inspect} rev-parse --abbrev-ref HEAD`.strip
+      self.commit = `git -C #{Shellwords.escape(temp_clone_path.to_s)} rev-parse --abbrev-ref HEAD`.strip
     end
 
     repository_path.parent.mkpath
     write_primary_branch_file if branch_opt.blank?
     write_fork_data
 
-    sh("rm -rf #{repository_path.to_s.inspect} && mv #{temp_clone_path.to_s.inspect} #{repository_path.to_s.inspect}",
+    sh("rm -rf #{Shellwords.escape(repository_path.to_s)} && mv #{Shellwords.escape(temp_clone_path.to_s)} #{Shellwords.escape(repository_path.to_s)}",
       title: "Move #{name} into place")
 
     true
