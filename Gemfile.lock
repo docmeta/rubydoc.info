@@ -94,7 +94,7 @@ GEM
     bluecloth (2.2.0)
     bootsnap (1.21.1)
       msgpack (~> 1.2)
-    brakeman (7.1.2)
+    brakeman (8.0.1)
       racc
     builder (3.3.0)
     capybara (3.40.0)
