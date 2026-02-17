@@ -46,7 +46,7 @@ group :development, :test do
 
   gem "capybara", require: "capybara"
   gem "selenium-webdriver"
-  gem "rspec-rails", "~> 8.0.2"
+  gem "rspec-rails", "~> 8.0.3"
   gem "faker"
   gem "factory_bot_rails"
   gem "rails-controller-testing", "~> 1.0"
