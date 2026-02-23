@@ -134,7 +134,7 @@ GEM
       thor (>= 0.19, < 2)
     diff-lcs (1.6.2)
     drb (2.2.3)
-    erb (6.0.1)
+    erb (6.0.2)
     erubi (1.13.1)
     et-orbi (1.4.0)
       tzinfo
@@ -417,11 +417,10 @@ GEM
     uri (1.1.1)
     useragent (0.16.11)
     version_sorter (2.3.0)
-    web-console (4.2.1)
-      actionview (>= 6.0.0)
-      activemodel (>= 6.0.0)
+    web-console (4.3.0)
+      actionview (>= 8.0.0)
       bindex (>= 0.4.0)
-      railties (>= 6.0.0)
+      railties (>= 8.0.0)
     websocket (1.2.11)
     websocket-driver (0.8.0)
       base64
