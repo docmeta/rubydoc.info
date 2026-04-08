@@ -1,4 +1,4 @@
-FROM ruby:3-alpine
+FROM ruby:4-alpine
 
 ARG GIT_SHA
 ENV GIT_SHA=$GIT_SHA

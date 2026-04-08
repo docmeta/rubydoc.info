@@ -1,4 +1,4 @@
-ARG RUBY_VERSION=3.4.3
+ARG RUBY_VERSION=4
 FROM ruby:$RUBY_VERSION-alpine AS build
 LABEL Maintainer="Loren Segal <lsegal@soen.ca>"
 
