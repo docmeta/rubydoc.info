@@ -11,8 +11,6 @@ RUN chmod +x /rb/generate.rb
 RUN adduser -D app
 USER app
 ENV GEM_HOME=/home/app/.gems
-RUN gem update --system --no-document
-RUN gem install --no-document bundler
 RUN git clone --depth 1 --branch main https://github.com/lsegal/yard /home/app/yard
 ENV RUBYOPT="-I/home/app/yard/lib"
 RUN ruby -ryard -e "puts YARD::VERSION"
