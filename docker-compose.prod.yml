@@ -48,6 +48,7 @@ services:
       - db
   db:
     image: postgres:alpine
+    command: -N 500 -B 240MB
     environment:
       POSTGRES_USER: db
       POSTGRES_PASSWORD: db
