@@ -38,7 +38,6 @@ services:
     environment:
       RAILS_MAX_THREADS: 8
       DOCPARSE_MAX_BUILDS: 8
-      DEFAULT_QUEUE_PROCESSES: 2
     entrypoint: ["./bin/jobs", "start"]
     deploy:
       replicas: 1
