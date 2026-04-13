@@ -36,7 +36,7 @@ services:
       - ./config/credentials.yml.enc:/app/config/credentials.yml.enc
       - ./storage:/app/storage
     environment:
-      RAILS_MAX_THREADS: 8
+      RAILS_MAX_THREADS: 10
       DOCPARSE_MAX_BUILDS: 8
     entrypoint: ["./bin/jobs", "start"]
     deploy:
