@@ -7,7 +7,7 @@ RSpec.describe YARDController, type: :controller do
     let(:store) { instance_double(LibraryStore::FeaturedStore) }
     let(:adapter) { instance_double(YARD::Server::RackAdapter) }
     let(:router_instance) { instance_double(LibraryRouter::FeaturedRouter) }
-    let(:library_version) { instance_double('Library', source_path: Pathname.new('/tmp/docs')) }
+    let(:library_version) { double('library_version', source_path: Pathname.new('/tmp/docs')) }
 
     before do
       allow(LibraryStore::FeaturedStore).to receive(:new).and_return(store)
