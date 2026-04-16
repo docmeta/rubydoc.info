@@ -5,7 +5,8 @@ services:
       context: .
       dockerfile: ./docker/app/Dockerfile
     environment:
-      WEB_CONCURRENCY: auto
+      RAILS_MAX_THREADS: 2
+      WEB_CONCURRENCY: 4
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config/master.key:/app/config/master.key
@@ -14,14 +15,14 @@ services:
     ports:
       - "0.0.0.0:80:80"
     deploy:
-      replicas: 1
+      replicas: 8
       update_config:
         order: start-first
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost/healthcheck"]
       start_period: 1s
       interval: 30s
-      timeout: 10s
+      timeout: 30s
       retries: 3
     depends_on:
       - db
