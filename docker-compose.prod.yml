@@ -6,7 +6,7 @@ services:
       dockerfile: ./docker/app/Dockerfile
     environment:
       RAILS_MAX_THREADS: 2
-      WEB_CONCURRENCY: 4
+      WEB_CONCURRENCY: 14
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - ./config/master.key:/app/config/master.key
@@ -15,11 +15,11 @@ services:
     ports:
       - "0.0.0.0:80:80"
     deploy:
-      replicas: 8
+      replicas: 2
       update_config:
         order: start-first
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost/healthcheck"]
+      test: [ "CMD", "curl", "-f", "http://localhost/healthcheck" ]
       start_period: 1s
       interval: 30s
       timeout: 30s
@@ -39,7 +39,7 @@ services:
     environment:
       RAILS_MAX_THREADS: 10
       DOCPARSE_MAX_BUILDS: 8
-    entrypoint: ["./bin/jobs", "start"]
+    entrypoint: [ "./bin/jobs", "start" ]
     deploy:
       replicas: 1
       update_config:
@@ -61,7 +61,7 @@ services:
       restart_policy:
         condition: on-failure
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "db"]
+      test: [ "CMD", "pg_isready", "-U", "db" ]
       start_period: 0s
       interval: 30s
       timeout: 10s
