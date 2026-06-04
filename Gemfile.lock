@@ -92,7 +92,7 @@ GEM
     bigdecimal (4.1.2)
     bindex (0.8.1)
     bluecloth (2.2.0)
-    bootsnap (1.24.5)
+    bootsnap (1.24.6)
       msgpack (~> 1.2)
     brakeman (8.0.4)
       racc
@@ -211,7 +211,7 @@ GEM
       railties (>= 7.1)
       stimulus-rails
       turbo-rails
-    msgpack (1.8.0)
+    msgpack (1.8.1)
     mutex_m (0.3.0)
     net-http-persistent (4.0.8)
       connection_pool (>= 2.2.4, < 4)
