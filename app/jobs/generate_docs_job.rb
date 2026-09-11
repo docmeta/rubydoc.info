@@ -61,27 +61,21 @@ class GenerateDocsJob < ApplicationJob
     end
   end
 
+  # Plugin installation needs the network, but generation runs untrusted code,
+  # so the container is detached from the network in between.
   def run_generate
     container = "docparse-#{SecureRandom.hex(8)}"
     FileUtils.rm_rf(library_version.yardoc_file)
-    sh "docker run -d --name #{container} -u #{Process.uid}:#{Process.gid} -v #{library_version.source_path.inspect}:/build --entrypoint tail #{IMAGE} -f /dev/null",
+    sh "docker run -d --name #{container} -u #{Process.uid}:#{Process.gid} -v #{library_version.source_path.inspect}:/build --network bridge --entrypoint tail #{IMAGE} -f /dev/null",
       title: "Starting #{library_version} (#{library_version.source})"
     sh "docker exec #{container} /rb/generate.rb setup",
       title: "Installing plugins for #{library_version} (#{library_version.source})"
-    disconnect_networks(container)
+    sh "docker network disconnect bridge #{container}",
+      title: "Disconnecting #{container} from the network"
     sh "docker exec #{container} /rb/generate.rb generate",
       title: "Generating #{library_version} (#{library_version.source})"
   ensure
     sh "docker rm -f #{container}", raise_error: false
-  end
-
-  # Generation runs untrusted code, so the container is detached from every
-  # network once its plugins are installed.
-  def disconnect_networks(container)
-    networks = JSON.parse(`docker inspect -f '{{json .NetworkSettings.Networks}}' #{container}`)
-    networks.each_key do |network|
-      sh "docker network disconnect #{network} #{container}"
-    end
   end
 
   def clear_cache
