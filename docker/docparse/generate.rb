@@ -2,7 +2,11 @@
 
 require 'shellwords'
 
-if File.exist?('.yardopts')
+# With no stage given, both stages run. The web app runs them separately so
+# that `generate` can execute untrusted code with the network disconnected.
+stage = ARGV.shift
+
+if stage != 'generate' && File.exist?('.yardopts')
   args = Shellwords.split(File.read('.yardopts').gsub(/^[ \t]*#.+/m, ''))
   args.each_with_index do |arg, i|
     next unless arg == '--plugin'
@@ -12,6 +16,8 @@ if File.exist?('.yardopts')
     system(cmd)
   end
 end
+
+exit if stage == 'setup'
 
 require 'yard'
 
