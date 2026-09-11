@@ -61,17 +61,20 @@ class GenerateDocsJob < ApplicationJob
     end
   end
 
-  # Plugin installation needs the network, but generation runs untrusted code,
-  # so the container is detached from the network in between.
+  # Downloading plugins needs the network, but installing one runs its build
+  # scripts and generation runs untrusted code, so only the download stage is
+  # given the network and the container is detached before either of those.
   def run_generate
     container = "docparse-#{SecureRandom.hex(8)}"
     FileUtils.rm_rf(library_version.yardoc_file)
     sh "docker run -d --name #{container} -u #{Process.uid}:#{Process.gid} -v #{library_version.source_path.inspect}:/build --network bridge --entrypoint tail #{IMAGE} -f /dev/null",
       title: "Starting #{library_version} (#{library_version.source})"
-    sh "docker exec #{container} /rb/generate.rb setup",
-      title: "Installing plugins for #{library_version} (#{library_version.source})"
+    sh "docker exec #{container} /rb/generate.rb download",
+      title: "Downloading plugins for #{library_version} (#{library_version.source})"
     sh "docker network disconnect bridge #{container}",
       title: "Disconnecting #{container} from the network"
+    sh "docker exec #{container} /rb/generate.rb install",
+      title: "Installing plugins for #{library_version} (#{library_version.source})"
     sh "docker exec #{container} /rb/generate.rb generate",
       title: "Generating #{library_version} (#{library_version.source})"
   ensure

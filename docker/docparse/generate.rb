@@ -2,22 +2,41 @@
 
 require 'shellwords'
 
-# With no stage given, both stages run. The web app runs them separately so
-# that `generate` can execute untrusted code with the network disconnected.
+# With no stage given, every stage runs. The web app runs them separately so
+# that only `download` has the network: plugins are fetched while online, then
+# installed (which runs their build scripts) and used with the network gone.
 stage = ARGV.shift
 
-if stage != 'generate' && File.exist?('.yardopts')
+CACHE = '/tmp/docparse-gems'
+
+if [nil, 'download'].include?(stage) && File.exist?('.yardopts')
+  Dir.mkdir(CACHE) unless Dir.exist?(CACHE)
   args = Shellwords.split(File.read('.yardopts').gsub(/^[ \t]*#.+/m, ''))
   args.each_with_index do |arg, i|
     next unless arg == '--plugin'
     next unless args[i + 1]
-    cmd = "gem install --user-install yard-#{args[i + 1].inspect}"
-    puts "[docparse] Installing plugin: #{cmd}"
-    system(cmd)
+    gem = "yard-#{args[i + 1]}"
+    puts "[docparse] Downloading plugin: #{gem}"
+    # --explain resolves the plugin and its dependencies without unpacking,
+    # building or otherwise running any of them.
+    explain = IO.popen(['gem', 'install', '--explain', gem], err: %i[child out], &:read)
+    # "yard-foo-1.2.3" or, for a precompiled gem, "yard-foo-1.2.3-x86_64-linux".
+    explain.scan(/^\s+(\S+?)-(\d[^\s-]*)(?:-(\S+))?$/) do |name, version, platform|
+      opts = platform ? ['--platform', platform] : []
+      system('gem', 'fetch', name, '-v', version, *opts, chdir: CACHE)
+    end
   end
 end
 
-exit if stage == 'setup'
+if [nil, 'install'].include?(stage)
+  gems = Dir["#{CACHE}/*.gem"]
+  unless gems.empty?
+    puts "[docparse] Installing plugins: #{gems.join(' ')}"
+    system('gem', 'install', '--local', '--ignore-dependencies', '--user-install', *gems)
+  end
+end
+
+exit unless [nil, 'generate'].include?(stage)
 
 require 'yard'
 
