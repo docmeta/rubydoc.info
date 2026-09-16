@@ -9,7 +9,7 @@ stage = ARGV.shift
 
 CACHE = '/tmp/docparse-gems'
 
-if [nil, 'download'].include?(stage) && File.exist?('.yardopts')
+if [ nil, 'download' ].include?(stage) && File.exist?('.yardopts')
   Dir.mkdir(CACHE) unless Dir.exist?(CACHE)
   args = Shellwords.split(File.read('.yardopts').gsub(/^[ \t]*#.+/m, ''))
   args.each_with_index do |arg, i|
@@ -19,16 +19,16 @@ if [nil, 'download'].include?(stage) && File.exist?('.yardopts')
     puts "[docparse] Downloading plugin: #{gem}"
     # --explain resolves the plugin and its dependencies without unpacking,
     # building or otherwise running any of them.
-    explain = IO.popen(['gem', 'install', '--explain', gem], err: %i[child out], &:read)
+    explain = IO.popen([ 'gem', 'install', '--explain', gem ], err: %i[child out], &:read)
     # "yard-foo-1.2.3" or, for a precompiled gem, "yard-foo-1.2.3-x86_64-linux".
     explain.scan(/^\s+(\S+?)-(\d[^\s-]*)(?:-(\S+))?$/) do |name, version, platform|
-      opts = platform ? ['--platform', platform] : []
+      opts = platform ? [ '--platform', platform ] : []
       system('gem', 'fetch', name, '-v', version, *opts, chdir: CACHE)
     end
   end
 end
 
-if [nil, 'install'].include?(stage)
+if [ nil, 'install' ].include?(stage)
   gems = Dir["#{CACHE}/*.gem"]
   unless gems.empty?
     puts "[docparse] Installing plugins: #{gems.join(' ')}"
@@ -36,7 +36,7 @@ if [nil, 'install'].include?(stage)
   end
 end
 
-exit unless [nil, 'generate'].include?(stage)
+exit unless [ nil, 'generate' ].include?(stage)
 
 require 'yard'
 
