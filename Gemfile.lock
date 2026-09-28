@@ -379,7 +379,7 @@ GEM
       websocket (~> 1.0)
     skylight (7.1.1)
       activesupport (>= 7.2.0)
-    solid_cable (4.0.2)
+    solid_cable (4.1.0)
       actioncable (>= 7.2)
       activejob (>= 7.2)
       activerecord (>= 7.2)
