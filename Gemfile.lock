@@ -311,7 +311,7 @@ GEM
       prism (>= 1.6.0)
       tsort
     rdiscount (2.2.7.5)
-    rdoc (8.0.0)
+    rdoc (8.1.0)
       erb
       prism (>= 1.6.0)
       rbs (>= 4.0.0)
