@@ -471,7 +471,7 @@ DEPENDENCIES
   mission_control-jobs
   net-http-persistent (~> 4.0)
   newrelic_rpm (~> 10.8)
-  pg (~> 1.6)
+  pg (~> 1.7)
   propshaft
   puma (>= 5.0)
   rack-mini-profiler
