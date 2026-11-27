@@ -470,7 +470,7 @@ DEPENDENCIES
   memory_profiler
   mission_control-jobs
   net-http-persistent (~> 4.0)
-  newrelic_rpm (~> 10.8)
+  newrelic_rpm (~> 10.9)
   pg (~> 1.6)
   propshaft
   puma (>= 5.0)
